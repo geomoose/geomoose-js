@@ -1,0 +1,34 @@
+ul.menubar {
+	margin: 0px;
+	padding: 0px;
+}
+
+ul.menubar li {
+	list-style-type: none;
+	margin: 0px;
+	padding: 0px;
+	float: left;
+	/*width: 150px;
+	border: solid 1px black;
+	background: white;*/
+}
+
+ul.submenu {
+	position: absolute;
+	visibility: hidden;
+	margin: 0px;
+	padding: 0px;
+	z-index: 10000;
+	border: solid 1px black;
+	border-bottom: none;
+}
+
+ul.submenu li {
+	float: none;
+	background: white;
+	width: 175px;
+	/*background: url(images/middlenav_repeat.jpg);*/
+	background: #88BE9D;
+	cursor: default;
+	border-bottom: solid 1px black;
+}

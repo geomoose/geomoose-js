@@ -1,0 +1,65 @@
+MAP
+	TRANSPARENT TRUE
+	
+	Symbol #needed to highlight points
+		Name 'circle'
+		Type ELLIPSE
+		FILLED TRUE
+		Points 1 1 END
+	END 	
+	
+	Symbol #Needed to highlight lines
+		NAME 'plainline'
+		TYPE ELLIPSE
+		FILLED TRUE
+		POINTS 1 1 END
+	END
+
+	WEB
+		METADATA
+			'ows_enable_request' '*'
+		END
+	END
+
+	PROJECTION
+		'+init=epsg:4326'
+	END
+
+	LAYER
+		NAME 'points'
+		GROUP 'highlight'
+		TYPE POINT
+		STATUS DEFAULT
+		CLASS
+			SYMBOL 'circle'
+			COLOR 255 255 0
+			SIZE 12
+		END
+	END
+
+	
+	LAYER
+		NAME 'polygons'
+		GROUP 'highlight'
+		TYPE POLYGON
+		STATUS DEFAULT
+		CLASS
+			STYLE
+				WIDTH 4
+				OUTLINECOLOR 255 255 0
+			END
+		END
+	END
+
+	LAYER
+		NAME 'lines'
+		GROUP 'highlight'
+		TYPE LINE
+		STATUS DEFAULT
+		CLASS
+			SYMBOL 'plainline'
+			COLOR 255 255 0
+			SIZE 2
+		END
+	END
+END

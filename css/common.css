@@ -1,0 +1,358 @@
+/*
+Copyright (c) 2009-2012, Dan "Ducky" Little & GeoMOOSE.org
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+*/
+
+body {
+	overflow: hidden;
+}
+
+#middle {
+	position: absolute;
+	left: 0px;
+	width: 100%;
+	bottom: 2em;
+}
+
+#menu {
+	margin: none;
+}
+
+/*** HEADER ***/
+#header {
+	/*
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	*/
+	width: 100%;
+	border-bottom: solid 1px black;
+}
+
+#header img {
+	border: none;
+	margin: 0px;
+	padding: 0px;
+}
+
+#toolbar {
+	width: 100%;
+}
+
+/*** FOOTER ***/
+#footer {
+	/*
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+	*/
+	height: 2em;
+	width: 100%;
+}
+
+#footer img {
+	border: none;
+	vertical-align: text-bottom;
+}
+
+#footer a {
+	color: black;
+	text-decoration: none;
+}
+
+#footer a:hover {
+	text-decoration: underline;
+}
+
+#coordinate-display .coordinate-type {
+	font-weight: bold;
+	margin-left: 5px;
+}
+
+.scale-jumper-text {
+	font-weight: bold;
+	margin-left: 5px;
+	margin-right: 3px;
+}
+
+.scale-jumper-select {
+	width: 150px;
+	text-align: right;
+}
+
+.scale-jumper-select option {
+	text-align: right;
+}
+
+/*** MIDDLE ***/
+#map {
+	display: block;
+	height: 100%;
+	border: solid 1px black;
+}
+
+#mapContainer {
+	width: 100%;
+	height: 100%;
+}
+
+#control-panel {
+	position: absolute;
+	top: 0px;
+	height: 100%;
+	width: 25em;
+}
+
+.DisplayRight #control-panel {
+	right: 0px;
+}
+
+.DisplayRight #map {
+	margin-right: 20em;
+	margin-left: 0px;
+}
+
+/*
+ *  Tab Styles
+ */
+
+.tab-strip {
+	margin-top: .3em;
+	border-bottom: solid .1em black;
+}
+
+#tab-container {
+	overflow: scroll;
+}
+
+#catalog-tab {
+}
+
+.tab {
+	border-top: solid 1px black;
+	border-left: solid 1px black;
+	border-right: solid 1px black;
+
+	padding-left: 2px;
+	padding-right: 2px;
+
+	cursor: pointer;
+
+	margin-left: 1px;
+	margin-right: 2px;
+	margin-top: 5px;
+
+	background-color: #EEE;
+}
+
+.tab-selected {
+	border-bottom: solid 1px white;
+	background-color: white;
+}
+
+.tab-hidden {
+	display: none;
+}
+
+.tab-visible {
+	display: block;
+}
+
+.tab-visible td,th {
+	font-size: 75%;
+}
+
+#service-tab table,td,th {
+/*	font-size: 1em;*/
+}
+
+/*
+ *  CSS for styling service rendering
+ */
+
+.service-title {
+	display: block;
+	font-size: 1.5em;
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+
+.service-input-parent {
+	display: block;
+}
+
+.service-input-title {
+	font-weight: bold;
+}
+
+.service-step-visible {
+	display: block;
+}
+
+.service-step-hidden {
+	display: none;
+}
+
+#measuretool-input-total,#measuretool-input-segment,#measuretool-input-heading {
+	text-align: right;
+}
+
+.popupContainer {
+	overflow-y: auto;
+	overflow-x: auto;
+}
+
+/*
+ *  Some CSS for the Zoom To boxes.
+ */
+
+#zoomto-boxes {
+	text-align: center;
+}
+
+.zoomto-select {
+	width: 10em;
+}
+
+/*** REFERENCE MAP ***/
+.olControlOverviewMapElement {
+	background: none !important;
+}
+
+
+.olControlOverviewMapMaximizeButton {
+	background-repeat: no-repeat;
+	background-image: url('../images/toolbar/add.png');
+}
+
+.olControlOverviewMapMinimizeButton {
+	background-repeat: no-repeat;
+	background-image: url('../images/toolbar/delete.png');
+}
+
+*.olControlOverviewMapMinimizeButton > img {
+	display: none;
+}
+
+*.olControlOverviewMapMaximizeButton > img {
+	display: none;
+}
+
+.olControlOverviewMapElement .olMap {
+	background-color: white;
+	border: solid 1px black;
+}
+
+.Visible {
+	display: block;
+}
+
+.Hidden {
+	display: none !important;
+}
+
+/*** Turns the cursor back to pointer over pan/zoom bars ***/
+.olControlPanZoomBar {
+	cursor:auto !important;
+}
+
+/*** This is some new stuff for 2.6.  It will get reorg'd in a new minor revision to supprot
+ CSS Compilation ***/
+
+.sprite-control-activate {
+	background-image: url('../images/activate.png') !important;
+	background-position: 0px 0px !important;
+}
+
+.catalog-active-map-source {
+	background-image: url(../images/catalog_gradiant.png);
+	background-repeat: repeat-x;
+	background-color: #FFF475;
+}
+
+.tundra .dijitDialogPaneContent {
+	padding: 2px !important;
+}
+
+.measure_header_label {
+	width: 7em;
+	font-weight: bold;
+}
+
+.measure_segment_id_column {
+	width: 3em;
+}
+
+.measure_segment_column,
+.measure_total_column {
+	width: 10em;
+}
+
+/** This determines the width and font sizes for the zoom-to drop downs */
+.zoomto_select .dijitSelectLabel {
+	width: 16em;
+	text-align: left
+}
+
+.zoomto_select .dijitMenuItemLabel {
+	font-size: 75%;
+}
+
+
+/** These are the recommended settings from extensions/MeasureWithBearing.js **/
+.measure-tool-title {
+	font-size: 1.1em;
+	font-weight: bold;
+	margin-bottom: .25em;
+}
+
+.measure-tool-display-title {
+	display: inline-block;
+	width: 6em;
+	padding-left: .2em;
+	font-weight: bold;
+}
+
+.measure-tool-header-cell {
+	text-decoration: underline;
+}
+
+
+/* Fix for #71, #92  */
+.olLayerGooglePoweredBy {
+	display: none !important;
+}
+
+.geomooseDownloadLink {
+	display: block;
+	padding: .25em;
+	color: black;
+}
+
+.geomooseDownloadTab {
+}
+
+.geomooseDownloadAttachment {
+}
+
+.geomoseDownloadClose {
+}
+
+

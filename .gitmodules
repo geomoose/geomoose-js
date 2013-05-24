@@ -1,0 +1,9 @@
+[submodule "libs/OpenLayers"]
+	path = libs/OpenLayers
+	url = git://github.com/openlayers/openlayers.git
+[submodule "libs/dojo"]
+	path = libs/dojo
+	url = git://github.com/dojo/dojo.git
+[submodule "libs/proj4js"]
+	path = libs/proj4js
+	url = git://github.com/geomoose/proj4js-amd.git

@@ -1,0 +1,142 @@
+/*
+Copyright (c) 2009-2012, Dan "Ducky" Little & GeoMOOSE.org
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+*/
+
+body {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 75%;
+	font-style: normal;
+	font-weight: normal;
+	text-decoration: none;
+	color: #000000;
+	margin: 0px 0px 0px 0px;
+}
+
+table td,th {
+	font-size: 75%;
+}
+
+/* 
+HEADER: To change the color of the menu bar you will need to change the background-color values. 
+For example rgb(239,239,239) is grey and rgb(255,255,155) is yellow. You will also need to 
+change the color of the image file for the menubar.png to match. 
+*/
+
+#header {
+	background-image:url(images/menubar.png);
+	background-repeat: repeat-x;
+	background-color: rgb(239,239,239);
+	color: black;
+}
+
+/* 
+LOGO: To replace the GeoMoose Logo replace the logo.png file with yours.  A small logo image will 
+make a smaller header. The padding-left and padding-top can be used to adjust the position the logo.  
+*/
+
+#logo {
+	background-image: url('images/logo.png');
+	background-repeat: no-repeat;
+	padding-left: 250px;
+	padding-top: 65px;
+	float: left;
+	display: block;
+}
+
+/* 
+FOOTER LOGO: To replace the small moose logo replace the logo.png file with yours. The  
+padding-left and padding-top can be used to adjust the position the logo.
+*/ 
+
+#footer_logo {
+	background-image: url('images/mini_logo.png');
+	background-repeat: no-repeat;
+	padding-left: 17px;
+	padding-top: 17px;
+	margin: 3px;
+	float: left;
+	display: block;
+
+}
+
+/*
+TOOLBAR: To change the background color of the toolbar, uncomment 'background:white;'line and 
+replace it with a color of interest. This could also be done using an rgb format rgb(255,255,155).  
+*/ 
+
+#toolbar {
+/*	background: white;*/
+}
+
+
+#menubar {
+	display: block;
+	width: 100%;
+	clear: both;
+	padding-left: .75em;
+	padding-top: .5em;
+	padding-bottom: .25em;
+	padding-right: .25em;
+}
+
+#menubar a {
+	color: black;
+}
+
+/* 
+FOOTER: You can change the background color of the footer line by changing replacing the menubar.png 
+file with another image. Currently the menubar.png is used so that the colors match. 
+*/ 
+
+#footer {
+	background-repeat: repeat-x;
+	border-top: solid 2px #397C17; /*black;*/
+	background-image:url(images/menubar.png);
+	background-position: bottom;
+	background-repeat: repeat-x;
+	background-color: #aaa;
+}
+
+#footer a {
+	font-weight: bold;
+}
+
+#middle {
+	background: white;
+}
+
+#map {
+	background: white;
+	border: none !important;
+}
+
+#copyright, #coordinate-display {
+	padding-top: .5em;
+	float: left;
+}
+
+#coordinate-display {
+	position: absolute;
+	bottom: .5em;
+	width: 40em;
+	left: 50%;
+	margin-left: -20em;
+}

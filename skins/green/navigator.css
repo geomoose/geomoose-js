@@ -1,0 +1,96 @@
+#navigatorNorth {
+	top: 53px;
+	left: 30px;
+	width: 35px;
+	height: 25px;
+	overflow: hidden;
+	background-image: url(../green/images/slider/north.jpg);
+	position: absolute;
+	border: none;
+	z-index: 5000;
+}
+
+#navigatorEast {
+	top: 145px;
+	left: 67px;
+	width: 25px;
+	height: 35px;
+	overflow: hidden;
+	background-image: url(../green/images/slider/east.jpg);
+	position: absolute;
+	border: none;
+	z-index: 5000;
+}
+
+#navigatorWest {
+	top: 145px;
+	left:3px;
+	width: 25px;
+	height: 35px;
+	overflow: hidden;
+	background-image: url(../green/images/slider/west.jpg);
+	position: absolute;
+	border: none;
+	z-index: 5000;
+}
+
+#navigatorSouth {
+	top: 261px;
+	left: 30px;
+	width: 35px;
+	height: 25px;
+	overflow: hidden;
+	background-image: url(../green/images/slider/south.jpg);
+	position: absolute;
+	border: none;
+	z-index: 5000;
+}
+
+#navigatorBar {
+	top: 80px;
+	left: 30px;
+	width: 35px;
+	height: 179px;
+	background-image: url(../green/images/slider/bar_back.jpg);
+	position: absolute;
+	border: none;
+	z-index: 5000;
+}
+
+#navigatorSliderControl {
+	position: absolute;
+	border: none;
+	padding: none;
+	overflow: hidden;
+	width: 21px;
+	height: 7px;
+	background-image: url(../green/images/slider/slider_adjuster.jpg);
+	z-index: 5002;
+	left: 36px;
+}
+
+#navigatorIncreaseScale {
+	width: 31px;
+	height: 30px;
+/*	background: red;*/
+	position: absolute;
+	left: 32px;
+	top: 82px;
+	z-index: 5001;
+	border: none;
+	padding: 0px;
+	overflow: hidden;
+}
+
+#navigatorDecreaseScale {
+	width: 31px;
+	height: 30px;
+/*	background: blue;*/
+	position: absolute;
+	left: 32px;
+	top: 225px;
+	z-index: 5001;
+	border: none;
+	padding: 0px;
+	overflow: hidden;
+}

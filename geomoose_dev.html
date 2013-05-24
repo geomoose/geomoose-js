@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>GeoMOOSE 2.6.1</title>
+
+	<meta name="crawl_key" content="06a9c7a2a53faadc417db597a5e48844"/>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
+	<!--
+	Copyright (c) 2009-2012, Dan "Ducky" Little & GeoMOOSE.org
+
+	Permission is hereby granted, free of charge, to any person obtaining a copy
+	of this software and associated documentation files (the "Software"), to deal
+	in the Software without restriction, including without limitation the rights
+	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	copies of the Software, and to permit persons to whom the Software is
+	furnished to do so, subject to the following conditions:
+
+	The above copyright notice and this permission notice shall be included in
+	all copies or substantial portions of the Software.
+
+	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+	THE SOFTWARE.
+	-->
+
+
+	<link type="text/css" rel="stylesheet" href="css/common.css"/>
+	<link type="text/css" rel="stylesheet" href="css/catalog.css"/>
+	<link type="text/css" rel="stylesheet" href="css/tools.css"/>
+	<link type="text/css" rel="stylesheet" href="css/sprite.css"/>
+
+	<link type="text/css" rel="stylesheet" href="css/user_tools.css"/>
+	<link type="text/css" rel="stylesheet" href="css/user_catalog.css"/>
+	<link type="text/css" rel="stylesheet" href="libs/dojo/dijit/themes/tundra/tundra.css"/>
+
+	<!--
+		This is where your skin is defined.
+		For an example, comment out the line containing "green.css" and
+		uncomment "blue.css".
+	-->
+<!--	<link type="text/css" rel="stylesheet" href="skins/green/green.css"/> -->
+<!--	<link type="text/css" rel="stylesheet" href="skins/blue/blue.css"/> -->
+<!--	<link type="text/css" rel="stylesheet" href="skins/red/red.css"/> -->
+	<link type="text/css" rel="stylesheet" href="skins/grey/grey.css"/>
+
+
+	<!-- This is the projection library -->
+	<script type="text/javascript" src="./libs/proj4js/lib/proj4js-compressed.js"></script>
+
+	<!--
+		Include your projection file below.
+	-->
+	<script type="text/javascript" src="projections/EPSG26915.js"></script>
+	<script type="text/javascript" src="projections/EPSG3857.js"></script>
+
+
+	<!-- these are the mapping libraries -->
+	<!-- webmerc-libs -->
+	<script type="text/javascript" src='http://dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=6.1'></script>
+	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false&v=3.6"></script>
+	<!--
+	-->
+	<!-- end webmerc-libs -->
+
+	<script type="text/javascript" src="libs/OpenLayers/OpenLayers.js"></script>
+
+	<script type="text/javascript" src="geomoose/config.js"></script>
+	<script type="text/javascript" src="libs/dojo/dojo/dojo.js"></script>
+
+	<script type="text/javascript" src="geomoose/geomoose.js"></script>
+	<script type="text/javascript" src="geomoose/includes.js"></script>
+
+	<script type="text/javascript" src="geomoose/main.js"></script>
+	<style type="text/css">
+		html,body,#main {
+			width: 100%; height:100%;
+		}
+
+		#main {
+			position: absolute;
+			top: 0; left: 0;
+		}
+	</style>
+	<script type="text/javascript">
+		// Fix for Dojo build paths != run paths.
+		dojo.registerModulePath('extensions', '../../../extensions');
+	</script>
+	<script type="text/javascript" src="site/includes.js"></script>
+	<script type="text/javascript" src="extensions/CustomTab.js"></script>
+	<script type="text/javascript" src="extensions/MeasureWithBearing.js"></script>
+</head>
+<body class="tundra">
+
+<div id="main">
+	<div id="header">
+		<span id="logo"></span>
+		<div id="menubar"></div>
+		<div id="toolbar"></div>
+	</div>
+
+	<div id="middle" region="center">
+		<div id="map">
+			<div id="mapContainer"></div>
+		</div>
+
+		<div id="control-panel">
+			<div id="tabs"></div>
+		</div>
+	</div>
+
+	<div id="footer"> 
+		<span id="footer_logo"></span>
+		<span id="copyright"><a href="http://www.geomoose.org" target="_blank" class="geomoose_link">GeoMOOSE 2.6.1</a></span>
+	</div>
+</div>
+
+</body>
+</html>

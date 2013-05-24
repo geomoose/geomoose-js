@@ -1,0 +1,141 @@
+/*
+ * Place all of the user defined tool CSS definitions here.
+ * No copyright reserved or intended.  This file is intended for modifaction by the user.
+ */
+
+#tool-add_point {
+	background-image: url('../images/toolbar/add.png');
+	background-position: 2 2;
+	background-repeat: no-repeat;
+	padding-left: 2px;
+	width: auto;
+}
+
+#tool-add_point .ToolText,#tool-add_point .ToolContent {
+	display: -moz-inline-box;
+	display: inline-block;
+	width: auto;
+}
+
+#tool-add_point .ToolText {
+	padding: 2px;
+}
+
+#tool-add_polygon {
+	background-image: url('../images/toolbar/add.png');
+	background-position: 2 2;
+	background-repeat: no-repeat;
+	padding-left: 2px;
+	width: auto;
+}
+
+#tool-add_polygon .ToolText {
+	padding: 2px;
+	display: -moz-inline-box;
+	display: inline-block;
+	width: auto;
+}
+
+#tool-add_polygon .ToolContent {
+	display: -moz-inline-box;
+	display: inline-block;
+	width: auto;
+}
+
+
+#tool-print {
+	width: auto;
+	background-position: 2 2;
+	background-image: url('../images/toolbar/printer.png');
+}
+
+#tool-print .ToolContent {
+	display: -moz-inline-box;
+	display: inline-block;
+	width: auto;
+}
+
+#tool-print .ToolText {
+	display: block;
+	padding-top: 3px;
+	padding-right: 3px;
+
+	display: -moz-inline-box;
+	display: inline-block;
+}
+
+
+#tool-search_parcels,#tool-search_parcels .ToolContent {
+	width: auto;
+
+	display: -moz-inline-box;
+	display: inline-block;
+}
+
+#tool-search_parcels .ToolText {
+	display: -moz-inline-box;
+	display: inline-block;
+	display: block; padding: 3px;
+}
+
+/* 
+ * Label all of the drawing tools 
+ */
+
+#tool-markup_tools,#tool-markup_tools .ToolContent,
+#tool-draw_polygon,#tool-draw_polygon .ToolContent,
+#tool-draw_line,#tool-draw_line .ToolContent,
+#tool-draw_point,#tool-draw_point .ToolContent,
+#tool-draw_remove,#tool-draw_remove .ToolContent,
+#tool-draw_edit,#tool-draw_edit .ToolContent,
+#tool-draw_edit_attributes,#tool-draw_edit_attributes .ToolContent,
+#tool-clear_drawings,#tool-clear_drawings .ToolContent,
+#tool-draw_move_shape, #tool-draw_move_shape .ToolContent
+{
+	width: auto;
+
+	display: -moz-inline-box;
+	display: inline-block;
+}
+
+#tool-markup_tools .ToolText,
+#tool-draw_polygon .ToolText,
+#tool-draw_line .ToolText,
+#tool-draw_point .ToolText, 
+#tool-draw_remove .ToolText, 
+#tool-draw_edit .ToolText, 
+#tool-draw_edit_attributes .ToolText, 
+#tool-clear_drawings .ToolText,
+#tool-draw_move_shape .ToolText
+{
+	display: -moz-inline-box;
+	display: inline-block;
+	display: block; padding: 3px;
+}
+
+#tool-animate_layers {
+	width: auto;
+}
+
+#tool-animate_layers .ToolContent 
+{
+	width: auto;
+	display: -moz-inline-box;
+	display: inline-block;
+}
+
+#tool-animate_layers .ToolText
+{
+	width: auto;
+	display: -moz-inline-box;
+	display: inline-block;
+	display: block; padding: 3px;
+}
+
+.sprite-control-animate_layers { background-position: 0 -40; }  .sprite-control-animate_layers-selected { background-position: -20 -40 !important; } 
+
+.my_tool_icon {
+background-image: url("images/toolbar/bell.png");
+width: 18px;
+height: 18px;
+}

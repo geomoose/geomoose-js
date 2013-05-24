@@ -1,0 +1,81 @@
+/*
+Copyright (c) 2009-2012, Dan "Ducky" Little & GeoMOOSE.org
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+*/
+
+
+.sprite-control {
+	background-image: url('../images/all.png');
+	background-repeat: no-repeat;
+	height: 18px; /* nee, < 2.6 20px */
+	width: 20px;
+	display: inline-block;
+	cursor: pointer;
+	background-position: 0px -580px;	/* This should default to the 'find' icon */
+	/* IE hacks for the sprites. */
+	*zoom: 1;
+	*display: inline;
+}
+
+ .sprite-control-add { background-position: 0px -10px; }  .sprite-control-add-selected { background-position: -20px -10px !important; } 
+ .sprite-control-advanced_tools { background-position: 0px -40px; }  .sprite-control-advanced_tools-selected { background-position: -20px -40px !important; } 
+ .sprite-control-bell { background-position: 0px -70px; }  .sprite-control-bell-selected { background-position: -20px -70px !important; } 
+ .sprite-control-birdseye { background-position: 0px -100px; }  .sprite-control-birdseye-selected { background-position: -20px -100px !important; } 
+ .sprite-control-bookmark { background-position: 0px -130px; }  .sprite-control-bookmark-selected { background-position: -20px -130px !important; } 
+ .sprite-control-buffered_select { background-position: 0px -160px; }  .sprite-control-buffered_select-selected { background-position: -20px -160px !important; } 
+ .sprite-control-clear { background-position: 0px -190px; }  .sprite-control-clear-selected { background-position: -20px -190px !important; } 
+ .sprite-control-clear_drawings { background-position: 0px -220px; }  .sprite-control-clear_drawings-selected { background-position: -20px -220px !important; } 
+ .sprite-control-delete { background-position: 0px -250px; }  .sprite-control-delete-selected { background-position: -20px -250px !important; } 
+ .sprite-control-detail { background-position: 0px -280px; }  .sprite-control-detail-selected { background-position: -20px -280px !important; } 
+ .sprite-control-down { background-position: 0px -310px; }  .sprite-control-down-selected { background-position: -20px -310px !important; } 
+ .sprite-control-draw_edit { background-position: 0px -340px; }  .sprite-control-draw_edit-selected { background-position: -20px -340px !important; } 
+ .sprite-control-draw_edit_attributes { background-position: 0px -370px; }  .sprite-control-draw_edit_attributes-selected { background-position: -20px -370px !important; } 
+ .sprite-control-draw_line { background-position: 0px -400px; }  .sprite-control-draw_line-selected { background-position: -20px -400px !important; } 
+ .sprite-control-draw_move_shape { background-position: 0px -430px; }  .sprite-control-draw_move_shape-selected { background-position: -20px -430px !important; } 
+ .sprite-control-draw_point { background-position: 0px -460px; }  .sprite-control-draw_point-selected { background-position: -20px -460px !important; } 
+ .sprite-control-draw_polygon { background-position: 0px -490px; }  .sprite-control-draw_polygon-selected { background-position: -20px -490px !important; } 
+ .sprite-control-draw_remove { background-position: 0px -520px; }  .sprite-control-draw_remove-selected { background-position: -20px -520px !important; } 
+ .sprite-control-fade { background-position: 0px -550px; }  .sprite-control-fade-selected { background-position: -20px -550px !important; } 
+ .sprite-control-find { background-position: 0px -580px; }  .sprite-control-find-selected { background-position: -20px -580px !important; } 
+ .sprite-control-folder { background-position: 0px -610px; }  .sprite-control-folder-selected { background-position: -20px -610px !important; } 
+ .sprite-control-fullextent { background-position: 0px -640px; }  .sprite-control-fullextent-selected { background-position: -20px -640px !important; } 
+ .sprite-control-geocode { background-position: 0px -670px; }  .sprite-control-geocode-selected { background-position: -20px -670px !important; } 
+ .sprite-control-help { background-position: 0px -700px; }  .sprite-control-help-selected { background-position: -20px -700px !important; } 
+ .sprite-control-identify { background-position: 0px -730px; }  .sprite-control-identify-selected { background-position: -20px -730px !important; } 
+ .sprite-control-information { background-position: 0px -760px; }  .sprite-control-information-selected { background-position: -20px -760px !important; } 
+ .sprite-control-legend { background-position: 0px -790px; }  .sprite-control-legend-selected { background-position: -20px -790px !important; } 
+ .sprite-control-markup_tools { background-position: 0px -820px; }  .sprite-control-markup_tools-selected { background-position: -20px -820px !important; } 
+ .sprite-control-measure { background-position: 0px -850px; }  .sprite-control-measure-selected { background-position: -20px -850px !important; } 
+ .sprite-control-measurearea { background-position: 0px -880px; }  .sprite-control-measurearea-selected { background-position: -20px -880px !important; } 
+ .sprite-control-next { background-position: 0px -910px; }  .sprite-control-next-selected { background-position: -20px -910px !important; } 
+ .sprite-control-pan { background-position: 0px -940px; }  .sprite-control-pan-selected { background-position: -20px -940px !important; } 
+ .sprite-control-popups { background-position: 0px -970px; }  .sprite-control-popups-selected { background-position: -20px -970px !important; } 
+ .sprite-control-previous { background-position: 0px -1000px; }  .sprite-control-previous-selected { background-position: -20px -1000px !important; } 
+ .sprite-control-printer { background-position: 0px -1030px; }  .sprite-control-printer-selected { background-position: -20px -1030px !important; } 
+ .sprite-control-select { background-position: 0px -1060px; }  .sprite-control-select-selected { background-position: -20px -1060px !important; } 
+ .sprite-control-showMetadata { background-position: 0px -1090px; }  .sprite-control-showMetadata-selected { background-position: -20px -1090px !important; } 
+ .sprite-control-streetview { background-position: 0px -1120px; }  .sprite-control-streetview-selected { background-position: -20px -1120px !important; } 
+ .sprite-control-super_identify { background-position: 0px -1150px; }  .sprite-control-super_identify-selected { background-position: -20px -1150px !important; } 
+ .sprite-control-unfade { background-position: 0px -1180px; }  .sprite-control-unfade-selected { background-position: -20px -1180px !important; } 
+ .sprite-control-up { background-position: 0px -1210px; }  .sprite-control-up-selected { background-position: -20px -1210px !important; } 
+ .sprite-control-zoomin { background-position: 0px -1240px; }  .sprite-control-zoomin-selected { background-position: -20px -1240px !important; } 
+ .sprite-control-zoomout { background-position: 0px -1270px; }  .sprite-control-zoomout-selected { background-position: -20px -1270px !important; } 
+ .sprite-control-zoomto { background-position: 0px -1300px; }  .sprite-control-zoomto-selected { background-position: -20px -1300px !important; } 
+
