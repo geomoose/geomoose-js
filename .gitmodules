@@ -4,3 +4,6 @@
 [submodule "libs/proj4js"]
 	path = libs/proj4js
 	url = https://github.com/geomoose/proj4js-amd.git
+[submodule "libs/dojo"]
+	path = libs/dojo
+	url = https://github.com/geomoose/dojo.git
