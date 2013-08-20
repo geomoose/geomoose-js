@@ -40,18 +40,43 @@ dojo.declare('GeoMOOSE.Tab._CatalogLayer', null, {
 
 	checkbox_id: '',
 
+	inScale: function(minscale, maxscale) {
+		var scale = GeoMOOSE.getScale();
+		if(!maxscale && !minscale) { 
+			return true; 
+		}
+		if(!maxscale && scale >= minscale) { 
+			return true; 
+		}
+		if(!minscale && scale <= maxscale) {
+			return true;
+		}
+		return (minscale <= scale && scale <= maxscale);
+	},
+	
+	onRefreshMap: function() {
+		var keep = this;
+		dojo.forEach(dojo.query(".catalog-layer-title"), function(layerTitle) {
+			if(keep.inScale(layerTitle.minscale, layerTitle.maxscale)) {
+				layerTitle.className = layerTitle.className.replace('catalog-outscale', 'catalog-inscale');
+			} else {
+				layerTitle.className = layerTitle.className.replace('catalog-inscale', 'catalog-outscale');
+			}
+		});
+	},
+
 	constructor: function(parent_id, layer_xml, multiple) {
 		/* render ... */
 		var p = dojo.byId(parent_id);
 
-		var label = layer_xml.getAttribute('title');
+		var titleAtt = layer_xml.getAttribute('title');
 		var tip = layer_xml.getAttribute('tip');
 		var container;
 
-		this.title = label;
+		this.title = titleAtt;
 
 
-		if (tip != null)
+		if(tip != null)
 			container = dojo.create('div', {title: tip}, p);
 		else
 			container = dojo.create('div', null, p);
@@ -91,11 +116,21 @@ dojo.declare('GeoMOOSE.Tab._CatalogLayer', null, {
 			GeoMOOSE.changeLayerVisibility(paths, v);
 		}));
 
-
-		dojo.create('span', {'innerHTML' : label}, title);
+		var label = dojo.create('span', {'id':'toc-' + titleAtt, 'innerHTML' : titleAtt, 'className' : 'catalog-layer-title'}, title);		
+		if(layer_xml.getAttribute('minscale')) {
+			label.minscale = parseFloat(layer_xml.getAttribute('minscale'));
+		}
+		if(layer_xml.getAttribute('maxscale')) {
+			label.maxscale = parseFloat(layer_xml.getAttribute('maxscale'));
+		}
+		if(this.inScale(label.minscale, label.maxscale)) {
+			label.className += ' catalog-inscale';
+		} else {
+			label.className += ' catalog-outscale';
+		}
 
 		/** Whew ... time to render controls ... yikes ... **/
-		var controls = dojo.create('div', {}, container);
+		var controls = dojo.create('div', {'className':'catalog-controls-container', 'id':'container-' + this.title}, container);
 		for(var i = 0; i < CONFIGURATION.layer_control_order.length; i++) {
 			var control_name = CONFIGURATION.layer_control_order[i];
 			var control_on = parseBoolean(layer_xml.getAttribute(control_name), CONFIGURATION.layer_controls[control_name].on);
@@ -200,6 +235,7 @@ dojo.declare('GeoMOOSE.Tab._CatalogLayer', null, {
 	},
 
 	updateDynamicLegend: function() {
+		this.onRefreshMap();
 		var legends_div = dojo.byId(this.legends_id);
 		while(legends_div.firstChild) { legends_div.removeChild(legends_div.firstChild); }
 
