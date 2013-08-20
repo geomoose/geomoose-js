@@ -46,14 +46,15 @@ dojo.declare('GeoMOOSE.Tab._CatalogLayer', null, {
 
 		var label = layer_xml.getAttribute('title');
 		var tip = layer_xml.getAttribute('tip');
+		var container;
 
 		this.title = label;
 
 
 		if (tip != null)
-			var container = dojo.create('div', {title: tip}, p);
+			container = dojo.create('div', {title: tip}, p);
 		else
-			var container = dojo.create('div', null, p);
+			container = dojo.create('div', null, p);
 
 		this.div = container;
 
@@ -91,7 +92,7 @@ dojo.declare('GeoMOOSE.Tab._CatalogLayer', null, {
 		}));
 
 
-		var label = dojo.create('span', {'innerHTML' : label}, title);
+		dojo.create('span', {'innerHTML' : label}, title);
 
 		/** Whew ... time to render controls ... yikes ... **/
 		var controls = dojo.create('div', {}, container);
