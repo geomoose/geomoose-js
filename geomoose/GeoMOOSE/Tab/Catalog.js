@@ -49,7 +49,7 @@ dojo.declare('GeoMOOSE.Tab._CatalogLayer', null, {
 			return true; 
 		}
 		if(!minscale && scale <= maxscale) {
-			 return true;
+			return true;
 		}
 		return (minscale <= scale && scale <= maxscale);
 	},
