@@ -377,59 +377,58 @@ dojo.declare('GeoMOOSE.Tab.Service', [dijit.layout.BorderContainer], {
 			}
 		}
 		this.drawing_layer.setVisibility(true);
-		if(parseBoolean(step.getAttribute('show-tools'), true)) {
-			var p = document.getElementById(parentId);
-			p.appendChild(document.createTextNode('Available Tools: '));
-			p.appendChild(document.createElement("br"));
 
-			var step_id = GeoMOOSE.id();
+		var p = dojo.byId(parentId);
+		if(!parseBoolean(step.getAttribute('show-tools'), true)) {
+			p.appendChild(dojo.create('div', {'style':'display:none;'}));
+			p = p.children[0];
+		}
+		p.appendChild(document.createTextNode('Available Tools: '));
+		p.appendChild(document.createElement("br"));
 
-			var radio_buttons = {};
-			var first_non_navigate_tool = null;
+		var step_id = GeoMOOSE.id();
 
-			for(var v in this.geotools) {
-				if(parseBoolean(step.getAttribute(v), this.geotools[v]['status'])) {
-					var input_div = dojo.create('div', {}, p);
-					var radio_span = dojo.create('span', {}, input_div);
-					var label_span = dojo.create('span', {
-						'innerHTML' : this.geotools[v].title
-					}, input_div);
-					if(!GeoMOOSE.isDefined(first_non_navigate_tool) && v != 'pan') {
-						first_non_navigate_tool = v;
-					}
+		var radio_buttons = {};
+		var first_non_navigate_tool = null;
 
-
-					radio_buttons[v] = new dijit.form.RadioButton({
-						'name' : step_id,
-						'onChange' : dojo.hitch({'drawing_tools' : this.tools,'tool' : v}, function(isMe) {
-							if(isMe) {
-								for(var tool in Tools) {
-									Tools[tool].deactivate();
-								}
-								for(var tool in this.drawing_tools) {
-									this.drawing_tools[tool].deactivate();
-								}
-								if(GeoMOOSE.isDefined(this.drawing_tools[this.tool])) {
-									this.drawing_tools[this.tool].activate();
-								}
-							}
-						})
-					}, radio_span);
-
+		for(var v in this.geotools) {
+			if(parseBoolean(step.getAttribute(v), this.geotools[v]['status'])) {
+				var input_div = dojo.create('div', {}, p);
+				var radio_span = dojo.create('span', {}, input_div);
+				var label_span = dojo.create('span', {
+					'innerHTML' : this.geotools[v].title
+				}, input_div);
+				if(!GeoMOOSE.isDefined(first_non_navigate_tool) && v != 'pan') {
+					first_non_navigate_tool = v;
 				}
-			}
-			p.appendChild(document.createElement('br'));
 
-			var default_tool = step.getAttribute('default');
-			if(GeoMOOSE.isDefined(default_tool) && GeoMOOSE.isDefined(radio_buttons[default_tool])) {
-				radio_buttons[default_tool].set('checked',true);
-			} else {
-				radio_buttons[first_non_navigate_tool].set('checked', true);
+
+				radio_buttons[v] = new dijit.form.RadioButton({
+					'name' : step_id,
+					'onChange' : dojo.hitch({'drawing_tools' : this.tools,'tool' : v}, function(isMe) {
+						if(isMe) {
+							for(var tool in Tools) {
+								Tools[tool].deactivate();
+							}
+							for(var tool in this.drawing_tools) {
+								this.drawing_tools[tool].deactivate();
+							}
+							if(GeoMOOSE.isDefined(this.drawing_tools[this.tool])) {
+								this.drawing_tools[this.tool].activate();
+							}
+						}
+					})
+				}, radio_span);
+
 			}
-		} else if(step.getAttribute('default')) {
-		//	changeDrawingTool(step.getAttribute('default'), step);
+		}
+		p.appendChild(document.createElement('br'));
+
+		var default_tool = step.getAttribute('default');
+		if(GeoMOOSE.isDefined(default_tool) && GeoMOOSE.isDefined(radio_buttons[default_tool])) {
+			radio_buttons[default_tool].set('checked',true);
 		} else {
-			alert(CONFIGURATION.messages.service_config_error);
+			radio_buttons[first_non_navigate_tool].set('checked', true);
 		}
 
 		/* return the number of inputs, since the spatial step is one,
