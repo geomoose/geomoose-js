@@ -57,10 +57,11 @@ dojo.declare('GeoMOOSE.Tab._CatalogLayer', null, {
 	onRefreshMap: function() {
 		var keep = this;
 		dojo.forEach(dojo.query(".catalog-layer-title"), function(layerTitle) {
-			if(keep.inScale(layerTitle.minscale, layerTitle.maxscale))
+			if(keep.inScale(layerTitle.minscale, layerTitle.maxscale)) {
 				layerTitle.className = layerTitle.className.replace('catalog-outscale', 'catalog-inscale');
-			else
+			} else {
 				layerTitle.className = layerTitle.className.replace('catalog-inscale', 'catalog-outscale');
+			}
 		});
 	},
 
