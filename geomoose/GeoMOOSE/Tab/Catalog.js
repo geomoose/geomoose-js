@@ -42,9 +42,15 @@ dojo.declare('GeoMOOSE.Tab._CatalogLayer', null, {
 
 	inScale: function(minscale, maxscale) {
 		var scale = GeoMOOSE.getScale();
-		if(!maxscale && !minscale) { return true; }
-		if(!maxscale && scale >= minscale) { return true; }
-		if(!minscale && scale <= maxscale) { return true; }
+		if(!maxscale && !minscale) { 
+			return true; 
+		}
+		if(!maxscale && scale >= minscale) { 
+			return true; 
+		}
+		if(!minscale && scale <= maxscale) {
+			 return true;
+		}
 		return (minscale <= scale && scale <= maxscale);
 	},
 	
@@ -69,7 +75,7 @@ dojo.declare('GeoMOOSE.Tab._CatalogLayer', null, {
 		this.title = titleAtt;
 
 
-		if (tip != null)
+		if(tip != null)
 			container = dojo.create('div', {title: tip}, p);
 		else
 			container = dojo.create('div', null, p);
@@ -110,14 +116,17 @@ dojo.declare('GeoMOOSE.Tab._CatalogLayer', null, {
 		}));
 
 		var label = dojo.create('span', {'id':'toc-' + titleAtt, 'innerHTML' : titleAtt, 'className' : 'catalog-layer-title'}, title);		
-		if(layer_xml.getAttribute('minscale'))
+		if(layer_xml.getAttribute('minscale')) {
 			label.minscale = parseFloat(layer_xml.getAttribute('minscale'));
-		if(layer_xml.getAttribute('maxscale'))
+		}
+		if(layer_xml.getAttribute('maxscale')) {
 			label.maxscale = parseFloat(layer_xml.getAttribute('maxscale'));
-		if(this.inScale(label.minscale, label.maxscale))
+		}
+		if(this.inScale(label.minscale, label.maxscale)) {
 			label.className += ' catalog-inscale';
-		else
+		} else {
 			label.className += ' catalog-outscale';
+		}
 
 		/** Whew ... time to render controls ... yikes ... **/
 		var controls = dojo.create('div', {'className':'catalog-controls-container', 'id':'container-' + this.title}, container);
