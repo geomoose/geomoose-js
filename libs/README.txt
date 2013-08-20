@@ -8,3 +8,5 @@ OpenLayers - https://raw.github.com/openlayers/openlayers/master/license.txt
 
 Proj4Js - http://www.gnu.org/copyleft/lesser.html 
  Proj4Js uses the LGPL.
+
+To build an optimized version of GeoMOOSE run ./build_js.sh from this directory.

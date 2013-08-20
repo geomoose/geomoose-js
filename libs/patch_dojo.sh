@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DOJO_DIR=dojo-1.6.1
+DOJO_DIR=dojo
 
 #
 # Create the dojo profile file.
@@ -68,6 +68,10 @@ mkdir -p $BUILD_DIR/dojo/resources
 
 cp -r $RELEASE_DIR/dojo/nls/* $BUILD_DIR/dojo/nls
 cp -r $RELEASE_DIR/dojo/resources/* $BUILD_DIR/dojo/resources
+
+mkdir -p $BUILD_DIR/dijit
+cp -r $RELEASE_DIR/dijit/{themes,icons} $BUILD_DIR/dijit
+
 echo "Done."
 
 if [ $FAKE_USER_INCLUDES = 1 ]
