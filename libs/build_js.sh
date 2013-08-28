@@ -44,7 +44,8 @@ if ([ ! -e "../build/OpenLayers.js" ] ||
       [ "OpenLayers/build/OpenLayers.js" -nt "../build/OpenLayers.js" ]) ; then
 	echo "Deploying OpenLayers."
 	cp OpenLayers/build/OpenLayers.js ../build
-	cp -a OpenLayers/{theme,img} ../build
+	cp -a OpenLayers/theme ../build
+	cp -a OpenLayers/img ../build
 fi
 
 # Build proj4js
