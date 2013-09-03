@@ -500,8 +500,8 @@ dojo.declare('GeoMOOSE.Tab.Service', [dijit.layout.BorderContainer], {
 				'preventCache' : true,
 				'content' : params,
 				'load' : dojo.hitch(this, this.onServiceReturn),
-				'error' : dojo.hitch(this, this.onServiceError),
-				'handleAs' : 'xml'
+				'error' : dojo.hitch(this, this.onServiceError)//,
+				//'handleAs' : 'xml'
 			});
 		}
 
@@ -522,18 +522,36 @@ dojo.declare('GeoMOOSE.Tab.Service', [dijit.layout.BorderContainer], {
 	_concatChildValues: function(node) {
 		var xml = new OpenLayers.Format.XML();
 		var res = xml.getChildValue(node);
-		for(var i = 0; i < node.children.length; i++) {
-			res += xml.getChildValue(node.children[i]);
+		if(node.children) {
+			for(var i = 0; i < node.children.length; i++) {
+				res += xml.getChildValue(node.children[i]);
+			}
 		}
 		return res;
 	},
 
 	onServiceReturn: function(responseXML) {
-		//var xml = new OpenLayers.Format.XML();
+		var parseFail = false;
+		/* Dojo's built-in parsing was failing in IE, so I've switched
+		 * back to using the OpenLayers parser and having the services
+		 * return text.  This seems to be working more reliably.
+		 * Duck 3 Sept 2013
+		 */
+		try {
+			var xml = new OpenLayers.Format.XML();
+			/* replace response XML */
+			responseXML = xml.read(responseXML);
+			/* check for our standard root element, "<results>" */
+			if(responseXML.getElementsByTagName('results').length < 1) {
+				parseFail = true;
+			}
+		} catch(e) {
+			parseFail = true;
+		}
+
 
 		var html = '';
-
-		if(!GeoMOOSE.isDefined(responseXML)) {
+		if(!GeoMOOSE.isDefined(responseXML) || parseFail) {
 			html = CONFIGURATION.messages.service_return_error;
 		} else {
 			var scripts = responseXML.getElementsByTagName('script');
