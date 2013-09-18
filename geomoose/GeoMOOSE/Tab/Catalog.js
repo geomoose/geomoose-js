@@ -92,10 +92,14 @@ dojo.declare('GeoMOOSE.Tab._CatalogLayer', null, {
 		}));
 
 
-		dojo.create('span', {'innerHTML' : label}, title);
+		var title = dojo.create('span', {'innerHTML' : label}, title);
 
 		/** Whew ... time to render controls ... yikes ... **/
-		var controls = dojo.create('div', {}, container);
+		var controls_id = GeoMOOSE.id();
+		var controls = dojo.create('div', {id: controls_id}, container);
+		if(CONFIGURATION.catalog.show_controls === false) {
+			dojo.addClass(controls, 'hide');
+		}
 		for(var i = 0; i < CONFIGURATION.layer_control_order.length; i++) {
 			var control_name = CONFIGURATION.layer_control_order[i];
 			var control_on = parseBoolean(layer_xml.getAttribute(control_name), CONFIGURATION.layer_controls[control_name].on);
@@ -107,6 +111,11 @@ dojo.declare('GeoMOOSE.Tab._CatalogLayer', null, {
 					control.draw(controls);
 				}
 			}
+		}
+		if(CONFIGURATION.catalog.toggle_controls) {
+			title.style.cursor = 'pointer';
+			title.setAttribute('data-control-id', controls_id);
+			dojo.connect(title, 'click', this.toggleControls);
 		}
 
 		/** check for the drawing tools **/
@@ -209,6 +218,16 @@ dojo.declare('GeoMOOSE.Tab._CatalogLayer', null, {
 				'src' : legend_urls[i]
 			}, legends_div);
 			dojo.addClass(legend_img, ['catalog-legend-image']);
+		}
+	},
+	
+	toggleControls: function() {
+		var controls_id = this.getAttribute('data-control-id');
+		var controls = dojo.byId(controls_id);
+		if(dojo.hasClass(controls, 'hide')) {
+			dojo.removeClass(controls, 'hide');
+		} else {
+			dojo.addClass(controls, 'hide');
 		}
 	}
 });
