@@ -727,6 +727,21 @@ window.GeoMOOSE = {
 	download: function(id, extension) {
 		var d = new GeoMOOSE.Dialog.Download({'download_id' : id, 'download_extension' : extension});
 		d.show();
+	},
+
+	/*
+	 * Method: zoomToLonLat
+	 * Zooms to a specified lon, lat.
+	 */
+	_latLongProj: null,
+
+	zoomToLonLat: function(lon, lat) {
+		if(GeoMOOSE._latLongProj == null) {
+			GeoMOOSE._latLongProj = new OpenLayers.Projection('WGS84');
+		}
+		var p = new OpenLayers.Geometry.Point(lon,lat);
+		OpenLayers.Projection.transform(p, GeoMOOSE._latLongProj, Map.getProjectionObject());
+		GeoMOOSE.zoomToPoint(p.x,p.y,100);
 	}
 	
 };
