@@ -40,7 +40,7 @@ dojo.declare('GeoMOOSE.Tab._CatalogLayer', null, {
 
 	checkbox_id: '',
 
-	constructor: function(parent_id, layer_xml, multiple) {
+	constructor: function(parent_id, layer_xml, multiple, group_name) {
 		/* render ... */
 		var p = dojo.byId(parent_id);
 
@@ -75,12 +75,14 @@ dojo.declare('GeoMOOSE.Tab._CatalogLayer', null, {
 		}
 
 		var checkbox_class = dijit.form.CheckBox;
+		var construct_opts = {};
 
 		if(multiple === false) {
 			var checkbox_class = dijit.form.RadioButton;
+			construct_opts['name'] = group_name;
 		}
 
-		var cbox = new checkbox_class({}, checkbox);
+		var cbox = new checkbox_class(construct_opts, checkbox);
 		dojo.connect(cbox, 'onChange', dojo.hitch(this, function(v) {
 			/* toggle the paths values */
 			var paths = [];
@@ -265,7 +267,11 @@ dojo.declare('GeoMOOSE.Tab.Catalog', [GeoMOOSE.Tab], {
 	 */
 	renderLayer: function(groupElementId, layer_xml, overrideStatusList) {
 		var multiple = parseBoolean(layer_xml.parentNode.getAttribute('multiple'),true);
-		var layer = new GeoMOOSE.Tab._CatalogLayer(groupElementId, layer_xml, multiple);
+		var group_name = '';
+		if(multiple == false) {
+			group_name = layer_xml.parentNode.getAttribute('title');
+		}
+		var layer = new GeoMOOSE.Tab._CatalogLayer(groupElementId, layer_xml, multiple, group_name);
 		this.catalog_layers.push(layer);
 	},
 
