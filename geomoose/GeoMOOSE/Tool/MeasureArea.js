@@ -69,7 +69,7 @@ dojo.declare('GeoMOOSE.Tool.MeasureArea', null, {
 			p = dojo.create('div', {});
 			measure_tab = new dijit.layout.ContentPane({
 				'title' : 'Measure Area',
-				'closable' : false,
+				'closable' : true,
 				'content' : p
 			});
 			GeoMOOSE.addTab('measure_area_tab', measure_tab);
