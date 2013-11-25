@@ -41,10 +41,29 @@ dojo.declare('GeoMOOSE.Application', null, {
 	 */
 	events: null,
 
+
+	/*
+	 * Member: isPopupSticky
+	 * Toggles whether the current popups should be "sticky"
+	 */
+	isPopupSticky: false,
+
+	/*
+	 * Member: popups
+	 * The stack of poups to be rendered.  A popup is defined
+	 * as follows:
+	 *  {id: Popup Id, title: Title HTML, content: Content HTML, classNames: [] cssClasses }
+	 */
+	popups: [],
+
+
 	initialize: function() {
 	},
 
 	startup: function() {
+		/* setup the popups array */
+		this.popups = new Array();
+
 		/* Load the extensions */
 		var extensions = GeoMOOSE.UX.getExtensions();
 
@@ -298,6 +317,7 @@ dojo.declare('GeoMOOSE.Application', null, {
 
 		Map.addLayers([this.navigationLayer]);
 
+
 		if(CONFIGURATION['debug']) {
 			Map.addControl(new OpenLayers.Control.LayerSwitcher());
 		}
@@ -311,6 +331,15 @@ dojo.declare('GeoMOOSE.Application', null, {
 		dojo.connect(dijit.byId('map'), 'resize', function() {
 			Map.updateSize();
 		});
+
+		/* override the map popups functions with out own.  */
+		Map.addPopup = dojo.hitch(this, this.addPopup);
+		Map.removePopup = dojo.hitch(this, this.removePopup);
+
+		var mapContainer = dojo.byId('mapContainer');
+		dojo.connect(mapContainer, 'mousemove', dojo.hitch(this, this.trackMouseForPopups));
+		dojo.connect(mapContainer, 'click', dojo.hitch(this, this.toggleStickyPopups));
+		dojo.connect(mapContainer, 'mouseout', dojo.hitch(this, this.clearPopups));
 	},
 
 	/**
@@ -436,7 +465,6 @@ dojo.declare('GeoMOOSE.Application', null, {
 
 			if(parseBoolean(map_source_xml.getAttribute('active'), false)) {
 				active_map_source = map_sources[i].getAttribute('name');
-				console.log('ACTIVE MAPSOURCE', active_map_source);
 			}
 		}
 
@@ -535,6 +563,106 @@ dojo.declare('GeoMOOSE.Application', null, {
 	 */
 
 	onActivateMapSource: function(path) {
+	},
+
+	_floatingPopupHtml: '',
+
+	renderPopupHtml: function() {
+		var new_html = '';
+		for(var i = 0, ii = this.popups.length; i < ii; i++) {
+			var p = this.popups[i];
+			console.log('renderPopupHtml', 'classnames', p.classNames);
+			var classes = p.classNames.join(' ');
+			new_html += '<div class="PopupEntry '+classes+'">';
+			// only render the title if we have one.
+			if(p.title) {
+				new_html += '<div class="title">'+p.title+'</div>';
+			}
+			new_html += '<div class="content">'+p.content+'</div>';
+			new_html += '</div>'; // end of popup
+		}
+		this._floatingPopupHtml = new_html;
+		console.log('renderPopupHtml', new_html);
+	},
+
+	addPopup: function(popup) {
+		this.popups.push(popup);
+		this.renderPopupHtml();
+		/* if the popup div exists, then we g'head and
+		 *  make sure it's visible */
+		if(this._popupDiv) {
+			dojo.removeClass(this._popupDiv, 'hide');
+		}
+	},
+
+	removePopup: function(popupId) {
+		var new_popups = [];
+		for(var i = 0, ii = this.popups.length; i < ii; i++ ) {
+			if(this.popups[i].id != popupId) {
+				new_popups.push(this.popups[i]);
+			}
+		}
+		this.popups = new_popups;
+		this.renderPopupHtml();
+	},
+
+	clearPopups: function() {
+		this._floatingPopupHtml = '';
+		while(this.popups.length > 0) {
+			this.popups.pop();
+		}
+		if(this._popupDiv && !this.isPopupSticky) {
+			dojo.body().removeChild(this._popupDiv);
+			this._popupDiv = null;
+		}
+	},
+
+	/*
+	 * Method: trackMouseForPopups 
+	 * When popups are enabled, this will follow the mouse in the map
+	 *  div and render them as appropriate.
+	 */
+	_popupDiv: null,
+	trackMouseForPopups: function(evt) {
+		/* if the popups are sticky, we don't bother rendering them. */
+		if(!this.isPopupSticky) {
+			/* Hey! We have some Popup HTML, AWESOME!!! */
+			if(this._floatingPopupHtml != '') {
+				if(this._popupDiv == null) {
+					this._popupDiv = document.createElement('div');
+					dojo.body().appendChild(this._popupDiv);
+					dojo.addClass(this._popupDiv, 'Popup');
+				}
+				this._popupDiv.style.top = (evt.clientY+3)+'px';
+				this._popupDiv.style.left = (evt.clientX+3)+'px';
+				/* TODO: there should be some sort of change check
+				 * to prevent unnecessary reflows. */
+				this._popupDiv.innerHTML = this._floatingPopupHtml;
+				
+			}
+		}
+	},
+
+	/* 
+	 * Method: toggleStickyPopups
+	 * Toggles whether the popups should stay on the map.
+	 */
+	toggleStickyPopups: function(evt) {
+		/* If there are no popups, we ignore the sticky toggle */
+		if(this._popupDiv) {
+			this.isPopupSticky = !this.isPopupSticky;
+			// it should exist, but we'll check just in case it doesn't.
+			if(this.isPopupSticky) {
+				// now add a close button to the sticky popup.
+				var close_btn = document.createElement('div');
+				close_btn.className = 'CloseBox';
+				this._popupDiv.appendChild(close_btn);
+				close_btn.title = 'Close Popup';
+				dojo.connect(close_btn, 'click', dojo.hitch(this, this.toggleStickyPopups));
+			} else {
+				this.clearPopups();
+			}
+		}
 	}
 	
 });

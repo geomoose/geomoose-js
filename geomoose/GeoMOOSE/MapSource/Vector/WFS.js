@@ -33,10 +33,17 @@ dojo.declare('GeoMOOSE.MapSource.Vector.WFS', [GeoMOOSE.MapSource.Vector], {
 	_createOLLayer: function(options) {
 		this._ol_layer_name = 'wfs'+GeoMOOSE.id();
 
-		this.save_strategy = new OpenLayers.Strategy.Save();
 
+		var strategies = [new OpenLayers.Strategy.BBOX()];
+		if(this.canSave) {
+			this.save_strategy = new OpenLayers.Strategy.Save();
+			strategies.push(this.save_strategy);
+		}
+		if(this.clusteringEnabled) {
+			strategies.push(new OpenLayers.Strategy.Cluster());
+		}
 		this._ol_layer = new OpenLayers.Layer.Vector(this._ol_layer_name, {
-			strategies: [new OpenLayers.Strategy.BBOX(), this.save_strategy],
+			strategies: strategies,
 			projection: new OpenLayers.Projection(CONFIGURATION.projection),
 			styleMap : this.style_map,
 			visibility: false,
@@ -45,6 +52,7 @@ dojo.declare('GeoMOOSE.MapSource.Vector.WFS', [GeoMOOSE.MapSource.Vector], {
 				srsName: this.srsName,
 				url: this.url,
 				featureNS: this.featureNS,
+				featurePrefix: this.featurePrefix,
 				featureType: this.featureType,
 				geometryName: this.featureGeometryName,
 				schema: this.featureSchema
@@ -55,6 +63,7 @@ dojo.declare('GeoMOOSE.MapSource.Vector.WFS', [GeoMOOSE.MapSource.Vector], {
 	preParseNode: function(mapbook_xml) {
 		var conversion_hash = {
 			'featureNS' : 'feature-namespace',
+			'featurePrefix' : 'feature-prefix',
 			'featureType' : 'feature-type',
 			'featureSchema' : 'schema',
 			'featureGeometryName' : 'geometry-name'

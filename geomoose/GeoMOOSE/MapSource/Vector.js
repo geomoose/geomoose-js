@@ -30,6 +30,16 @@ dojo.declare('GeoMOOSE.MapSource.Vector', GeoMOOSE.MapSource, {
 	/* We have a save function for hooks, but really, we're not going anywhere with the changes. */
 	canSave: false,
 
+	/* 
+	 * Variable: clusteringEnabled
+	 * Set to "true" when we have added
+	 * clustering to the style.
+	 */
+	clusteringEnabled: false,
+
+	/* popupTemplate, an HTML template for showing feature information on "hover" */
+	popupTemplate: null,
+
 	checkPath: function(path) {
 		return (path == this.path)
 	},
@@ -95,6 +105,11 @@ dojo.declare('GeoMOOSE.MapSource.Vector', GeoMOOSE.MapSource, {
 			'modify' : new OpenLayers.Control.ModifyFeature(this._ol_layer, {
 				vertexRenderIntent: 'select'
 			}),
+			'popup' : new OpenLayers.Control.SelectFeature(this._ol_layer, {
+				highlightOnly: true,
+				includeXY: true,
+				hover: true
+			}),
 			'edit_attributes' : new OpenLayers.Control.SelectFeature(this._ol_layer),
 			'remove' : new GeoMOOSE.Control.DeleteFeature(this._ol_layer),
 			'remove_all' : {
@@ -118,7 +133,47 @@ dojo.declare('GeoMOOSE.MapSource.Vector', GeoMOOSE.MapSource, {
 			dialog.show(ev);
 			//dojo.connect(dialog, 'onClose', function() { dialog.destoryRecursive(); });
 		});
+		this.controls['popup'].events.register('featurehighlighted', this, function(ev) {
+			var features = [];
+			if(ev.feature.cluster) {
+				features = ev.feature.cluster;
+			} else {
+				features.push(ev.feature);
+			}
+			var html = '';
+			for(var i = 0, ii = features.length; i < ii; i++) {
+				var feature = features[i];
+				if(feature._html) {
+					console.log('cached html');
+				} else {
+					var f_html = dojo.string.substitute(this.popupTemplate, feature.attributes);
+					feature._html = f_html;
+					console.log('created html');
+				}
+				html += feature._html;
+			}
 
+			if(ev.feature._popup) {
+				/* follow the mouse */
+			} else {
+				var popup_id = 'popup'+GeoMOOSE.id();
+				ev.feature._popup = popup_id;
+
+				this._ol_layer.map.addPopup({
+					id: popup_id,
+					classNames: [this.cssName],
+					content: html
+				});
+			}
+
+		});
+
+		this.controls['popup'].events.register('featureunhighlighted', this, function(ev) {
+			var map = ev.feature.layer.map;
+			var popup_id = ev.feature._popup;
+			map.removePopup(popup_id);
+			ev.feature._popup = null;
+		});
 	},
 
 	/**
@@ -141,7 +196,8 @@ dojo.declare('GeoMOOSE.MapSource.Vector', GeoMOOSE.MapSource, {
 			'modify' : true,
 			'edit_attributes' : true,
 			'remove' : true,
-			'remove_all' : true
+			'remove_all' : true,
+			'popup' : true
 		};
 
 		var supported = mapbook_entry.getAttribute('supports');
@@ -212,16 +268,61 @@ dojo.declare('GeoMOOSE.MapSource.Vector', GeoMOOSE.MapSource, {
 			style_map['select'] = { 'label' : "" };
 		}
 
+		var style_options = {
+			defaultStyle: false
+		};
+
+		/* check for clustering options. */
+		var clustering = mapbook_entry.getElementsByTagName('clustering');
+		if(clustering.length > 0) {
+			clustering = clustering[0];
+			if(parseBoolean(clustering.getAttribute('enabled'), false)) {
+				/* set clusteringEnabled to true so that child layers can
+				 *  add the clustering strategy */
+				this.clusteringEnabled = true;
+
+				var min_radius = clustering.getAttribute('min-radius');
+				var max_radius = clustering.getAttribute('max-radius');
+				if(!GeoMOOSE.isDefined(min_radius)) {
+					min_radius = 10;
+				} else {
+					min_radius = parseFloat(min_radius);
+				}
+				if(!GeoMOOSE.isDefined(max_radius)) {
+					/* To infinity! And beyond! (or 25...) */
+					max_radius = 25;
+				} else {
+					max_radius = parseFloat(max_radius);
+				}
+				var radius_fn = function(features) {
+					return Math.max(min_radius, Math.min(features.attributes.count, max_radius));
+				}
+
+				style_options.context = {
+					radius: radius_fn
+				}
+			}
+		}
+
+
+
 		var ol_built_in_style = new OpenLayers.Style();
 		for(var style_intent in style_map) {
 			/* mixin with the default openlayers styles */
 			var style = dojo.clone(OpenLayers.Feature.Vector.style[style_intent]);
 			dojo.mixin(style, style_map[style_intent]);
 			style_map[style_intent] = style;
-			style_map[style_intent] = new OpenLayers.Style(style_map[style_intent], {defaultStyle: false});
+			style_map[style_intent] = new OpenLayers.Style(style_map[style_intent], style_options);
 		}
 
 		this.style_map = new OpenLayers.StyleMap(style_map);
+
+		/* Check for a popup template */
+		var popup_template = mapbook_entry.getElementsByTagName('popup-template');
+		if(popup_template.length > 0) {
+			this.popupTemplate = OpenLayers.Util.getXmlNodeValue(popup_template[0]);
+		}
+
 		var options = {};
 		this.visibility = parseBoolean(mapbook_entry.getAttribute('status'), false);
 
