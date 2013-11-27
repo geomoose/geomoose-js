@@ -36,9 +36,10 @@ var CONFIGURATION = {
 	'toolbar' : {
 		'show_labels' : false
 	},
-	'layer_control_order' : ['activate', 'up','down','fade','unfade','refresh','cycle','legend','metadata'],
+	'layer_control_order' : ['activate', 'popups', 'up','down','fade','unfade','refresh','cycle','legend','metadata'],
 	'layer_controls' : {
 		'activate' : {on: false, tip: 'Activate ${layer} for use with layer contextual tools.'},
+		'popups' : {on: false, tip: 'Show Floating Popups for ${layer}'},
 		/* Up and down are essentially deprecated, Duck 06/09/2012 */
 		'up' : {on: false, tip: 'Move ${layer} up on the stack'},
 		'down' : {on: false, tip: 'Move ${layer} down on the stack'},

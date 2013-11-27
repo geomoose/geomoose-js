@@ -572,7 +572,6 @@ dojo.declare('GeoMOOSE.Application', null, {
 		var new_html = '';
 		for(var i = 0, ii = this.popups.length; i < ii; i++) {
 			var p = this.popups[i];
-			console.log('renderPopupHtml', 'classnames', p.classNames);
 			var classes = p.classNames.join(' ');
 			new_html += '<div class="PopupEntry '+classes+'">';
 			// only render the title if we have one.
@@ -584,7 +583,6 @@ dojo.declare('GeoMOOSE.Application', null, {
 		}
 		this._floatingPopupHtml = new_html;
 		this._popupHtmlHasChanged = true;
-		console.log('renderPopupHtml', new_html);
 	},
 
 	addPopup: function(popup) {

@@ -105,7 +105,7 @@ dojo.declare('GeoMOOSE.MapSource.Vector', GeoMOOSE.MapSource, {
 			'modify' : new OpenLayers.Control.ModifyFeature(this._ol_layer, {
 				vertexRenderIntent: 'select'
 			}),
-			'popup' : new OpenLayers.Control.SelectFeature(this._ol_layer, {
+			'popups' : new OpenLayers.Control.SelectFeature(this._ol_layer, {
 				highlightOnly: true,
 				includeXY: true,
 				hover: true
@@ -133,7 +133,7 @@ dojo.declare('GeoMOOSE.MapSource.Vector', GeoMOOSE.MapSource, {
 			dialog.show(ev);
 			//dojo.connect(dialog, 'onClose', function() { dialog.destoryRecursive(); });
 		});
-		this.controls['popup'].events.register('featurehighlighted', this, function(ev) {
+		this.controls['popups'].events.register('featurehighlighted', this, function(ev) {
 			var features = [];
 			if(ev.feature.cluster) {
 				features = ev.feature.cluster;
@@ -144,11 +144,10 @@ dojo.declare('GeoMOOSE.MapSource.Vector', GeoMOOSE.MapSource, {
 			for(var i = 0, ii = features.length; i < ii; i++) {
 				var feature = features[i];
 				if(feature._html) {
-					console.log('cached html');
+					/* if its defined, don't do any work. */
 				} else {
 					var f_html = dojo.string.substitute(this.popupTemplate, feature.attributes);
 					feature._html = f_html;
-					console.log('created html');
 				}
 				html += feature._html;
 			}
@@ -168,7 +167,7 @@ dojo.declare('GeoMOOSE.MapSource.Vector', GeoMOOSE.MapSource, {
 
 		});
 
-		this.controls['popup'].events.register('featureunhighlighted', this, function(ev) {
+		this.controls['popups'].events.register('featureunhighlighted', this, function(ev) {
 			var map = ev.feature.layer.map;
 			var popup_id = ev.feature._popup;
 			map.removePopup(popup_id);
@@ -197,7 +196,7 @@ dojo.declare('GeoMOOSE.MapSource.Vector', GeoMOOSE.MapSource, {
 			'edit_attributes' : true,
 			'remove' : true,
 			'remove_all' : true,
-			'popup' : true
+			'popups' : true
 		};
 
 		var supported = mapbook_entry.getAttribute('supports');

@@ -105,6 +105,7 @@ dojo.declare('GeoMOOSE.Tab._CatalogLayer', null, {
 		for(var i = 0; i < CONFIGURATION.layer_control_order.length; i++) {
 			var control_name = CONFIGURATION.layer_control_order[i];
 			var control_on = parseBoolean(layer_xml.getAttribute(control_name), CONFIGURATION.layer_controls[control_name].on);
+
 //			if(CONFIGURATION.layer_controls[control_name].on) {
 			if(control_on) {
 				var control_class = GeoMOOSE._getLayerControl(control_name);

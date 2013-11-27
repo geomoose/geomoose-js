@@ -72,21 +72,7 @@ dojo.declare('GeoMOOSE.UI.Toolbar', [dijit.Toolbar], {
 	},
 
 	_layerToolAction: function() {
-		var active_map_source = GeoMOOSE.getActiveMapSource();
-		if(!GeoMOOSE.isDefined(active_map_source)) {
-			GeoMOOSE.error('There is no actively selected layer.  Please activate a layer from the catalog.');
-		} else {
-			var map_source = this.parent.application.getMapSource(this.parent.activeMapSource);
-			if(map_source.supports[this.action] === true) {
-				/* okay, let's go! */
-				if(this.selectable) {
-					this._deactivateTools();
-				}
-				map_source.controls[this.action].activate();
-			} else {
-				GeoMOOSE.error('The current active layer does not support your selected action.');
-			}
-		}
+		GeoMOOSE.activateLayerTool(this.action);
 	},
 
 	_addTool: function(parent, tool_xml, asMenuItem) {
