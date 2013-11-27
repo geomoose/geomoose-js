@@ -21,7 +21,6 @@ THE SOFTWARE.
 */
 
 dojo.provide('GeoMOOSE.Tab.Catalog.LayerControl.Activate');
-dojo.provide('GeoMOOSE.Tab.Catalog.LayerControl.Unfade');
 
 dojo.declare('GeoMOOSE.Tab.Catalog.LayerControl.Activate', [GeoMOOSE.Tab.Catalog.LayerControl], {
 	classes: ['sprite-control-activate'],
