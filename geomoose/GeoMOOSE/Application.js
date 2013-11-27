@@ -566,6 +566,7 @@ dojo.declare('GeoMOOSE.Application', null, {
 	},
 
 	_floatingPopupHtml: '',
+	_popupHtmlHasChanged: false,
 
 	renderPopupHtml: function() {
 		var new_html = '';
@@ -582,6 +583,7 @@ dojo.declare('GeoMOOSE.Application', null, {
 			new_html += '</div>'; // end of popup
 		}
 		this._floatingPopupHtml = new_html;
+		this._popupHtmlHasChanged = true;
 		console.log('renderPopupHtml', new_html);
 	},
 
@@ -632,12 +634,20 @@ dojo.declare('GeoMOOSE.Application', null, {
 					this._popupDiv = document.createElement('div');
 					dojo.body().appendChild(this._popupDiv);
 					dojo.addClass(this._popupDiv, 'Popup');
+					this._popupContents = document.createElement('div');
+					this._popupDiv.appendChild(this._popupContents);
+					dojo.addClass(this._popupContents, 'PopupContents');
+
+					var tail = document.createElement('div');
+					this._popupDiv.appendChild(tail);
+					dojo.addClass(tail, 'Tail');
 				}
 				this._popupDiv.style.top = (evt.clientY+3)+'px';
 				this._popupDiv.style.left = (evt.clientX+3)+'px';
-				/* TODO: there should be some sort of change check
-				 * to prevent unnecessary reflows. */
-				this._popupDiv.innerHTML = this._floatingPopupHtml;
+				if(this._popupHtmlHasChanged) {
+					this._popupContents.innerHTML = this._floatingPopupHtml;
+					this._popupHtmlHasChanged = false;
+				}
 				
 			}
 		}
