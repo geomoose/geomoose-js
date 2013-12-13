@@ -360,3 +360,42 @@ body {
 .hide {
 	display: none !important;
 }
+
+.Popup {
+	display: block;
+	z-index: 10000;
+	position: absolute;
+}
+
+.PopupEntry {
+	width: 15em;
+	padding: 4px;
+}
+
+.Popup .CloseBox {
+	padding-left: 16px;
+	padding-top: 16px;
+	background-image: url(../images/toolbar/delete.png);
+	position: absolute;
+	top: 0; right: 0;
+	cursor: pointer;
+}
+
+.Popup .PopupContents {
+	margin-left: 27px;
+	background-color: white;
+	border: solid 1px #555;
+	border-radius: 3px;
+}
+
+.Popup .Tail {
+	position: absolute;
+	left: 0; top: 0;
+	background-repeat: repeat-x;
+}
+
+.Popup .Tail:before {
+	content: "\25C0\25C0\25C0";
+	color: #555;
+	font-size: 15px;
+}

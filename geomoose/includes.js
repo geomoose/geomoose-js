@@ -53,6 +53,7 @@ dojo.require('GeoMOOSE.Tab.Service');
 dojo.require('GeoMOOSE.Tab.Catalog');
 dojo.require('GeoMOOSE.Tab.Catalog.LayerControl');
 dojo.require('GeoMOOSE.Tab.Catalog.LayerControl.Activate');
+dojo.require('GeoMOOSE.Tab.Catalog.LayerControl.Popups');
 dojo.require('GeoMOOSE.Tab.Catalog.LayerControl.Up');
 dojo.require('GeoMOOSE.Tab.Catalog.LayerControl.Fade');
 dojo.require('GeoMOOSE.Tab.Catalog.LayerControl.Legend');

@@ -75,6 +75,13 @@ dojo.declare('GeoMOOSE.MapSource', null, {
 	path: "",
 
 	/**
+	 * Variable: cssName
+	 *
+	 * CSS Friendly identifier for the MapSource.
+	 */
+	cssName: "",
+
+	/**
 	 * Variable: params
 	 * 
 	 * Used to hold the "parameters" found in the mapbook.
@@ -244,6 +251,9 @@ dojo.declare('GeoMOOSE.MapSource', null, {
 
 		mapbook_entry = this.preParseNode(mapbook_entry);
 		this.path = mapbook_entry.getAttribute('name');
+		// technically we supported "/" in the names and so we 
+		//  will replace them with css-friendly "-"s
+		this.cssName = this.path.replace('/','-');
 		this.params = this._parseParams(mapbook_entry);
 		this.layers = this._parseLayers(mapbook_entry);
 

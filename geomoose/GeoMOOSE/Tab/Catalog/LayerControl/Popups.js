@@ -20,17 +20,19 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-dojo.provide('GeoMOOSE.Tab.Catalog.LayerControl.Activate');
+dojo.provide('GeoMOOSE.Tab.Catalog.LayerControl.Popups');
 
-dojo.declare('GeoMOOSE.Tab.Catalog.LayerControl.Activate', [GeoMOOSE.Tab.Catalog.LayerControl], {
-	classes: ['sprite-control-activate'],
+dojo.declare('GeoMOOSE.Tab.Catalog.LayerControl.Popups', [GeoMOOSE.Tab.Catalog.LayerControl], {
+	classes: ['sprite-control-popups'],
 
-	tip: 'CONFIGURATION.layer_controls.activate.tip',
+	tip: 'CONFIGURATION.layer_controls.popups.tip',
 
 	onClick: function() {
+		/* first we activate the layer */ 
 		GeoMOOSE.activateMapSource(this.layer.src);
+		GeoMOOSE.activateLayerTool('popups');
 	}
 });
 
-GeoMOOSE._registerLayerControl('activate', GeoMOOSE.Tab.Catalog.LayerControl.Activate);
+GeoMOOSE._registerLayerControl('popups', GeoMOOSE.Tab.Catalog.LayerControl.Popups);
 
