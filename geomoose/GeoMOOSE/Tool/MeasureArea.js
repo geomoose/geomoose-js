@@ -23,8 +23,10 @@ THE SOFTWARE.
 
 /**
  * Class: GeoMOOSE.Tool.MeasureArea
- * Defines the MeasureAre Tool.
+ * Defines the MeasureArea Tool.
  * 
+ * Inherits from:
+ *  - <GeoMOOSE.Tool>
  */
 
 

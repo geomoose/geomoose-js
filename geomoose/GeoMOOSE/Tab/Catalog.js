@@ -20,9 +20,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-/*
+/**
  * Class: GeoMOOSE.Tab.Catalog
  * The new, more classy, GeoMOOSE catalog.
+ *
+ * Inherits from:
+ *  - <GeoMOOSE.Tab>
+ *
  */
 
 dojo.provide('GeoMOOSE.Tab.Catalog');

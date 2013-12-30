@@ -20,6 +20,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+/*
+ * Class: GeoMOOSE.Tab.Service
+ * Handles rendering services in the tab pane.
+ *
+ * Inherits from:
+ *  - <GeoMOOSE.Tab>
+ */
+
+
 
 dojo.provide('GeoMOOSE.Tab.Service');
 

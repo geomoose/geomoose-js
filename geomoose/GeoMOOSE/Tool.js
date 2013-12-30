@@ -20,12 +20,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+
 dojo.provide('GeoMOOSE.Tool');
 
 dojo.require('dijit.form.Button');
 dojo.require('dijit.MenuItem');
 dojo.require('dijit.CheckedMenuItem');
-
 
 dojo.declare('GeoMOOSE._Tool', null, {
 	tool_xml: null,
@@ -67,6 +67,12 @@ dojo.declare('GeoMOOSE._Tool', null, {
 
 });
 
+/*
+ * Class: GeoMOOSE.Tool
+ * Defines a selectable tool
+ */
+
+
 dojo.declare('GeoMOOSE.Tool', [GeoMOOSE._Tool, dijit.form.ToggleButton], {
 	selectable: true,
 
@@ -82,9 +88,19 @@ dojo.declare('GeoMOOSE.Tool', [GeoMOOSE._Tool, dijit.form.ToggleButton], {
 	}
 });
 
+/*
+ * Class: GeoMOOSE.UnselectableTool
+ * Creates a tool that cannot be selcted.
+ */
+
 dojo.declare('GeoMOOSE.UnselectableTool', [GeoMOOSE._Tool, dijit.form.Button], {
 	selectable: false
 });
+
+/*
+ * Class: GeoMOOSE.ToolMenu
+ * Renders a tool as a menu item.
+ */
 
 dojo.declare('GeoMOOSE.ToolMenu', [GeoMOOSE._Tool, dijit.CheckedMenuItem], {
 	selectable: true,
@@ -103,6 +119,10 @@ dojo.declare('GeoMOOSE.ToolMenu', [GeoMOOSE._Tool, dijit.CheckedMenuItem], {
 	}
 });
 
+/*
+ * Class: GeoMOOSE.ToolMenu
+ * Renders a tool as a menu item that cannot be selected.
+ */
 dojo.declare('GeoMOOSE.UnselectableToolMenu', [GeoMOOSE._Tool, dijit.MenuItem], {
 	selectable: false 
 });

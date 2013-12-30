@@ -56,42 +56,59 @@ Group: GeoMOOSE  {
 
       File: DeleteFeature  (GeoMOOSE/Control/DeleteFeature.js)
       File: Measure  (GeoMOOSE/Control/Measure.js)
-      File: ServiceControl  (GeoMOOSE/Control/SourceControl.js)
       }  # Group: Control
 
-   File: Dialog.AttributeEditor  (GeoMOOSE/Dialog/AttributeEditor.js)
-   File: Dialog.Error  (GeoMOOSE/Dialog/Error.js)
+   Group: Dialog  {
+
+      File: AttributeEditor  (GeoMOOSE/Dialog/AttributeEditor.js)
+      File: Download  (GeoMOOSE/Dialog/Download.js)
+      File: Error  (GeoMOOSE/Dialog/Error.js)
+      }  # Group: Dialog
+
    File: Layout.Default  (GeoMOOSE/Layout/Default.js)
    File: MapSource  (GeoMOOSE/MapSource.js)
 
    Group: MapSource  {
 
+      File: AGS  (GeoMOOSE/MapSource/AGS.js)
+      File: Google  (GeoMOOSE/MapSource/Google.js)
       File: MapServer  (GeoMOOSE/MapSource/MapServer.js)
+      File: TMS  (GeoMOOSE/MapSource/TMS.js)
       File: Vector  (GeoMOOSE/MapSource/Vector.js)
       File: Vector.WFS  (GeoMOOSE/MapSource/Vector/WFS.js)
       File: WMS  (GeoMOOSE/MapSource/WMS.js)
+      File: XYZ  (GeoMOOSE/MapSource/XYZ.js)
+      File: Yahoo  (GeoMOOSE/MapSource/Yahoo.js)
       }  # Group: MapSource
 
+   File: ServiceInputTypes  (GeoMOOSE/ServiceInputTypes.js)
    File: Tab  (GeoMOOSE/Tab.js)
-   File: Tab.Catalog  (GeoMOOSE/Tab/Catalog.js)
-   File: Tool.MeasureArea  (GeoMOOSE/Tool/MeasureArea.js)
-   File: Toolbar  (GeoMOOSE/Toolbar.js)
-   File: UI.CoordinateDisplay  (GeoMOOSE/UI/CoordinateDisplay.js)
-   File: UI.ScaleJumper  (GeoMOOSE/UI/ScaleJumper.js)
-   }  # Group: GeoMOOSE
 
-File: OpenLayers.Control.DeleteFeature  (DeleteFeature.js)
-File: OpenLayers.Layer.geomooseWMS  (geomoose_wms_layer.js)
-File: ScaleJumper.js  (ScaleJumper.js)
+   Group: Tab  {
+
+      File: Catalog  (GeoMOOSE/Tab/Catalog.js)
+      File: Service  (GeoMOOSE/Tab/Service.js)
+      }  # Group: Tab
+
+   File: Tool  (GeoMOOSE/Tool.js)
+   File: Tool.MeasureArea  (GeoMOOSE/Tool/MeasureArea.js)
+
+   Group: UI  {
+
+      File: CoordinateDisplay  (GeoMOOSE/UI/CoordinateDisplay.js)
+      File: LinksBar  (GeoMOOSE/UI/LinksBar.js)
+      File: ScaleJumper  (GeoMOOSE/UI/ScaleJumper.js)
+      File: Toolbar  (GeoMOOSE/UI/Toolbar.js)
+      File: ZoomTo  (GeoMOOSE/UI/ZoomTo.js)
+      }  # Group: UI
+
+   }  # Group: GeoMOOSE
 
 Group: Index  {
 
    Index: Everything
    Class Index: Classes
-   Constant Index: Constants
-   File Index: Files
    Function Index: Functions
-   Property Index: Properties
    Variable Index: Variables
    }  # Group: Index
 

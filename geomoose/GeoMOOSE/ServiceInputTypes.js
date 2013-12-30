@@ -23,6 +23,11 @@ THE SOFTWARE.
 /* these, theoretically, could be broken out into separate class
 	files, but for now, this seems to be sufficient */
 
+/*
+ * Class: GeoMOOSE.ServiceInputTypes
+ * Container for the litany of service inputs.
+ */
+
 dojo.provide('GeoMOOSE.ServiceInputTypes');
 
 dojo.require('dijit.form.CheckBox');
