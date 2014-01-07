@@ -7,3 +7,6 @@
 [submodule "libs/dojo"]
 	path = libs/dojo
 	url = https://github.com/geomoose/dojo.git
+[submodule "libs/usng_tools"]
+	path = libs/usng_tools
+	url = https://github.com/klassenjs/usng_tools.git

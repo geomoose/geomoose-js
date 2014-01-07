@@ -26,8 +26,6 @@ THE SOFTWARE.
  */
 dojo.provide('GeoMOOSE.UI.CoordinateDisplay');
 
-dojo.require('GeoMOOSE.USNG');
-
 
 dojo.declare('GeoMOOSE.UI.CoordinateDisplay', null, {
 	constructor: function() {
@@ -36,6 +34,10 @@ dojo.declare('GeoMOOSE.UI.CoordinateDisplay', null, {
 		this.coordinate_display = dojo.create('span', {
 			'id' : 'coordinate-display'
 		}, footer);
+
+		if(CONFIGURATION.coordinate_display.usng) {
+			this.usng = new USNG2();
+		}
 
 		/* wait for the mapbook to load and then finish setup */
 		GeoMOOSE.register('onMapbookLoaded', this, this.gotMapbook);
@@ -73,7 +75,14 @@ dojo.declare('GeoMOOSE.UI.CoordinateDisplay', null, {
 			/* Convert the map units to inches, and then inches to meters */
 			var metersPerPx = Map.getResolution() * (inches[Map.getUnits()] * (1/inches['m']));
 			var digits = 6-Math.ceil(Math.log(metersPerPx)/2.302585092994046);
-			html += (new USNG()).fromLatLong(lat_long, digits);
+			try {
+				var usng_c = this.usng.fromLonLat({
+				                   lon: lat_long.x, 
+				                   lat: lat_long.y}, digits);
+				html += usng_c;
+			} catch(err) {
+				html += err;
+			}
 		}
 		return html;
 	}
