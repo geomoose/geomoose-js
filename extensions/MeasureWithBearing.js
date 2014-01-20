@@ -123,7 +123,7 @@ MeasureWithBearingExtension = new OpenLayers.Class(GeoMOOSE.UX.Extension, {
 				'content' : p
 			});
 			GeoMOOSE.addTab('measure_tab', measure_tab);
-			dojo.connect(measure_tab, 'onClose', dojo.hitch(this, this.onClose));
+			dojo.connect(measure_tab, 'onClose', dojo.hitch(this, this.onHide));
 			dojo.connect(measure_tab, 'onHide', dojo.hitch(this, this.onHide));
 			dojo.connect(measure_tab, 'onShow', dojo.hitch(this, this.onShow));
 		} else {
@@ -375,9 +375,6 @@ MeasureWithBearingExtension = new OpenLayers.Class(GeoMOOSE.UX.Extension, {
 		this.measure_tool.deactivate();
 	},
 
-	onClose: function() {
-		this.closeMeasure();
-	},
 
 	onShow: function () {
 		this.measure_tool.activate();
@@ -391,7 +388,7 @@ MeasureWithBearingExtension = new OpenLayers.Class(GeoMOOSE.UX.Extension, {
 		this.measure_tool.deactivate();
 		var tab = GeoMOOSE.getTab('measure_tab');
 		if(tab) {
-			GeoMOOSE.removeTab('measure_tab');
+			dijit.byId('tabs').closeChild(GeoMOOSE.getTab('measure_tab'));
 		}
 	},
 
