@@ -171,6 +171,15 @@ dojo.declare('GeoMOOSE.Tab._CatalogLayer', null, {
 			this.metadata_url = OpenLayers.Util.getXmlNodeValue(metadata[0]);
 		}
 		
+		var stat = parseBoolean(layer_xml.getAttribute('status'));
+		if(GeoMOOSE.isDefined(stat)) {
+			var paths = [];
+			for(var src in this.paths) {
+				this.paths[src] = stat;
+				paths.push(src);
+			}
+			GeoMOOSE.changeLayerVisibility(paths, stat);
+		}
 		p = null;
 	},
 
