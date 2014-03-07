@@ -131,7 +131,12 @@ window.GeoMOOSE = {
 		for(var i = 0, len = paths.length; i < len; i++) {
 			var layerPath = paths[i];
 			if(layerPath) {
-				Application.getMapSource(layerPath).setVisibility(layerPath, visibility);
+				var ms = Application.getMapSource(layerPath);
+				if(GeoMOOSE.isDefined(ms)) {
+					ms.setVisibility(layerPath, visibility);
+				} else {
+					GeoMOOSE.error("GeoMOOSE.changeLayerVisibility: map-source for path " + layerPath + " undefined.");
+				}
 			}
 		}
 	},
