@@ -212,6 +212,22 @@ GeoMOOSE.Services.InputType.PrintInfo = OpenLayers.Class(GeoMOOSE.Services.Input
 		return dojo.toJson(print_info);
 	}
 });
+
+GeoMOOSE.Services.InputType.MapInfo = OpenLayers.Class(GeoMOOSE.Services.InputType, {
+	MAPBOOK_NAME: "map_info",
+
+	getValue: function() {
+		var map_info = {
+			extent: Map.getExtent().toArray(),
+			img_size: [ Map.getSize().w, Map.getSize().h ],
+			center: [ Map.getCenter().lon, Map.getCenter().lat ],
+			scale_denom: Map.getScale(),
+			resolution: Map.getResolution(),
+			projection: Map.getProjection().toString(),
+		};
+		return dojo.toJson(map_info);
+	}
+});
 		
 GeoMOOSE.Services.InputType.User = OpenLayers.Class(GeoMOOSE.Services.InputType, {
 	MAPBOOK_NAME: "user",
