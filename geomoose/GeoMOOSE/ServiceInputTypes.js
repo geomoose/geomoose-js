@@ -223,7 +223,7 @@ GeoMOOSE.Services.InputType.MapInfo = OpenLayers.Class(GeoMOOSE.Services.InputTy
 			center: [ Map.getCenter().lon, Map.getCenter().lat ],
 			scale_denom: Map.getScale(),
 			resolution: Map.getResolution(),
-			projection: Map.getProjection().toString(),
+			projection: Map.getProjection().toString()
 		};
 		return dojo.toJson(map_info);
 	}
