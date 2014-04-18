@@ -110,14 +110,40 @@ dojo.declare('GeoMOOSE.Dialog.AttributeEditor', [dijit.Dialog], {
 				'name' : attribute_name,
 				'title' : this.feature_desc[i]['label']
 			});
-	
-			var value = this.feature_desc[i]['value'];
-			if(feature.attributes[attribute_name]) {
-				value = feature.attributes[attribute_name];
+			if (this.feature_desc[i]['display-value']) {
+				input_obj.setCustom(true);
 			}
-			input_obj.setValue(value);
+			if (this.feature_desc[i]['display-value'] && !feature.edited) {
+				input_obj.setValue(this.feature_desc[i]['display-value']);
+				feature.edited = true;
+			} else {
+				var value = this.feature_desc[i]['value'];
+				if (feature.attributes[attribute_name]) {
+					value = feature.attributes[attribute_name];
+				}
+				if (input_obj.custom) {
+					value = value * 100;
+					if (isNaN(value)) {
+						value = 0;
+					}
+				}
+				input_obj.setValue(value);
+			}
+			
+			var tip = this.feature_desc[i]['tip'];
+			if (tip) {
+				input_obj.setTip(tip);
+			}
+			var small = this.feature_desc[i]['small'];
+			if (small) {
+				input_obj.setSmall(small);
+			}
+			var dropdowns = this.feature_desc[i]['dropdowns'];
+			if (dropdowns) {
+				input_obj.setDropdowns(dropdowns);
+			}
 
-			if(input_obj.requiresRender()) {
+			if (input_obj.requiresRender()) {
 				input_obj.renderHTML(c_id);
 			}
 
@@ -141,7 +167,15 @@ dojo.declare('GeoMOOSE.Dialog.AttributeEditor', [dijit.Dialog], {
 				for(var i = 0, ii = controls.length; i < ii; i++) {
 					//controls[i].save();
 					//console.log(controls[i].getName(), controls[i].getValue());
-					this._updateAttribute(controls[i].getName(), controls[i].getValue());
+					if (controls[i].custom) {
+						var val = (controls[i].getValue() / 100);
+						if (isNaN(val)) {
+							val = 0;
+						}
+					}
+					else
+						var val = controls[i].getValue();
+					this._updateAttribute(controls[i].getName(), val);
 
 				}
 				this.hide();

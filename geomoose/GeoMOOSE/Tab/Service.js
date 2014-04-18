@@ -489,7 +489,9 @@ dojo.declare('GeoMOOSE.Tab.Service', [dijit.layout.BorderContainer], {
 		this.onStart();
 
 		if(service.getAttribute('target') == '_blank') {
-			dijit.byId('tabs').closeChild(GeoMOOSE.getTab(this.name));
+			if (GeoMOOSE.getTab(this.name)) {
+				dijit.byId('tabs').closeChild(GeoMOOSE.getTab(this.name));
+			}
 
 			/* TODO: Make this work for posts by background-targetting an iframe */
 			/* this is moderately evil. */

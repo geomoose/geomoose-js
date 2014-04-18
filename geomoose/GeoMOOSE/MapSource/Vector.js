@@ -102,8 +102,11 @@ dojo.declare('GeoMOOSE.MapSource.Vector', GeoMOOSE.MapSource, {
 			'polygon' : new OpenLayers.Control.DrawFeature(this._ol_layer, OpenLayers.Handler.Polygon, {}),
 			'line' : new OpenLayers.Control.DrawFeature(this._ol_layer, OpenLayers.Handler.Path, {}),
 			'point' : new OpenLayers.Control.DrawFeature(this._ol_layer, OpenLayers.Handler.Point, {}),
+			'text' : new OpenLayers.Control.DrawFeature(this._ol_layer, OpenLayers.Handler.Point, {"text":true}),
+			'move' : new OpenLayers.Control.DragFeature(this._ol_layer),
 			'modify' : new OpenLayers.Control.ModifyFeature(this._ol_layer, {
-				vertexRenderIntent: 'select'
+				vertexRenderIntent: 'select',
+				virtualStyle: this.style_map["select"]
 			}),
 			'popups' : new OpenLayers.Control.SelectFeature(this._ol_layer, {
 				highlightOnly: true,
@@ -131,7 +134,8 @@ dojo.declare('GeoMOOSE.MapSource.Vector', GeoMOOSE.MapSource, {
 		this.controls['edit_attributes'].events.register('featurehighlighted', this, function(ev) {
 			var dialog = new GeoMOOSE.Dialog.AttributeEditor({'feature_desc' : this.attributes});
 			dialog.show(ev);
-			//dojo.connect(dialog, 'onClose', function() { dialog.destoryRecursive(); });
+			var vect = this;
+			dojo.connect(dialog, 'onHide', function() { vect.controls["edit_attributes"].unselectAll(); });
 		});
 		this.controls['popups'].events.register('featurehighlighted', this, function(ev) {
 			var features = [];
@@ -173,6 +177,14 @@ dojo.declare('GeoMOOSE.MapSource.Vector', GeoMOOSE.MapSource, {
 			map.removePopup(popup_id);
 			ev.feature._popup = null;
 		});
+		
+		this.controls["text"].events.register('featureadded', this, function(feat){
+			feat.feature.attributes.opacity = "0";
+			feat.feature.attributes.line_opacity = "0";
+			feat.feature.attributes.title = "Label";
+			feat.feature.edited = true;
+			feat.feature.layer.redraw();
+		});
 	},
 
 	/**
@@ -192,6 +204,8 @@ dojo.declare('GeoMOOSE.MapSource.Vector', GeoMOOSE.MapSource, {
 			'point' : true,
 			'line' : true,
 			'polygon' : true,
+			'text' : true,
+			'move' : true,
 			'modify' : true,
 			'edit_attributes' : true,
 			'remove' : true,
@@ -221,12 +235,12 @@ dojo.declare('GeoMOOSE.MapSource.Vector', GeoMOOSE.MapSource, {
 		for(var i = 0, len = attributes.length; i < len; i++) {
 			var attr = attributes[i];
 			var attr_label = attr.getAttribute('label');
-			var attr_name = attr.getAttribute('name'), attr_type = attr.getAttribute('type');
+			var attr_name = attr.getAttribute('name'), attr_type = attr.getAttribute('type'), attr_tip = attr.getAttribute('tip'), attr_small = attr.getAttribute('small'), attr_display_value = attr.getAttribute('display-value'), attr_dropdowns = attr.getAttribute('dropdowns');
 			var attr_default_value = attr.getAttribute('default-value');
 			var required_on_create = parseBoolean(attr.getAttribute('mandatory'), false);
 			this.attributes.push({
 				'name'  : attr_name, 'type' : attr_type, 'default' : attr_default_value,
-				'mandatory' : required_on_create, 'label' : attr_label
+				'mandatory' : required_on_create, 'label' : attr_label, 'tip' : attr_tip, 'small' : attr_small, 'display-value' : attr_display_value, 'dropdowns' : attr_dropdowns
 			});
 		}
 
@@ -263,8 +277,11 @@ dojo.declare('GeoMOOSE.MapSource.Vector', GeoMOOSE.MapSource, {
 			if(!GeoMOOSE.isDefined(style_map['select']['label'])) {
 				dojo.mixin(style_map['select'], { 'label' : "" });
 			}
+			if(!GeoMOOSE.isDefined(style_map['select']['graphicName'])) {
+				dojo.mixin(style_map['select'], { 'graphicName' : "circle" });
+			}
 		} else {
-			style_map['select'] = { 'label' : "" };
+			style_map['select'] = { 'label' : "", 'graphicName': "circle"  };
 		}
 
 		var style_options = {

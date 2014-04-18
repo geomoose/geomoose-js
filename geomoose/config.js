@@ -15,6 +15,7 @@ var CONFIGURATION = {
 	'scales' : [1,2,4,8,16,32,64,128,256,500,1000,5000],
 	'max_extent' : [189783.560000,4816309.330000,761653.524114,5472346.500000],
 	'initial_extent' : [410438.542057,5125011.551363637,540998.542057,5163644.278636363],
+	'table_results' : [],
 	'projection' : "EPSG:26915",
 	'ground_units' : 'm',
 	'coordinate_display' : {
