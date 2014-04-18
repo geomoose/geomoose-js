@@ -72,7 +72,7 @@ dojo.declare('GeoMOOSE.UI.Toolbar', [dijit.Toolbar], {
 	},
 
 	_layerToolAction: function() {
-		GeoMOOSE.activateLayerTool(this.action);
+		GeoMOOSE.activateLayerTool(this);
 	},
 
 	_addTool: function(parent, tool_xml, asMenuItem) {
