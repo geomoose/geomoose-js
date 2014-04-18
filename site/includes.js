@@ -1,1 +1,0 @@
-dojo.require('extensions.VisibleLayers');
