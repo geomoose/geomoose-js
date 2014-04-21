@@ -36,12 +36,12 @@ dojo.declare('GeoMOOSE.MapSource.Vector.WFS', [GeoMOOSE.MapSource.Vector], {
 		this.save_strategy = new OpenLayers.Strategy.Save();
 		
 		var strategies = [];
-        if (this.fixed) {
-            strategies.push(new OpenLayers.Strategy.Fixed());
-        } else {
-            strategies.push(new OpenLayers.Strategy.BBOX());
-        }
-		
+		if (this.fixed) {
+			strategies.push(new OpenLayers.Strategy.Fixed());
+		} else {
+			strategies.push(new OpenLayers.Strategy.BBOX());
+		}
+
 		this._ol_layer = new OpenLayers.Layer.Vector(this._ol_layer_name, {
 			strategies: strategies,
 			projection: new OpenLayers.Projection(this.srsName),
