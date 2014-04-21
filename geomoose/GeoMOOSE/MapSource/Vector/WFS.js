@@ -33,18 +33,22 @@ dojo.declare('GeoMOOSE.MapSource.Vector.WFS', [GeoMOOSE.MapSource.Vector], {
 	_createOLLayer: function(options) {
 		this._ol_layer_name = 'wfs'+GeoMOOSE.id();
 
-		this.save_strategy = new OpenLayers.Strategy.Save();
-		
-		var strategies = [];
-		if (this.fixed) {
+
+		var strategies = [new OpenLayers.Strategy.BBOX()];
+		if(this.canSave) {
+			this.save_strategy = new OpenLayers.Strategy.Save();
+			strategies.push(this.save_strategy);
+		}
+		if(this.clusteringEnabled) {
+			strategies.push(new OpenLayers.Strategy.Cluster());
+		}
+		if(this.fixed) {
 			strategies.push(new OpenLayers.Strategy.Fixed());
-		} else {
-			strategies.push(new OpenLayers.Strategy.BBOX());
 		}
 
 		this._ol_layer = new OpenLayers.Layer.Vector(this._ol_layer_name, {
 			strategies: strategies,
-			projection: new OpenLayers.Projection(this.srsName),
+			projection: new OpenLayers.Projection(CONFIGURATION.projection),
 			styleMap : this.style_map,
 			visibility: false,
 			protocol: new OpenLayers.Protocol.WFS({
@@ -52,13 +56,14 @@ dojo.declare('GeoMOOSE.MapSource.Vector.WFS', [GeoMOOSE.MapSource.Vector], {
 				srsName: this.srsName,
 				url: this.url,
 				featureNS: this.featureNS,
+				featurePrefix: this.featurePrefix,
 				featureType: this.featureType,
 				geometryName: this.featureGeometryName,
 				schema: this.featureSchema
 			})
 		});
-	},    
-	
+	},
+
 	getUrl: function() {
         return this.url
     },
@@ -76,6 +81,7 @@ dojo.declare('GeoMOOSE.MapSource.Vector.WFS', [GeoMOOSE.MapSource.Vector], {
 	preParseNode: function(mapbook_xml) {
 		var conversion_hash = {
 			'featureNS' : 'feature-namespace',
+			'featurePrefix' : 'feature-prefix',
 			'featureType' : 'feature-type',
 			'featureSchema' : 'schema',
 			'featureGeometryName' : 'geometry-name'
@@ -95,15 +101,15 @@ dojo.declare('GeoMOOSE.MapSource.Vector.WFS', [GeoMOOSE.MapSource.Vector], {
 		if(!GeoMOOSE.isDefined(this.srsName)) {
 			this.srsName = CONFIGURATION.projection;
 		}
-		
+
 		this.fixed = mapbook_xml.getAttribute('fixed');
 
 		return mapbook_xml;
 	},
 
 	save: function() {
-		if (this.save_strategy) {
-            this.save_strategy.save();
+		if (this.canSave) {
+			this.save_strategy.save();
 		}
 	}
 });
