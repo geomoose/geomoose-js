@@ -143,6 +143,30 @@ GeoMOOSE.Services.InputType = OpenLayers.Class({
 		}
 		return '';
 	},
+	
+	/*
+	 * Method: setTip
+	 * Set the tool tip on inputs
+	 */
+	setTip: function(tip) {
+		this.tip = tip;
+	},
+	
+	/*
+	 * Method: setSmall
+	 * Allow for small inputs
+	 */
+	setSmall: function(small) {
+		this.small = small;
+	},
+	
+	/*
+	 * Method: setCustom
+	 * set Custom functionality (Attribute editor)
+	 */
+	setCustom: function(custom) {
+		this.custom = custom;
+	},
 
 	MAPBOOK_NAME: null
 });
@@ -212,6 +236,26 @@ GeoMOOSE.Services.InputType.PrintInfo = OpenLayers.Class(GeoMOOSE.Services.Input
 		return dojo.toJson(print_info);
 	}
 });
+
+GeoMOOSE.Services.InputType.Break = OpenLayers.Class(GeoMOOSE.Services.InputType, {
+	MAPBOOK_NAME: "break",
+	
+	initialize: function(input, options) {
+		GeoMOOSE.Services.InputType.prototype.initialize.apply(this, arguments);
+		this.options.renderable = true;
+	},
+
+	updateServiceSetting: function() {
+		this.input_obj.setValue(this.value);
+	},	
+	
+	renderHTML: function(parent_id) {
+		var p = document.getElementById(parent_id);
+		var inputParent = document.createElement('hr');
+		p.appendChild(inputParent);
+	}
+	
+});
 		
 GeoMOOSE.Services.InputType.User = OpenLayers.Class(GeoMOOSE.Services.InputType, {
 	MAPBOOK_NAME: "user",
@@ -245,7 +289,11 @@ GeoMOOSE.Services.InputType.User = OpenLayers.Class(GeoMOOSE.Services.InputType,
 	renderHTML: function(parent_id) {
 		var p = document.getElementById(parent_id);
 		var inputParent = document.createElement('span');
-		inputParent.className = 'service-input-parent';
+		if (this.getClass() == "inline") {
+			inputParent.className = 'service-input-parent-inline';
+		} else {
+			inputParent.className = 'service-input-parent';
+		}
 		p.appendChild(inputParent);
 
 		var i = document.createElement('input');
@@ -266,6 +314,23 @@ GeoMOOSE.Services.InputType.User = OpenLayers.Class(GeoMOOSE.Services.InputType,
 		inputParent.appendChild(title);
 		title.innerHTML = this.getTitle();
 		inputParent.appendChild(i);
+		
+		if (this.tip) {
+			var tip = document.createElement('span');
+			tip.className = 'service-input-text';
+			inputParent.appendChild(tip);
+			tip.innerHTML = this.tip;
+		}
+		if (this.small) {
+			dojo.style(i, "width", "40px");
+		}
+	},
+	
+	getClass: function() {
+		if(this.input) {
+			return this.input.getAttribute('class');
+		}
+		return '';
 	}
 	
 });
@@ -291,12 +356,20 @@ GeoMOOSE.Services.InputType.Select = OpenLayers.Class(GeoMOOSE.Services.InputTyp
 	},
 
 	getOptions: function() {
-		var opts = this.input.getElementsByTagName('option');
-		var formed_opts = [];
-		for(var i = 0 ; i < opts.length; i++) {
-			formed_opts.push({value: opts[i].getAttribute('value'), name: OpenLayers.Util.getXmlNodeValue(opts[i])});
+		if (this.input) {
+			var opts = this.input.getElementsByTagName('option');
+			var formed_opts = [];
+			for(var i = 0 ; i < opts.length; i++) {
+				formed_opts.push({value: opts[i].getAttribute('value'), name: OpenLayers.Util.getXmlNodeValue(opts[i])});
+			}
+			return formed_opts;
+		} else {
+			var formed_opts = [];
+			dojo.forEach(this.dropdowns.split(","), function(drop) {
+				formed_opts.push({value: drop, name: drop.charAt(0).toUpperCase() + drop.slice(1)});
+			});
+			return formed_opts;
 		}
-		return formed_opts;
 	},
 
 	setValue: function(v) {
@@ -305,18 +378,34 @@ GeoMOOSE.Services.InputType.Select = OpenLayers.Class(GeoMOOSE.Services.InputTyp
 			this.input.setAttribute('value', v);
 		}
 	},
+	
+	setDropdowns: function(dropdowns) {
+		this.dropdowns = dropdowns;
+	},
 
-	updateSettings: function() {
-		this.input_obj.setValue(this.getElementsByTagName('option')[this.selectedIndex].value);
+	updateSettings: function() {		
+		var val = "";
+		for (i=0;i<this.getElementsByTagName('option').length;i++) {
+			if (this.getElementsByTagName('option')[i].selected)
+				val += this.getElementsByTagName('option')[i].value + "|";
+		}
+		this.input_obj.setValue(val.slice(0,-1));
 	},
 
 	renderHTML: function(parent_id) {
 		var p = document.getElementById(parent_id);
 		var inputParent = document.createElement('span');
-		inputParent.className = 'service-input-parent';
+		if (this.getClass() == "inline") {
+			inputParent.className = 'service-input-parent-inline';
+		} else {
+			inputParent.className = 'service-input-parent';
+		}
 		p.appendChild(inputParent);
 
 		var select = document.createElement('select');
+		if (this.getMultiple() == "true") {
+			select.multiple = true;
+		}
 		select.input_obj = this;
 
 		var title = document.createElement('span');
@@ -344,8 +433,33 @@ GeoMOOSE.Services.InputType.Select = OpenLayers.Class(GeoMOOSE.Services.InputTyp
 		selected_option.selected = true;
 
 		this.setValue(selected_option.value);
-			
-		select.onchange = this.updateSettings;
+		if (this.input) {
+			var onchange = this.input.getAttribute("onchange");
+		}
+		if (onchange) {
+			select.onchange = function() {
+				eval(onchange);
+				this.updateSettings;
+			};
+		} else {
+			select.onchange = this.updateSettings;
+		}
+	},
+	
+	getMultiple: function() {
+		if(this.input) {
+			return this.input.getAttribute('multiple');
+		} else if(this.options.multiple) {
+			return this.options.multiple;
+		}
+		return '';
+	},
+	
+	getClass: function() {
+		if(this.input) {
+			return this.input.getAttribute('class');
+		}
+		return '';
 	}
 
 });

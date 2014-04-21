@@ -19,8 +19,10 @@ dependencies = {
                         dependencies: [
                                 "dojo.dojo",
                                 "dojo.base",
+                                "dojo.data.ItemFileWriteStore",
                                 "dijit.dijit",
                                 "dojox.widget",
+                                "dojox.grid.DataGrid",
                                 "site.includes",
                                 "gm.includes"
                         ]

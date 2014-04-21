@@ -42,6 +42,10 @@ dojo.declare('GeoMOOSE.MapSource.Vector.WFS', [GeoMOOSE.MapSource.Vector], {
 		if(this.clusteringEnabled) {
 			strategies.push(new OpenLayers.Strategy.Cluster());
 		}
+		if(this.fixed) {
+			strategies.push(new OpenLayers.Strategy.Fixed());
+		}
+
 		this._ol_layer = new OpenLayers.Layer.Vector(this._ol_layer_name, {
 			strategies: strategies,
 			projection: new OpenLayers.Projection(CONFIGURATION.projection),
@@ -59,6 +63,20 @@ dojo.declare('GeoMOOSE.MapSource.Vector.WFS', [GeoMOOSE.MapSource.Vector], {
 			})
 		});
 	},
+
+	getUrl: function() {
+        return this.url
+    },
+
+    setUrl: function(url) {
+        this.url = url;
+        this._ol_layer.protocol.url = this.url;
+        this._ol_layer.protocol.options.url = this.url;
+    },
+
+    redraw: function(url) {
+        this._ol_layer.refresh();
+    },
 
 	preParseNode: function(mapbook_xml) {
 		var conversion_hash = {
@@ -84,11 +102,15 @@ dojo.declare('GeoMOOSE.MapSource.Vector.WFS', [GeoMOOSE.MapSource.Vector], {
 			this.srsName = CONFIGURATION.projection;
 		}
 
+		this.fixed = mapbook_xml.getAttribute('fixed');
+
 		return mapbook_xml;
 	},
 
 	save: function() {
-		this.save_strategy.save();
+		if (this.canSave) {
+			this.save_strategy.save();
+		}
 	}
 });
 
