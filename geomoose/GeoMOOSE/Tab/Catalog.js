@@ -69,17 +69,18 @@ dojo.declare('GeoMOOSE.Tab._CatalogLayer', null, {
 		/* render ... */
 		var p = dojo.byId(parent_id);
 
-		var titleAtt = layer_xml.getAttribute('title');
+		var label = layer_xml.getAttribute('title');
 		var tip = layer_xml.getAttribute('tip');
 		var container;
 
-		this.title = titleAtt;
+		this.title = label;
 
 
-		if(tip != null)
+		if (tip != null) {
 			container = dojo.create('div', {title: tip}, p);
-		else
+		} else {
 			container = dojo.create('div', null, p);
+		}
 
 		this.div = container;
 
@@ -116,21 +117,21 @@ dojo.declare('GeoMOOSE.Tab._CatalogLayer', null, {
 			GeoMOOSE.changeLayerVisibility(paths, v);
 		}));
 
-		var label = dojo.create('span', {'id':'toc-' + titleAtt, 'innerHTML' : titleAtt, 'className' : 'catalog-layer-title'}, title);		
+		var span = dojo.create('span', {'innerHTML' : titleAtt, 'className' : 'catalog-layer-title'}, title);		
 		if(layer_xml.getAttribute('minscale')) {
-			label.minscale = parseFloat(layer_xml.getAttribute('minscale'));
+			span.minscale = parseFloat(layer_xml.getAttribute('minscale'));
 		}
 		if(layer_xml.getAttribute('maxscale')) {
-			label.maxscale = parseFloat(layer_xml.getAttribute('maxscale'));
+			span.maxscale = parseFloat(layer_xml.getAttribute('maxscale'));
 		}
-		if(this.inScale(label.minscale, label.maxscale)) {
-			label.className += ' catalog-inscale';
+		if(this.inScale(span.minscale, span.maxscale)) {
+			span.className += ' catalog-inscale';
 		} else {
-			label.className += ' catalog-outscale';
+			span.className += ' catalog-outscale';
 		}
 
 		/** Whew ... time to render controls ... yikes ... **/
-		var controls = dojo.create('div', {'className':'catalog-controls-container', 'id':'container-' + this.title}, container);
+		var controls = dojo.create('div', {'className':'catalog-controls-container'}, container);
 		for(var i = 0; i < CONFIGURATION.layer_control_order.length; i++) {
 			var control_name = CONFIGURATION.layer_control_order[i];
 			var control_on = parseBoolean(layer_xml.getAttribute(control_name), CONFIGURATION.layer_controls[control_name].on);
