@@ -44,6 +44,19 @@ dojo.declare('GeoMOOSE.Tab._CatalogLayer', null, {
 
 	checkbox_id: '',
 
+	onRefreshMap: function() {
+		dojo.query('.catalog-layer-title').forEach(function(layer_title) {
+			var minscale = parseFloat(layer_title.getAttribute('data-minscale'));
+			var maxscale = parseFloat(layer_title.getAttribute('data-maxscale'));
+
+			if(GeoMOOSE.inScale(minscale, maxscale)) {
+				dojo.removeClass(layer_title, 'catalog-outscale');
+			} else {
+				dojo.addClass(layer_title, 'catalog-outscale');
+			}
+		});
+	},
+
 	constructor: function(parent_id, layer_xml, multiple, group_name) {
 		/* render ... */
 		var p = dojo.byId(parent_id);
@@ -55,10 +68,11 @@ dojo.declare('GeoMOOSE.Tab._CatalogLayer', null, {
 		this.title = label;
 
 
-		if (tip != null)
+		if (tip != null) {
 			container = dojo.create('div', {title: tip}, p);
-		else
+		} else {
 			container = dojo.create('div', null, p);
+		}
 
 		this.div = container;
 
@@ -98,7 +112,19 @@ dojo.declare('GeoMOOSE.Tab._CatalogLayer', null, {
 		}));
 
 
-		var title = dojo.create('span', {'innerHTML' : label}, title);
+		var minscale = layer_xml.getAttribute('minscale');
+		var maxscale = layer_xml.getAttribute('maxscale');
+		/* store min/maxscale in the dom */
+		var label_span = dojo.create('span', {
+			'innerHTML' : label,
+			'data-minscale' : minscale,
+			'data-maxscale' : maxscale
+		}, title);
+		dojo.addClass(label_span, 'catalog-layer-title');
+
+		if(!GeoMOOSE.inScale(parseFloat(minscale),parseFloat(maxscale))) {
+			dojo.addClass(label_span, 'catalog-outscale');
+		}
 
 		/** Whew ... time to render controls ... yikes ... **/
 		var controls_id = GeoMOOSE.id();
@@ -216,6 +242,8 @@ dojo.declare('GeoMOOSE.Tab._CatalogLayer', null, {
 	},
 
 	updateDynamicLegend: function() {
+		this.onRefreshMap();
+
 		var legends_div = dojo.byId(this.legends_id);
 		while(legends_div.firstChild) { legends_div.removeChild(legends_div.firstChild); }
 

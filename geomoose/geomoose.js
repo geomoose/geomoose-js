@@ -316,6 +316,21 @@ window.GeoMOOSE = {
 	},
 
 	/*
+	 * Method: inScale
+	 * Check whether a given min/maxscale is within the 
+	 *  current scale.
+	 */
+	inScale: function(minscale, maxscale) {
+		var scale = GeoMOOSE.getScale();
+		var def_minscale = GeoMOOSE.isDefined(minscale) && !isNaN(minscale);
+		var def_maxscale = GeoMOOSE.isDefined(maxscale) && !isNaN(maxscale);
+		if(!def_minscale && !def_maxscale) { return true; }
+		if(!def_maxscale && scale >= minscale) { return true; }
+		if(!def_minscale && scale <= maxscale) { return true; }
+		return (minscale <= scale && scale <= maxscale);
+	},
+
+	/*
 	 * Method: moveLayerUp
 	 * Move's a layer up on the visibility stack.
 	 *
