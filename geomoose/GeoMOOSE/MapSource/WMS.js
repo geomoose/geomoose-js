@@ -223,7 +223,9 @@ dojo.declare('GeoMOOSE.MapSource.WMS', [GeoMOOSE.MapSource], {
 			'url' : this.urls[0],
 			'layers' : this._getLayersList(),
 			'legends' : this.getLegendUrls(),
-			'params' : this.getLayerParams(true)
+		        'params' : this.getLayerParams(true),
+		        'zindex': this._ol_layer.getZIndex(),
+			'opacity': this._ol_layer.opacity
 		};
 		return print_obj;
 	}
