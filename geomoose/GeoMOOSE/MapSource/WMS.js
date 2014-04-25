@@ -204,7 +204,13 @@ dojo.declare('GeoMOOSE.MapSource.WMS', [GeoMOOSE.MapSource], {
 
 			for(var p = 0, plen = paths.length; p < plen; p++) {
 				if(dojo.indexOf(layers, paths[p]) >= 0) {
-					legend_urls.push(legendURL + '&LAYER=' + paths[p] + '&STYLE=' + styles[paths[p]]);
+					var url = legendURL;
+					if(GeoMOOSE.isDefined(paths[p])) {
+						if(GeoMOOSE.isDefined(styles[paths[p]])) {
+							url += '&STYLE=' + styles[paths[p]];
+						}
+						legend_urls.push(url + '&LAYER=' + paths[p]);
+					}
 				}
 			}
 		} else {

@@ -55,6 +55,8 @@ dojo.declare('GeoMOOSE.Tab._CatalogLayer', null, {
 				dojo.addClass(layer_title, 'catalog-outscale');
 			}
 		});
+
+		this.updateLegends();
 	},
 
 	constructor: function(parent_id, layer_xml, multiple, group_name) {
@@ -175,12 +177,14 @@ dojo.declare('GeoMOOSE.Tab._CatalogLayer', null, {
 		if(!show_legends) {
 			dojo.style(legends, {'height' : 'auto', 'display' : 'none'});
 		}
+
 		var legends_xml = layer_xml.getElementsByTagName('legend');
 		this.dynamic_legends = (legends_xml.length <= 0);
-		for(var i = 0, len = legends_xml.length; i < len; i++) {
-			dojo.create('img', {
-				'src' : OpenLayers.Util.getXmlNodeValue(legends_xml[i])
-			}, legends);
+		if(!this.dynamic_legends) {
+			this.legend_urls = [];
+			for(var i = 0, len = legends_xml.length; i < len; i++) {
+				this.legend_urls.push(OpenLayers.Util.getXmlNodeValue(legends_xml[i]));
+			}
 		}
 
 		/** pull the metadata (as available( **/
@@ -231,28 +235,32 @@ dojo.declare('GeoMOOSE.Tab._CatalogLayer', null, {
 			checkbox.set('checked', change_state);
 		}
 		
-		/* TODO : We should really have a better way of handling partials... 
-		 *  The old version failed miserably here too.
-		 */
-
 		/** update the legends as appropriate **/
-		if(this.dynamic_legends && changed) {
-			this.updateDynamicLegend();
+		if(changed) {
+			this.updateLegends();
 		}
 	},
 
-	updateDynamicLegend: function() {
-		this.onRefreshMap();
-
+	updateLegends: function() {
 		var legends_div = dojo.byId(this.legends_id);
+		/* remove all the current legends */
 		while(legends_div.firstChild) { legends_div.removeChild(legends_div.firstChild); }
 
-		var legend_urls = GeoMOOSE.getLegendUrls(this.active_paths);
-		for(var i = 0; i < legend_urls.length; i++) {
-			var legend_img = dojo.create('img', {
-				'src' : legend_urls[i]
-			}, legends_div);
-			dojo.addClass(legend_img, ['catalog-legend-image']);
+		/* load the new legends */
+		if(dijit.byId(this.checkbox_id).get('checked')) {
+			var legend_urls = [];
+			if(this.dynamic_legends) {
+				legend_urls = GeoMOOSE.getLegendUrls(this.active_paths);
+			} else {
+				legend_urls = this.legend_urls;
+			}
+			/* update the legends */
+			for(var i = 0, ii = legend_urls.length; i < ii; i++) {
+				var legend_img = dojo.create('img', {
+					'src' : legend_urls[i]
+				}, legends_div);
+				dojo.addClass(legend_img, ['catalog-legend-image']);
+			}
 		}
 	},
 	
@@ -454,11 +462,9 @@ dojo.declare('GeoMOOSE.Tab.Catalog', [GeoMOOSE.Tab], {
 		this.updateListing(GeoMOOSE.getVisibleLayers());
 	},
 
-	updateDynamicLegends: function() {
+	onRefreshMap: function() {
 		for(var i = 0, ii = this.catalog_layers.length; i < ii; i++) {
-			if(this.catalog_layers[i].dynamic_legends) {
-				this.catalog_layers[i].updateDynamicLegend();
-			}
+			this.catalog_layers[i].onRefreshMap();
 		}
 	}
 

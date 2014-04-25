@@ -101,8 +101,7 @@ dojo.addOnLoad(function() {
 	//dojo.connect(Application, 'onGotMapbook', 
 	GeoMOOSE.register('onMapCreated', null, function(map) {
 		var measure_area = new GeoMOOSE.Tool.MeasureArea(map);
-
-		map.events.register('moveend', catalog, catalog.updateDynamicLegends);
+		map.events.register('moveend', catalog, catalog.onRefreshMap);
 	});
 
 
