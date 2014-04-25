@@ -45,7 +45,7 @@ dojo.declare('GeoMOOSE.Tab._CatalogLayer', null, {
 	checkbox_id: '',
 
 	onRefreshMap: function() {
-		dojo.query('.catalog-layer-title').forEach(function(layer_title) {
+		dojo.query('.catalog-layer-title', this.parent_id).forEach(function(layer_title) {
 			var minscale = parseFloat(layer_title.getAttribute('data-minscale'));
 			var maxscale = parseFloat(layer_title.getAttribute('data-maxscale'));
 
