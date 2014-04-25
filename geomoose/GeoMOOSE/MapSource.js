@@ -96,6 +96,20 @@ dojo.declare('GeoMOOSE.MapSource', null, {
 	paths: [],
 
 	/**
+	 * Variable: titles
+	 *
+	 * A hash of the titles keyed on layer path.
+	 */
+	titles: {},
+
+	/**
+	 * Variable: metadata
+	 *
+	 * A hash of the metadata URLs keyed on layer path.
+	 */
+	metadata: {},
+
+	/**
 	 * Method: _parseParams
 	 *
 	 * Parse the Mapbook parameters for a map-source
@@ -131,6 +145,8 @@ dojo.declare('GeoMOOSE.MapSource', null, {
 
 		for(var i = 0, len = layers.length; i < len; i++) {
 			var name = layers[i].getAttribute('name');
+			var title = layers[i].getAttribute('title');
+			var metadata_url = layers[i].getAttribute('metadata_url');
 			ret_layers.push(
 				new GeoMOOSE._Layer(
 					this.path,
@@ -141,6 +157,8 @@ dojo.declare('GeoMOOSE.MapSource', null, {
 				)
 			);
 			this.paths.push(this.path+'/'+name);
+			this.titles[this.path+'/'+name] = title;
+			this.metadata[this.path+'/'+name] = metadata_url;
 		}
 		return ret_layers;
 	 },

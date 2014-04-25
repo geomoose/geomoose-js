@@ -67,9 +67,6 @@ dojo.declare('GeoMOOSE.Tab._CatalogLayer', null, {
 		var tip = layer_xml.getAttribute('tip');
 		var container;
 
-		this.title = label;
-
-
 		if (tip != null) {
 			container = dojo.create('div', {title: tip}, p);
 		} else {
@@ -87,12 +84,22 @@ dojo.declare('GeoMOOSE.Tab._CatalogLayer', null, {
 		this.paths = {};
 		var src = layer_xml.getAttribute('src');
 		this.src = src;
+		var paths;
 		if(GeoMOOSE.isDefined(src)) {
-			var paths = src.split(':');
+			paths = src.split(':');
 			for(var i = 0; i < paths.length; i++) {
 				this.paths[paths[i]] = false;
 			}
 		}
+
+		/* Default to MapSource.Layer title if not given in catalog */
+		if(!label && paths && paths.length == 1) {
+			var ms = Application.getMapSource(paths[0]);
+			if(ms) {
+				label = ms.titles[paths[0]];
+			}
+		}
+		this.title = label;
 
 		var checkbox_class = dijit.form.CheckBox;
 		var construct_opts = {};
@@ -194,6 +201,15 @@ dojo.declare('GeoMOOSE.Tab._CatalogLayer', null, {
 			this.metadata_url = OpenLayers.Util.getXmlNodeValue(metadata[0]);
 		}
 		
+		var stat = parseBoolean(layer_xml.getAttribute('status'));
+		if(GeoMOOSE.isDefined(stat)) {
+			var paths = [];
+			for(var src in this.paths) {
+				this.paths[src] = stat;
+				paths.push(src);
+			}
+			GeoMOOSE.changeLayerVisibility(paths, stat);
+		}
 		p = null;
 	},
 
