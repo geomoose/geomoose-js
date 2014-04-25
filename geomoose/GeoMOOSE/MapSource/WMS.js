@@ -45,7 +45,6 @@ dojo.declare('GeoMOOSE.MapSource.WMS', [GeoMOOSE.MapSource], {
 	 *  options - OpenLayers Layer Options hash.
 	 */
 	_createOLLayer: function(options) {
-		this._ol_layer_name = GeoMOOSE.id();
 		this._ol_layer = new OpenLayers.Layer.WMS(
 			this._ol_layer_name,
 			this.urls,
@@ -107,6 +106,12 @@ dojo.declare('GeoMOOSE.MapSource.WMS', [GeoMOOSE.MapSource], {
 			}
 		}
 
+		var title = mapbook_entry.getAttribute('title');
+		if(GeoMOOSE.isDefined(title)) {
+			this._ol_layer_name = title;
+		} else {
+			this._ol_layer_name = this.path;
+		}
 
 		if(!GeoMOOSE.isDefined(this.params['FORMAT'])) {
 			this.params['FORMAT'] = 'image/png';
@@ -204,7 +209,13 @@ dojo.declare('GeoMOOSE.MapSource.WMS', [GeoMOOSE.MapSource], {
 
 			for(var p = 0, plen = paths.length; p < plen; p++) {
 				if(dojo.indexOf(layers, paths[p]) >= 0) {
-					legend_urls.push(legendURL + '&LAYER=' + paths[p] + '&STYLE=' + styles[paths[p]]);
+					var url = legendURL;
+					if(GeoMOOSE.isDefined(paths[p])) {
+						if(GeoMOOSE.isDefined(styles[paths[p]])) {
+							url += '&STYLE=' + styles[paths[p]];
+						}
+						legend_urls.push(url + '&LAYER=' + paths[p]);
+					}
 				}
 			}
 		} else {

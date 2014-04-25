@@ -45,7 +45,6 @@ dojo.declare('GeoMOOSE.MapSource.TMS', [GeoMOOSE.MapSource], {
 	 *  options - OpenLayers Layer Options hash.
 	 */
 	_createOLLayer: function(options) {
-		this._ol_layer_name = 'tms'+GeoMOOSE.id();
 		this._ol_layer = new OpenLayers.Layer.TMS(
 			this._ol_layer_name,
 			this.urls,
@@ -121,6 +120,13 @@ dojo.declare('GeoMOOSE.MapSource.TMS', [GeoMOOSE.MapSource], {
 		 * TODO: should this code be merged with the WMS case?
 		 */
 		dojo.mixin(options, this.params);
+
+		var title = mapbook_entry.getAttribute('title');
+		if(GeoMOOSE.isDefined(title)) {
+			this._ol_layer_name = title;
+		} else {
+			this._ol_layer_name = this.path;
+		}
 
 		this._createOLLayer(options);
 		this.onLayersChange();
