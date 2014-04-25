@@ -167,10 +167,36 @@ dojo.declare('GeoMOOSE.MapSource.WMS', [GeoMOOSE.MapSource], {
 	},
 
 	getLegendUrls: function(paths) {
-		/* Yummy string hacking... */
-		var legendURL = this._ol_layer.getURL(OpenLayers.Bounds.fromArray(GeoMOOSE.getExtent())).replace('REQUEST=GetMap', 'REQUEST=GetLegendGraphic');
-		legendURL += '&SCALE=' + GeoMOOSE.getScale();
+		var urls = this._ol_layer.url;  // this.urls
+		var params = {};  // need to clone so we don't change the orig.
+		for(var k in this._ol_layer.params ) {
+			params[k] = this._ol_layer.params[k];
+		}
 
+		// Add legend parameters
+		params['REQUEST'] = 'GetLegendGraphic';
+		params['SCALE'] = GeoMOOSE.getScale();
+		params['WIDTH'] = 250;// Get Legend Width in Pixels -- how updated when user drags handle?
+	
+		// Remove non-legend parameters	
+		var ls = params['LAYERS'].split(',');
+		var ss = params['STYLES'].split(',');
+		var styles = {};
+		for(var i in ls) {
+			styles[ls[i]] = ss[i];
+		}
+		delete params['LAYERS'];
+		delete params['STYLES'];
+
+		var param_array = [];
+		for( var k in params ) {
+			param_array.push(k + "=" + params[k]); // URL encode
+		}
+
+		var legendURL = urls[0] + "?";  // loop over urls
+		legendURL += param_array.join('&');
+
+		// Loop over layers and get legend all legnd chips
 		var layers = this._getLayersList();
 		var legend_urls = [];
 
@@ -183,13 +209,13 @@ dojo.declare('GeoMOOSE.MapSource.WMS', [GeoMOOSE.MapSource], {
 
 			for(var p = 0, plen = paths.length; p < plen; p++) {
 				if(dojo.indexOf(layers, paths[p]) >= 0) {
-					legend_urls.push(legendURL + '&LAYER=' + paths[p]);
+					legend_urls.push(legendURL + '&LAYER=' + paths[p] + '&STYLE=' + styles[paths[p]]);
 				}
 			}
 		} else {
 			/* if we're not locking it down, then just return everything */
 			for(var i = 0, len = layers.length; i < len; i++) {
-				legend_urls.push(legendURL + '&LAYER=' + layers[i]);
+				legend_urls.push(legendURL + '&LAYER=' + layers[i] + '&STYLE=' + styles[layers[i]]);
 			}
 		}
 
@@ -228,7 +254,9 @@ dojo.declare('GeoMOOSE.MapSource.WMS', [GeoMOOSE.MapSource], {
 			'url' : this.urls[0],
 			'layers' : this._getLayersList(),
 			'legends' : this.getLegendUrls(),
-			'params' : this.getLayerParams(true)
+		        'params' : this.getLayerParams(true),
+		        'zindex': this._ol_layer.getZIndex(),
+			'opacity': this._ol_layer.opacity
 		};
 		return print_obj;
 	}

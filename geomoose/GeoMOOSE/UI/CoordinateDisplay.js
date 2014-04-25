@@ -36,7 +36,16 @@ dojo.declare('GeoMOOSE.UI.CoordinateDisplay', null, {
 		}, footer);
 
 		if(CONFIGURATION.coordinate_display.usng) {
-			this.usng = new USNG2();
+			var has_usng = true;
+			try {
+				eval('new USNG2()');
+			} catch(err) {
+				GeoMOOSE.error('usng display requested but USNG2 Library is not included.');
+				has_usng = false;
+			}
+			if(has_usng) {
+				this.usng = new USNG2();
+			}
 		}
 
 		/* wait for the mapbook to load and then finish setup */
