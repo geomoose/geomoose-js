@@ -129,7 +129,10 @@ dojo.declare('GeoMOOSE.MapSource.Vector', GeoMOOSE.MapSource, {
 		}
 
 		this.controls['edit_attributes'].events.register('featurehighlighted', this, function(ev) {
-			var dialog = new GeoMOOSE.Dialog.AttributeEditor({'feature_desc' : this.attributes});
+			var dialog = new GeoMOOSE.Dialog.AttributeEditor({
+				'feature_desc' : this.attributes,
+				'layer_path' : this.path
+			});
 			dialog.show(ev);
 			//dojo.connect(dialog, 'onClose', function() { dialog.destoryRecursive(); });
 		});
@@ -224,10 +227,21 @@ dojo.declare('GeoMOOSE.MapSource.Vector', GeoMOOSE.MapSource, {
 			var attr_name = attr.getAttribute('name'), attr_type = attr.getAttribute('type');
 			var attr_default_value = attr.getAttribute('default-value');
 			var required_on_create = parseBoolean(attr.getAttribute('mandatory'), false);
-			this.attributes.push({
+			var desc = {
 				'name'  : attr_name, 'type' : attr_type, 'default' : attr_default_value,
 				'mandatory' : required_on_create, 'label' : attr_label
-			});
+			}
+			var options = attr.getElementsByTagName('option');
+			if(options.length > 0) {
+				desc['options'] = [];
+				for(var o = 0, oo = options.length; o < oo; o++) {
+					desc['options'].push({
+						'value' : options[o].getAttribute('value'),
+						'name' : options[o].firstChild.nodeValue
+					});
+				}
+			}
+			this.attributes.push(desc);
 		}
 
 		/* interpret the style! */

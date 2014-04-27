@@ -288,15 +288,11 @@ GeoMOOSE.Services.InputType.User = OpenLayers.Class(GeoMOOSE.Services.InputType,
 
 GeoMOOSE.Services.InputType.Select = OpenLayers.Class(GeoMOOSE.Services.InputType, {
 	MAPBOOK_NAME: "select",
-	input: null,
 
 	initialize: function(input, options) {
-		this.options = {
-			renderable: true,
-			title: ''
-		};
-		OpenLayers.Util.extend(this.options, options || {});		
-		this.input = input;
+		console.log('Select type input', input);
+		GeoMOOSE.Services.InputType.prototype.initialize.apply(this, arguments);
+		this.options.renderable = true;
 	},
 
 	getValue: function() {
@@ -307,12 +303,16 @@ GeoMOOSE.Services.InputType.Select = OpenLayers.Class(GeoMOOSE.Services.InputTyp
 	},
 
 	getOptions: function() {
-		var opts = this.input.getElementsByTagName('option');
-		var formed_opts = [];
-		for(var i = 0 ; i < opts.length; i++) {
-			formed_opts.push({value: opts[i].getAttribute('value'), name: OpenLayers.Util.getXmlNodeValue(opts[i])});
+		if(GeoMOOSE.isDefined(this.options['options'])) {
+			return this.options['options'];
+		} else {
+			var opts = this.input.getElementsByTagName('option');
+			var formed_opts = [];
+			for(var i = 0 ; i < opts.length; i++) {
+				formed_opts.push({value: opts[i].getAttribute('value'), name: OpenLayers.Util.getXmlNodeValue(opts[i])});
+			}
+			return formed_opts;
 		}
-		return formed_opts;
 	},
 
 	setValue: function(v) {
@@ -342,6 +342,7 @@ GeoMOOSE.Services.InputType.Select = OpenLayers.Class(GeoMOOSE.Services.InputTyp
 		inputParent.appendChild(select);
 
 		var options = this.getOptions();
+		console.log('Select Input Options', options);
 		var selIndex = 0;
 		var val = this.getValue();
 		for(var i = 0; i < options.length; i++) {

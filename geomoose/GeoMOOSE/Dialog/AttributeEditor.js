@@ -36,6 +36,7 @@ dojo.declare('GeoMOOSE.Dialog.AttributeEditor', [dijit.Dialog], {
 	title: "Edit Attributes",
 
 	feature_desc: [],
+	layer_path: '',
 
 	postCreate: function() {
 		this.inherited(arguments);
@@ -45,15 +46,7 @@ dojo.declare('GeoMOOSE.Dialog.AttributeEditor', [dijit.Dialog], {
 		});
 		this.set('content', content_div);
 
-		var pos = dojo.position(dojo.body());
-		dojo.style(content_div, {
-			'width': '300px',
-			'height' : '300px'
-		});
-
-		dojo.style(content_div, {
-			'padding' : '2px'
-		});
+		dojo.addClass(content_div, ['attribute-editor', this.layer_path]);
 	},
 
 	_updateAttribute: function(attr, value) {
@@ -106,10 +99,16 @@ dojo.declare('GeoMOOSE.Dialog.AttributeEditor', [dijit.Dialog], {
 				input_type = 'user';
 			}
 
-			var input_obj = new input_types[input_type](null, {
+			var input_opts = {
 				'name' : attribute_name,
 				'title' : this.feature_desc[i]['label']
-			});
+			}
+
+			if(GeoMOOSE.isDefined(this.feature_desc[i]['options'])) {
+				input_opts['options'] = this.feature_desc[i]['options'];
+			}
+
+			var input_obj = new input_types[input_type](null, input_opts);
 	
 			var value = this.feature_desc[i]['value'];
 			if(feature.attributes[attribute_name]) {
