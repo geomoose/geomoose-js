@@ -464,9 +464,9 @@ dojo.declare('GeoMOOSE.Tab.Service', [dijit.layout.BorderContainer], {
 					input_value = values[input_name];
 				}
 				if(params[input_name]) {
-					params[input_name].push( encodeURIComponent(input_value) );
+					params[input_name].push(input_value);
 				} else {
-					params[input_name] = [encodeURIComponent(input_value)];
+					params[input_name] = [input_value];
 				}
 			}
 		}

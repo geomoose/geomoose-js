@@ -180,6 +180,9 @@ dojo.declare('GeoMOOSE.MapSource.WMS', [GeoMOOSE.MapSource], {
 	
 		// Remove non-legend parameters	
 		var ls = params['LAYERS'].split(',');
+		if(!GeoMOOSE.isDefined(params['STYLES'])) {
+			params['STYLES'] = '';
+		}
 		var ss = params['STYLES'].split(',');
 		var styles = {};
 		for(var i in ls) {
