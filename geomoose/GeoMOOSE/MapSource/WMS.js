@@ -159,7 +159,6 @@ dojo.declare('GeoMOOSE.MapSource.WMS', [GeoMOOSE.MapSource], {
 			var ol_map = this._ol_layer.map;
 			var popup_id = 'popup'+GeoMOOSE.id();
 			this._popup_id = popup_id;
-			console.log('got feature info');
 
 			ol_map.addPopup({
 				clearOnMove: true,
@@ -169,9 +168,6 @@ dojo.declare('GeoMOOSE.MapSource.WMS', [GeoMOOSE.MapSource], {
 				classNames: [this.cssName],
 				content: ev.text
 			});
-
-			console.log('added popup');
-			console.log(ev);
 		});
 		map.addControl(this.controls['popups']);
 	},

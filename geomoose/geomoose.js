@@ -775,7 +775,6 @@ window.GeoMOOSE = {
 			GeoMOOSE.error('There is no actively selected layer.  Please activate a layer from the catalog.');
 		} else {
 			var map_source = Application.getMapSource(active_map_source);
-			console.log(active_map_source, map_source, map_source.supports[action]);
 			if(map_source.supports[action] === true) {
 				/* okay, let's go! */
 				if(this.selectable) {

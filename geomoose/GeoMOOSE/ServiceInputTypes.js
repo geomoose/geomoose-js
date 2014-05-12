@@ -290,7 +290,6 @@ GeoMOOSE.Services.InputType.Select = OpenLayers.Class(GeoMOOSE.Services.InputTyp
 	MAPBOOK_NAME: "select",
 
 	initialize: function(input, options) {
-		console.log('Select type input', input);
 		GeoMOOSE.Services.InputType.prototype.initialize.apply(this, arguments);
 		this.options.renderable = true;
 	},
@@ -342,7 +341,6 @@ GeoMOOSE.Services.InputType.Select = OpenLayers.Class(GeoMOOSE.Services.InputTyp
 		inputParent.appendChild(select);
 
 		var options = this.getOptions();
-		console.log('Select Input Options', options);
 		var selIndex = 0;
 		var val = this.getValue();
 		for(var i = 0; i < options.length; i++) {

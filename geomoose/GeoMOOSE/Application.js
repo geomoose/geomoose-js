@@ -653,14 +653,10 @@ dojo.declare('GeoMOOSE.Application', null, {
 				/* offsets are here to prevent the popup from getting an "out" and disappearing */
 				this._popupDiv.style.top = evt.clientY+'px';
 				this._popupDiv.style.left = (evt.clientX+3)+'px';
-				console.log('trackMouseForPopups', evt.clientY, evt.clientX, this._popupDiv.style.top);
 				if(this._popupHtmlHasChanged) {
 					this._popupContents.innerHTML = this._floatingPopupHtml;
 					this._popupHtmlHasChanged = false;
-					console.log(this._popupDiv);
-					console.log('popup should show');
 				} else {
-					console.log('clearing popup...');
 					if(this.clearPopupsOnMove) {
 						this.clearPopups()
 					}
