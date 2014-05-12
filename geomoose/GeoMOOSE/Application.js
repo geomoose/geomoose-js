@@ -586,6 +586,7 @@ dojo.declare('GeoMOOSE.Application', null, {
 	},
 
 	addPopup: function(popup) {
+		this.clearPopupsOnMove = (popup.clearOnMove === true);
 		this.popups.push(popup);
 		this.renderPopupHtml();
 		/* if the popup div exists, then we g'head and
@@ -593,6 +594,15 @@ dojo.declare('GeoMOOSE.Application', null, {
 		if(this._popupDiv) {
 			dojo.removeClass(this._popupDiv, 'hide');
 		}
+
+		if(popup.renderOnAdd === true) {
+			var p = dojo.position(Map.div);
+			this.trackMouseForPopups({
+				clientX: p.x + popup.renderXY.x,
+				clientY: p.y + popup.renderXY.y
+			});
+		}
+
 	},
 
 	removePopup: function(popupId) {
@@ -640,13 +650,21 @@ dojo.declare('GeoMOOSE.Application', null, {
 					this._popupDiv.appendChild(tail);
 					dojo.addClass(tail, 'Tail');
 				}
-				this._popupDiv.style.top = (evt.clientY+3)+'px';
+				/* offsets are here to prevent the popup from getting an "out" and disappearing */
+				this._popupDiv.style.top = evt.clientY+'px';
 				this._popupDiv.style.left = (evt.clientX+3)+'px';
+				console.log('trackMouseForPopups', evt.clientY, evt.clientX, this._popupDiv.style.top);
 				if(this._popupHtmlHasChanged) {
 					this._popupContents.innerHTML = this._floatingPopupHtml;
 					this._popupHtmlHasChanged = false;
+					console.log(this._popupDiv);
+					console.log('popup should show');
+				} else {
+					console.log('clearing popup...');
+					if(this.clearPopupsOnMove) {
+						this.clearPopups()
+					}
 				}
-				
 			}
 		}
 	},

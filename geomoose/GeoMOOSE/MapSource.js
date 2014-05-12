@@ -45,6 +45,7 @@ dojo.declare('GeoMOOSE._Layer', null, {
 		this.name = name;
 		this.on = on;
 		this.initial_on = initial_on;
+		this.supports = {};
 	},
 
 	hasChanged: function() {

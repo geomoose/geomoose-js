@@ -79,7 +79,9 @@ dojo.declare('GeoMOOSE.MapSource.WMS', [GeoMOOSE.MapSource], {
 			ratio: CONFIGURATION.layer_options.ratio, /* (1) only applies in single tile mode */
 			buffer: CONFIGURATION.layer_options.buffer, /* (0) only applies in tiled/gridded mode */
 			transitionEffect: transitionEffect,
-			visibility: this.isVisible()
+			visibility: this.isVisible(),
+			/* by default setup the popup controls */
+			popups: parseBoolean(mapbook_entry.getAttribute('popups'), true)
 		};
 
 		transitionEffect = mapbook_entry.getAttribute('transitionEffect');
@@ -128,7 +130,50 @@ dojo.declare('GeoMOOSE.MapSource.WMS', [GeoMOOSE.MapSource], {
 
 		this.updateParameters({});
 
+		this.supports = {'popups': true};
 		this.onLayersChange();
+	},
+
+	addToMap: function(map) {
+		this.inherited(arguments);
+
+		this.controls = {
+			'popups' : new OpenLayers.Control.WMSGetFeatureInfo({
+				'url' : this.urls[0],
+				'layers' : [this._ol_layer],
+				'hover' : true,
+				'queryVisible' : true,
+				'vendorParams' : this.params
+			})
+		}
+		this.controls['popups'].events.register('beforegetfeatureinfo', this, function(ev) {
+			var ol_map = this._ol_layer.map;
+			var popup_id = this._popup_id;
+			if(popup_id) {
+				ol_map.removePopup(popup_id);
+				this._popup_id = null;
+			}
+		});
+
+		this.controls['popups'].events.register('getfeatureinfo', this, function(ev) {
+			var ol_map = this._ol_layer.map;
+			var popup_id = 'popup'+GeoMOOSE.id();
+			this._popup_id = popup_id;
+			console.log('got feature info');
+
+			ol_map.addPopup({
+				clearOnMove: true,
+				renderOnAdd: true,
+				renderXY: ev.xy, 
+				id: popup_id,
+				classNames: [this.cssName],
+				content: ev.text
+			});
+
+			console.log('added popup');
+			console.log(ev);
+		});
+		map.addControl(this.controls['popups']);
 	},
 
 	/**
