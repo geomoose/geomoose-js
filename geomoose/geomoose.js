@@ -661,6 +661,11 @@ window.GeoMOOSE = {
 	 *  name - The name of the mapsource to activate.
 	 */
 	activateMapSource: function(name) {
+		var active_map_source = GeoMOOSE.getActiveMapSource();
+		if(GeoMOOSE.isDefined(active_map_source)) {
+			var map_source = Application.getMapSource(active_map_source); 
+			map_source.deactivate();
+		}
 		Application.activateMapSource(name);
 	},
 

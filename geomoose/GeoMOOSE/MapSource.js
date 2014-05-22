@@ -111,6 +111,13 @@ dojo.declare('GeoMOOSE.MapSource', null, {
 	metadata: {},
 
 	/**
+	 * Variable: controls
+	 *
+	 * A hash of OL controls supported by the layer.
+	 */
+	controls: {},
+
+	/**
 	 * Method: _parseParams
 	 *
 	 * Parse the Mapbook parameters for a map-source
@@ -435,6 +442,16 @@ dojo.declare('GeoMOOSE.MapSource', null, {
 	 */
 	_createBlankLayer: function(name) {
 		return new OpenLayers.Layer.WMS(name,'images/blank.gif', {}, {singleTile: true});
+	},
+
+	/*
+	 * Method: deactivate
+	 * Deactivates any of the layer controls.
+	 */
+	deactivate: function() {
+		for(var control in this.controls) {
+			this.controls[control].deactivate();
+		}
 	}
 
 });

@@ -159,15 +159,16 @@ dojo.declare('GeoMOOSE.MapSource.WMS', [GeoMOOSE.MapSource], {
 			var ol_map = this._ol_layer.map;
 			var popup_id = 'popup'+GeoMOOSE.id();
 			this._popup_id = popup_id;
-
-			ol_map.addPopup({
-				clearOnMove: true,
-				renderOnAdd: true,
-				renderXY: ev.xy, 
-				id: popup_id,
-				classNames: [this.cssName],
-				content: ev.text
-			});
+			if(ev.text && ev.text.length > 1) {
+				ol_map.addPopup({
+					clearOnMove: true,
+					renderOnAdd: true,
+					renderXY: ev.xy, 
+					id: popup_id,
+					classNames: [this.cssName],
+					content: ev.text
+				});
+			}
 		});
 		map.addControl(this.controls['popups']);
 	},
