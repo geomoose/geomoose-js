@@ -338,8 +338,8 @@ dojo.declare('GeoMOOSE.Application', null, {
 
 		var mapContainer = dojo.byId('mapContainer');
 		dojo.connect(mapContainer, 'mousemove', dojo.hitch(this, this.trackMouseForPopups));
-		dojo.connect(mapContainer, 'click', dojo.hitch(this, this.toggleStickyPopups));
-		dojo.connect(mapContainer, 'mouseout', dojo.hitch(this, this.clearPopups));
+//		dojo.connect(mapContainer, 'click', dojo.hitch(this, this.toggleStickyPopups));
+//		dojo.connect(mapContainer, 'mouseout', dojo.hitch(this, this.clearPopups));
 	},
 
 	/**
@@ -598,8 +598,8 @@ dojo.declare('GeoMOOSE.Application', null, {
 		if(popup.renderOnAdd === true) {
 			var p = dojo.position(Map.div);
 			this.trackMouseForPopups({
-				clientX: p.x + popup.renderXY.x,
-				clientY: p.y + popup.renderXY.y
+				clientX: p.x + popup.renderXY.x - 3,
+				clientY: p.y + popup.renderXY.y - 3
 			});
 		}
 
@@ -616,7 +616,26 @@ dojo.declare('GeoMOOSE.Application', null, {
 		this.renderPopupHtml();
 	},
 
-	clearPopups: function() {
+	/** Check to see if the event happened "on the popup"
+	 */ 
+	_isTargetOnPopup: function(evt) {
+		/* If the event is not defined, then its not on there */
+		if(!GeoMOOSE.isDefined(evt)) { return false; }
+
+		var target = evt.target;
+		if(evt.srcElement) { target = evt.srcElement; }
+		var is_popup = false;
+		while(target && !is_popup) {
+			is_popup = (target == this._popupDiv);
+			target = target.parentNode;
+		}
+		return is_popup;
+	},
+
+	clearPopups: function(evt) {
+		/* short circuit when the event is on the popup */
+		if(this._isTargetOnPopup(evt)) { return false; }
+
 		this._floatingPopupHtml = '';
 		while(this.popups.length > 0) {
 			this.popups.pop();
@@ -649,16 +668,17 @@ dojo.declare('GeoMOOSE.Application', null, {
 					var tail = document.createElement('div');
 					this._popupDiv.appendChild(tail);
 					dojo.addClass(tail, 'Tail');
+					dojo.connect(this._popupDiv, 'click', dojo.hitch(this, this.toggleStickyPopups));
 				}
 				/* offsets are here to prevent the popup from getting an "out" and disappearing */
 				this._popupDiv.style.top = evt.clientY+'px';
-				this._popupDiv.style.left = (evt.clientX+3)+'px';
+				this._popupDiv.style.left = evt.clientX+'px';
 				if(this._popupHtmlHasChanged) {
 					this._popupContents.innerHTML = this._floatingPopupHtml;
 					this._popupHtmlHasChanged = false;
 				} else {
 					if(this.clearPopupsOnMove) {
-						this.clearPopups()
+						this.clearPopups(evt);
 					}
 				}
 			}
