@@ -668,7 +668,11 @@ dojo.declare('GeoMOOSE.Application', null, {
 					var tail = document.createElement('div');
 					this._popupDiv.appendChild(tail);
 					dojo.addClass(tail, 'Tail');
-					dojo.connect(this._popupDiv, 'click', dojo.hitch(this, this.toggleStickyPopups));
+
+					var close_box = document.createElement('div');
+					close_box.className = 'CloseBox';
+					this._popupDiv.appendChild(close_box);
+					dojo.connect(close_box, 'click', dojo.hitch(this, this.toggleStickyPopups));
 				}
 				/* offsets are here to prevent the popup from getting an "out" and disappearing */
 				this._popupDiv.style.top = evt.clientY+'px';
@@ -696,11 +700,13 @@ dojo.declare('GeoMOOSE.Application', null, {
 			// it should exist, but we'll check just in case it doesn't.
 			if(this.isPopupSticky) {
 				// now add a close button to the sticky popup.
+				/*
 				var close_btn = document.createElement('div');
 				close_btn.className = 'CloseBox';
 				this._popupDiv.appendChild(close_btn);
 				close_btn.title = 'Close Popup';
 				dojo.connect(close_btn, 'click', dojo.hitch(this, this.toggleStickyPopups));
+				*/
 			} else {
 				this.clearPopups();
 			}

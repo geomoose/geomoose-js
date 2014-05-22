@@ -27,10 +27,16 @@ dojo.declare('GeoMOOSE.Tab.Catalog.LayerControl.Popups', [GeoMOOSE.Tab.Catalog.L
 
 	tip: 'CONFIGURATION.layer_controls.popups.tip',
 
+	/* TODO: This should check to see if the layer is active and if popups
+	 * are active. */
 	onClick: function() {
 		/* first we activate the layer */ 
-		GeoMOOSE.activateMapSource(this.layer.src);
-		GeoMOOSE.activateLayerTool('popups');
+		if(GeoMOOSE.getActiveMapSource() != this.layer.src) {
+			GeoMOOSE.activateMapSource(this.layer.src);
+			GeoMOOSE.activateLayerTool('popups');
+		} else {
+			GeoMOOSE.deactiveMapSource(this.layer.src);
+		}
 	}
 });
 

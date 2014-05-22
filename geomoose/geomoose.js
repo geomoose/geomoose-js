@@ -670,6 +670,23 @@ window.GeoMOOSE = {
 	},
 
 	/*
+	 * Function: deactivateMapSource
+	 * Sets the active map source to null
+	 * and turns off the controls on any active map source.
+	 */
+	deactiveMapSource: function(path) {
+		if(!GeoMOOSE.isDefined(path)) { path = GeoMOOSE.getActiveMapSource(); }
+
+		var map_source = Application.getMapSource(path);
+		if(GeoMOOSE.isDefined(map_source)) {
+			map_source.deactivate();
+		}
+		if(path == GeoMOOSE.getActiveMapSource()) {
+			GeoMOOSE.activateMapSource(null);
+		}
+	},
+
+	/*
 	 * Function: getActiveMapSource
 	 * Gets the active map source.
 	 *
