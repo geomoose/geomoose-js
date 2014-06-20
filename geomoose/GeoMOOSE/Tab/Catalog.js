@@ -120,7 +120,6 @@ dojo.declare('GeoMOOSE.Tab._CatalogLayer', null, {
 			GeoMOOSE.changeLayerVisibility(paths, v);
 		}));
 
-
 		var minscale = layer_xml.getAttribute('minscale');
 		var maxscale = layer_xml.getAttribute('maxscale');
 		/* store min/maxscale in the dom */
@@ -155,9 +154,9 @@ dojo.declare('GeoMOOSE.Tab._CatalogLayer', null, {
 			}
 		}
 		if(CONFIGURATION.catalog.toggle_controls) {
-			title.style.cursor = 'pointer';
-			title.setAttribute('data-control-id', controls_id);
-			dojo.connect(title, 'click', this.toggleControls);
+			label_span.style.cursor = 'pointer';
+			label_span.setAttribute('data-control-id', controls_id);
+			dojo.connect(label_span, 'click', this.toggleControls);
 		}
 
 		/** check for the drawing tools **/

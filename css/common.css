@@ -399,3 +399,9 @@ body {
 	color: #555;
 	font-size: 15px;
 }
+
+.attribute-editor {
+	width: 300px;
+	height: 300px;
+	padding: 2px;
+}

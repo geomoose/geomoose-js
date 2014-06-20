@@ -661,7 +661,29 @@ window.GeoMOOSE = {
 	 *  name - The name of the mapsource to activate.
 	 */
 	activateMapSource: function(name) {
+		var active_map_source = GeoMOOSE.getActiveMapSource();
+		if(GeoMOOSE.isDefined(active_map_source)) {
+			var map_source = Application.getMapSource(active_map_source); 
+			map_source.deactivate();
+		}
 		Application.activateMapSource(name);
+	},
+
+	/*
+	 * Function: deactivateMapSource
+	 * Sets the active map source to null
+	 * and turns off the controls on any active map source.
+	 */
+	deactiveMapSource: function(path) {
+		if(!GeoMOOSE.isDefined(path)) { path = GeoMOOSE.getActiveMapSource(); }
+
+		var map_source = Application.getMapSource(path);
+		if(GeoMOOSE.isDefined(map_source)) {
+			map_source.deactivate();
+		}
+		if(path == GeoMOOSE.getActiveMapSource()) {
+			GeoMOOSE.activateMapSource(null);
+		}
 	},
 
 	/*
@@ -775,7 +797,6 @@ window.GeoMOOSE = {
 			GeoMOOSE.error('There is no actively selected layer.  Please activate a layer from the catalog.');
 		} else {
 			var map_source = Application.getMapSource(active_map_source);
-			console.log(active_map_source, map_source, map_source.supports[action]);
 			if(map_source.supports[action] === true) {
 				/* okay, let's go! */
 				if(this.selectable) {

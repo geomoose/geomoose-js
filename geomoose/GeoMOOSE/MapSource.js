@@ -45,6 +45,7 @@ dojo.declare('GeoMOOSE._Layer', null, {
 		this.name = name;
 		this.on = on;
 		this.initial_on = initial_on;
+		this.supports = {};
 	},
 
 	hasChanged: function() {
@@ -108,6 +109,13 @@ dojo.declare('GeoMOOSE.MapSource', null, {
 	 * A hash of the metadata URLs keyed on layer path.
 	 */
 	metadata: {},
+
+	/**
+	 * Variable: controls
+	 *
+	 * A hash of OL controls supported by the layer.
+	 */
+	controls: {},
 
 	/**
 	 * Method: _parseParams
@@ -434,6 +442,16 @@ dojo.declare('GeoMOOSE.MapSource', null, {
 	 */
 	_createBlankLayer: function(name) {
 		return new OpenLayers.Layer.WMS(name,'images/blank.gif', {}, {singleTile: true});
+	},
+
+	/*
+	 * Method: deactivate
+	 * Deactivates any of the layer controls.
+	 */
+	deactivate: function() {
+		for(var control in this.controls) {
+			this.controls[control].deactivate();
+		}
 	}
 
 });

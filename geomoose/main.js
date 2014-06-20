@@ -69,7 +69,6 @@ dojo.addOnLoad(function() {
 		if(GeoMOOSE.isDefined(params.call)) {
 			var service_name = params.call;
 			delete params.call;
-			console.log(params);
 			GeoMOOSE.startService(service_name, params, true);
 		}
 	});
