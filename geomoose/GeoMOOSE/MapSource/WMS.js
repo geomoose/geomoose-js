@@ -137,39 +137,44 @@ dojo.declare('GeoMOOSE.MapSource.WMS', [GeoMOOSE.MapSource], {
 	addToMap: function(map) {
 		this.inherited(arguments);
 
-		this.controls = {
-			'popups' : new OpenLayers.Control.WMSGetFeatureInfo({
-				'url' : this.urls[0],
-				'layers' : [this._ol_layer],
-				'hover' : true,
-				'queryVisible' : true,
-				'vendorParams' : this.params
-			})
-		}
-		this.controls['popups'].events.register('beforegetfeatureinfo', this, function(ev) {
-			var ol_map = this._ol_layer.map;
-			var popup_id = this._popup_id;
-			if(popup_id) {
-				ol_map.removePopup(popup_id);
-				this._popup_id = null;
-			}
+		var feature_info_control = new OpenLayers.Control.WMSGetFeatureInfo({
+			'url' : this.urls[0],
+			'layers' : [this._ol_layer],
+			'hover' : true,
+			'queryVisible' : true,
+			'vendorParams' : this.params
 		});
 
-		this.controls['popups'].events.register('getfeatureinfo', this, function(ev) {
-			var ol_map = this._ol_layer.map;
+		feature_info_control._activate = feature_info_control.activate;
+
+		feature_info_control.activate = function(kwargs) {
+			if(GeoMOOSE.isDefined(kwargs) && GeoMOOSE.isDefined(kwargs.title)) {
+				this.title = kwargs.title;
+			} else {
+				this.title = '&nbsp;';
+			}
+			this._activate();
+		}
+
+		feature_info_control.events.register('getfeatureinfo', {layer: this, control: feature_info_control}, function(ev) {
+			var ol_map = this.layer._ol_layer.map;
 			var popup_id = 'popup'+GeoMOOSE.id();
-			this._popup_id = popup_id;
 			if(ev.text && ev.text.length > 1) {
 				ol_map.addPopup({
 					clearOnMove: true,
 					renderOnAdd: true,
 					renderXY: ev.xy, 
 					id: popup_id,
-					classNames: [this.cssName],
+					title: this.control.title,
+					classNames: [this.layer.cssName],
 					content: ev.text
 				});
 			}
 		});
+
+		this.controls = {
+			'popups' : feature_info_control 
+		}
 		map.addControl(this.controls['popups']);
 	},
 

@@ -106,11 +106,13 @@ body {
 	display: block;
 	height: 100%;
 	border: solid 1px black;
+	overflow: hidden;
 }
 
 #mapContainer {
 	width: 100%;
 	height: 100%;
+	overflow: hidden;
 }
 
 #control-panel {
@@ -375,10 +377,15 @@ body {
 .Popup .CloseBox {
 	padding-left: 16px;
 	padding-top: 16px;
-	background-image: url(../images/toolbar/delete.png);
+	background-image: url(../images/close.png);
 	position: absolute;
 	top: 0; right: 0;
 	cursor: pointer;
+}
+
+.Popup .title {
+	padding: 2px;
+	background-color: #888;
 }
 
 .Popup .PopupContents {

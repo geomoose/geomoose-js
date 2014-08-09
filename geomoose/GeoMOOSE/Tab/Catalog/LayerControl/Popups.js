@@ -33,7 +33,7 @@ dojo.declare('GeoMOOSE.Tab.Catalog.LayerControl.Popups', [GeoMOOSE.Tab.Catalog.L
 		/* first we activate the layer */ 
 		if(GeoMOOSE.getActiveMapSource() != this.layer.src) {
 			GeoMOOSE.activateMapSource(this.layer.src);
-			GeoMOOSE.activateLayerTool('popups');
+			GeoMOOSE.activateLayerTool('popups', {title: this.layer.title});
 		} else {
 			GeoMOOSE.deactiveMapSource(this.layer.src);
 		}

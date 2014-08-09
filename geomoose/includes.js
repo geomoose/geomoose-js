@@ -25,6 +25,7 @@ dojo.require('dijit.layout.TabContainer');
 dojo.require('dojox.widget.Standby');
 
 dojo.registerModulePath('GeoMOOSE', '../../../geomoose/GeoMOOSE');
+dojo.require('GeoMOOSE.Popup');
 dojo.require('GeoMOOSE.Application');
 
 dojo.require('GeoMOOSE.Handler.Box');

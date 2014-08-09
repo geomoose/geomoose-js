@@ -790,7 +790,7 @@ window.GeoMOOSE = {
 	 * Method: activateLayerTool
 	 * Activates a layer tool
 	 */
-	activateLayerTool: function(action) {
+	activateLayerTool: function(action, kwargs) {
 		//return Application.getMapSource(layerName).getUrl();
 		var active_map_source = GeoMOOSE.getActiveMapSource();
 		if(!GeoMOOSE.isDefined(active_map_source)) {
@@ -802,7 +802,11 @@ window.GeoMOOSE = {
 				if(this.selectable) {
 					this._deactivateTools();
 				}
-				map_source.controls[action].activate();
+				if(GeoMOOSE.isDefined(kwargs)) {
+					map_source.controls[action].activate(kwargs);
+				} else {
+					map_source.controls[action].activate();
+				}
 			} else {
 				GeoMOOSE.error('The current active layer does not support your selected action.');
 			}

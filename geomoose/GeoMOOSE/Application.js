@@ -50,19 +50,16 @@ dojo.declare('GeoMOOSE.Application', null, {
 
 	/*
 	 * Member: popups
-	 * The stack of poups to be rendered.  A popup is defined
-	 * as follows:
-	 *  {id: Popup Id, title: Title HTML, content: Content HTML, classNames: [] cssClasses }
+	 * Hash of popups currently on display in the map.
 	 */
-	popups: [],
-
+	popups: {},
 
 	initialize: function() {
 	},
 
 	startup: function() {
 		/* setup the popups array */
-		this.popups = new Array();
+		this.popups = {};
 
 		/* Load the extensions */
 		var extensions = GeoMOOSE.UX.getExtensions();
@@ -336,8 +333,9 @@ dojo.declare('GeoMOOSE.Application', null, {
 		Map.addPopup = dojo.hitch(this, this.addPopup);
 		Map.removePopup = dojo.hitch(this, this.removePopup);
 
-		var mapContainer = dojo.byId('mapContainer');
-		dojo.connect(mapContainer, 'mousemove', dojo.hitch(this, this.trackMouseForPopups));
+		Map.events.register('moveend', this, this.clearPopups);
+
+//		var mapContainer = dojo.byId('mapContainer');
 //		dojo.connect(mapContainer, 'click', dojo.hitch(this, this.toggleStickyPopups));
 //		dojo.connect(mapContainer, 'mouseout', dojo.hitch(this, this.clearPopups));
 	},
@@ -565,154 +563,33 @@ dojo.declare('GeoMOOSE.Application', null, {
 	onActivateMapSource: function(path) {
 	},
 
-	_floatingPopupHtml: '',
-	_popupHtmlHasChanged: false,
-
-	renderPopupHtml: function() {
-		var new_html = '';
-		for(var i = 0, ii = this.popups.length; i < ii; i++) {
-			var p = this.popups[i];
-			var classes = p.classNames.join(' ');
-			new_html += '<div class="PopupEntry '+classes+'">';
-			// only render the title if we have one.
-			if(p.title) {
-				new_html += '<div class="title">'+p.title+'</div>';
-			}
-			new_html += '<div class="content">'+p.content+'</div>';
-			new_html += '</div>'; // end of popup
-		}
-		this._floatingPopupHtml = new_html;
-		this._popupHtmlHasChanged = true;
-	},
-
+	/*
+	 * Method: addPopup
+	 * Place a popup on the map.
+	 */
 	addPopup: function(popup) {
-		this.clearPopupsOnMove = (popup.clearOnMove === true);
-		this.popups.push(popup);
-		this.renderPopupHtml();
-		/* if the popup div exists, then we g'head and
-		 *  make sure it's visible */
-		if(this._popupDiv) {
-			dojo.removeClass(this._popupDiv, 'hide');
-		}
-
-		if(popup.renderOnAdd === true) {
-			var p = dojo.position(Map.div);
-			this.trackMouseForPopups({
-				clientX: p.x + popup.renderXY.x - 3,
-				clientY: p.y + popup.renderXY.y - 3
-			});
-		}
-
+		var popup_div = dojo.create('div', {}, Map.div);
+		this.popups[GeoMOOSE.id()] = new GeoMOOSE.Popup(popup, popup_div);
 	},
 
 	removePopup: function(popupId) {
-		var new_popups = [];
-		for(var i = 0, ii = this.popups.length; i < ii; i++ ) {
-			if(this.popups[i].id != popupId) {
-				new_popups.push(this.popups[i]);
-			}
-		}
-		this.popups = new_popups;
-		this.renderPopupHtml();
-	},
-
-	/** Check to see if the event happened "on the popup"
-	 */ 
-	_isTargetOnPopup: function(evt) {
-		/* If the event is not defined, then its not on there */
-		if(!GeoMOOSE.isDefined(evt)) { return false; }
-
-		var target = evt.target;
-		if(evt.srcElement) { target = evt.srcElement; }
-		var is_popup = false;
-		while(target && !is_popup) {
-			is_popup = (target == this._popupDiv);
-			target = target.parentNode;
-		}
-		return is_popup;
-	},
-
-	clearPopups: function(evt) {
-		/* short circuit when the event is on the popup */
-		if(this._isTargetOnPopup(evt)) { return false; }
-
-		this._floatingPopupHtml = '';
-		while(this.popups.length > 0) {
-			this.popups.pop();
-		}
-		if(this._popupDiv && !this.isPopupSticky) {
-			dojo.body().removeChild(this._popupDiv);
-			this._popupDiv = null;
+		if(this.popups[popupId]) {
+			this.popups[popupId].close();
+			delete this.popups[popupId];
 		}
 	},
 
-	/*
-	 * Method: trackMouseForPopups 
-	 * When popups are enabled, this will follow the mouse in the map
-	 *  div and render them as appropriate.
-	 */
-	_popupDiv: null,
-	trackMouseForPopups: function(evt) {
-		/* if the popups are sticky, we don't bother rendering them. */
-		if(!this.isPopupSticky) {
-			/* Hey! We have some Popup HTML, AWESOME!!! */
-			if(this._floatingPopupHtml != '') {
-				if(this._popupDiv == null) {
-					this._popupDiv = document.createElement('div');
-					dojo.body().appendChild(this._popupDiv);
-					dojo.addClass(this._popupDiv, 'Popup');
-					this._popupContents = document.createElement('div');
-					this._popupDiv.appendChild(this._popupContents);
-					dojo.addClass(this._popupContents, 'PopupContents');
-
-					var tail = document.createElement('div');
-					this._popupDiv.appendChild(tail);
-					dojo.addClass(tail, 'Tail');
-
-					var close_box = document.createElement('div');
-					close_box.className = 'CloseBox';
-					this._popupDiv.appendChild(close_box);
-					dojo.connect(close_box, 'click', dojo.hitch(this, this.toggleStickyPopups));
-				}
-				/* offsets are here to prevent the popup from getting an "out" and disappearing */
-				this._popupDiv.style.top = evt.clientY+'px';
-				this._popupDiv.style.left = evt.clientX+'px';
-				if(this._popupHtmlHasChanged) {
-					this._popupContents.innerHTML = this._floatingPopupHtml;
-					this._popupHtmlHasChanged = false;
-				} else {
-					if(this.clearPopupsOnMove) {
-						this.clearPopups(evt);
-					}
-				}
-			}
+	clearPopups: function() {
+		var keys = [];
+		for(var key in this.popups) {
+			console.log(key);
+			keys.push(key);
 		}
-	},
-
-	/* 
-	 * Method: toggleStickyPopups
-	 * Toggles whether the popups should stay on the map.
-	 */
-	toggleStickyPopups: function(evt) {
-		/* If there are no popups, we ignore the sticky toggle */
-		if(this._popupDiv) {
-			this.isPopupSticky = !this.isPopupSticky;
-			// it should exist, but we'll check just in case it doesn't.
-			if(this.isPopupSticky) {
-				// now add a close button to the sticky popup.
-				/*
-				var close_btn = document.createElement('div');
-				close_btn.className = 'CloseBox';
-				this._popupDiv.appendChild(close_btn);
-				close_btn.title = 'Close Popup';
-				dojo.connect(close_btn, 'click', dojo.hitch(this, this.toggleStickyPopups));
-				*/
-			} else {
-				this.clearPopups();
-			}
+		for(var i = 0, ii = keys.length; i < ii; i++) {
+			this.popups[keys[i]].close();
+			delete this.popups[keys[i]];
 		}
 	}
-	
 });
 
 
