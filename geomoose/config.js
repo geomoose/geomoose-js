@@ -108,6 +108,7 @@ var CONFIGURATION = {
 		'show_heading' : false
 	},
 	popups: {
+		left_offset: 43
 	},
 	messages: {
 		requirement_failure : 'You forgot to fill in a required field!',

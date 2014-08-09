@@ -61,13 +61,20 @@ dojo.declare('GeoMOOSE.Popup', [dijit._Widget, dijit._Templated], {
 	},
 
 	endMove: function(evt) {
+		dojo.addClass(this.popupNode, 'Moved');
+		if(!dojo.hasClass(this.popupNode, 'PopupAnchorRight')) {
+			var p = dojo.position(this.popupNode);
+			var map_pos = dojo.position('map');
+			this.popupNode.style.left = ((p.x - map_pos.x) + CONFIGURATION.popups.left_offset)+'px';
+		}
+		dojo.removeClass(this.popupNode, ['PopupAnchorBottom', 'PopupAnchorRight']);
 		dojo.disconnect(this._endEvt);
 		dojo.disconnect(this._moveEvt);
 	},
 
 	movePopup: function(evt) {
-		delete this.popupNode.style.bottom;
-		delete this.popupNode.style.right;
+		this.popupNode.style.bottom = 'auto';
+		this.popupNode.style.right = 'auto';
 		this.popupNode.style.top = (evt.clientY - this._offset.y) + 'px';
 		this.popupNode.style.left = (evt.clientX - this._offset.x) + 'px';
 	},

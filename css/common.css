@@ -397,7 +397,7 @@ body {
 }
 
 .Popup.PopupAnchorBottom .Tail {
-	bottom: 0 !important;
+	bottom: 0;
 	top: auto;
 }
 
@@ -407,7 +407,7 @@ body {
 }
 
 .Popup.PopupAnchorRight .Tail {
-	right: 0 !important;
+	right: 0;
 	left: auto;
 }
 
@@ -418,7 +418,6 @@ body {
 }
 
 .Popup .Tail:before {
-	/*content: "\25C0\25C0\25C0";*/
 	content: "\25C4\25C4\25C4";
 	color: #555;
 	font-size: 15px;
@@ -426,6 +425,14 @@ body {
 
 .Popup.PopupAnchorRight .Tail:before {
 	content: "\25B6\25B6\25B6";
+}
+
+.Popup.Moved .Tail:before {
+	content: "";
+}
+
+.Popup.Moved .PopupContents {
+	margin-left: 0; margin-right: 0;
 }
 
 .attribute-editor {
