@@ -156,6 +156,12 @@ dojo.declare('GeoMOOSE.MapSource.WMS', [GeoMOOSE.MapSource], {
 			this._activate();
 		}
 
+		/* this corrects a bug we were having with IE11,
+		 *  OpenLayers document sniffing was causing issues. */
+		feature_info_control.handleResponse = function(xy, request, url) {
+			this.triggerGetFeatureInfo(request, xy, []);
+		}
+
 		feature_info_control.events.register('getfeatureinfo', {layer: this, control: feature_info_control}, function(ev) {
 			var ol_map = this.layer._ol_layer.map;
 			var popup_id = 'popup'+GeoMOOSE.id();
