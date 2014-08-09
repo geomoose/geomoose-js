@@ -39,7 +39,7 @@ dojo.declare('GeoMOOSE.Popup', [dijit._Widget, dijit._Templated], {
 	title: "&nbsp;",
 	contents: "",
 	classNames: "",
-	top: 0, left: 0,
+	x: 0, y: 0,
 
 	close: function() {
 		/* user clicks close, we bring the boom. */
@@ -66,14 +66,31 @@ dojo.declare('GeoMOOSE.Popup', [dijit._Widget, dijit._Templated], {
 	},
 
 	movePopup: function(evt) {
+		delete this.popupNode.style.bottom;
+		delete this.popupNode.style.right;
 		this.popupNode.style.top = (evt.clientY - this._offset.y) + 'px';
 		this.popupNode.style.left = (evt.clientX - this._offset.x) + 'px';
 	},
 
+	position: function() {
+		var parent_pos = dojo.position(this.domNode.parentNode);
+		var anchors = {x: 'left', y: 'top'};
+		if(this.x + 50 > parent_pos.w) {
+			anchors.x = 'right';
+			this.x = parent_pos.w - this.x; 
+		}
+		if(this.y + 50 > parent_pos.h) {
+			anchors.y = 'bottom';
+			this.y = parent_pos.h - this.y;
+		}
+		this.popupNode.style[anchors.x] = this.x + 'px';
+		this.popupNode.style[anchors.y] = this.y + 'px';
+	},
+
 	constructor: function(args) {
 		if(args.renderXY) {
-			args.left = args.renderXY.x;
-			args.top = args.renderXY.y;
+			this.x = args.renderXY.x;
+			this.y = args.renderXY.y;
 		}
 		if(dojo.isArray(args.classNames)) {
 			args.classNames = args.classNames.join(' ');
@@ -83,6 +100,9 @@ dojo.declare('GeoMOOSE.Popup', [dijit._Widget, dijit._Templated], {
 
 	postCreate: function() {
 		this.inherited(arguments);
+
+		/* position the popup */
+		this.position();
 		/* wire up a click to the close box to close the popup */	
 		dojo.connect(this.closeBox, 'click', dojo.hitch(this, this.close));
 		dojo.connect(this.titleNode, 'mousedown', dojo.hitch(this, this.startMove));

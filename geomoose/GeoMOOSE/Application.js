@@ -582,7 +582,6 @@ dojo.declare('GeoMOOSE.Application', null, {
 	clearPopups: function() {
 		var keys = [];
 		for(var key in this.popups) {
-			console.log(key);
 			keys.push(key);
 		}
 		for(var i = 0, ii = keys.length; i < ii; i++) {
