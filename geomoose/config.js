@@ -110,6 +110,9 @@ var CONFIGURATION = {
 	popups: {
 		left_offset: 43
 	},
+	services: {
+		disable_hidden_tabs: false
+	},
 	messages: {
 		requirement_failure : 'You forgot to fill in a required field!',
 		invalid_tool : 'SERVICE CONFIGURATION ERROR! Drawing tool %TOOL% not available!',

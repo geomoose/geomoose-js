@@ -819,7 +819,9 @@ dojo.declare('GeoMOOSE.Tab.Service', [dijit.layout.BorderContainer], {
 
 	onHide: function() {
 		this.inherited(arguments);
-		this.disableTools();
+		if(CONFIGURATION.services.disable_hidden_tabs) {
+			this.disableTools();
+		}
 	},
 
 	onShow: function() {
