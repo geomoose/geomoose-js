@@ -378,21 +378,37 @@ body {
 	padding-left: 16px;
 	padding-top: 16px;
 	background-image: url(../images/close.png);
-	position: absolute;
-	top: 0; right: 0;
+	/*position: absolute;
+	top: 0; right: 0;*/
+	float: right;
 	cursor: pointer;
 }
 
 .Popup .title {
 	padding: 2px;
-	background-color: #888;
+	background-color: #aaa;
 }
 
 .Popup .PopupContents {
-	margin-left: 27px;
+	margin-left: 43px;
 	background-color: white;
 	border: solid 1px #555;
 	border-radius: 3px;
+}
+
+.Popup.PopupAnchorBottom .Tail {
+	bottom: 0 !important;
+	top: auto;
+}
+
+.Popup.PopupAnchorRight .PopupContents {
+	margin-left: 0px;
+	margin-right: 38px;
+}
+
+.Popup.PopupAnchorRight .Tail {
+	right: 0 !important;
+	left: auto;
 }
 
 .Popup .Tail {
@@ -402,9 +418,14 @@ body {
 }
 
 .Popup .Tail:before {
-	content: "\25C0\25C0\25C0";
+	/*content: "\25C0\25C0\25C0";*/
+	content: "\25C4\25C4\25C4";
 	color: #555;
 	font-size: 15px;
+}
+
+.Popup.PopupAnchorRight .Tail:before {
+	content: "\25B6\25B6\25B6";
 }
 
 .attribute-editor {

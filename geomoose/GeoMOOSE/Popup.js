@@ -75,14 +75,17 @@ dojo.declare('GeoMOOSE.Popup', [dijit._Widget, dijit._Templated], {
 	position: function() {
 		var parent_pos = dojo.position(this.domNode.parentNode);
 		var anchors = {x: 'left', y: 'top'};
-		if(this.x + 50 > parent_pos.w) {
+		if(this.x + 75 > parent_pos.w) {
 			anchors.x = 'right';
 			this.x = parent_pos.w - this.x; 
 		}
-		if(this.y + 50 > parent_pos.h) {
+		if(this.y + 75 > parent_pos.h) {
 			anchors.y = 'bottom';
 			this.y = parent_pos.h - this.y;
 		}
+
+		dojo.toggleClass(this.popupNode, 'PopupAnchorBottom', anchors.y == 'bottom');
+		dojo.toggleClass(this.popupNode, 'PopupAnchorRight', anchors.x == 'right');
 		this.popupNode.style[anchors.x] = this.x + 'px';
 		this.popupNode.style[anchors.y] = this.y + 'px';
 	},
