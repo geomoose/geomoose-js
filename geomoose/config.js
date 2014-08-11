@@ -107,6 +107,7 @@ var CONFIGURATION = {
 		'area_units' : 'acre',
 		'show_heading' : false
 	},
+	default_tool: 'pan',
 	popups: {
 		left_offset: 43
 	},

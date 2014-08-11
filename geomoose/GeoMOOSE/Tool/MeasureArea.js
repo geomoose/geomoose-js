@@ -75,9 +75,10 @@ dojo.declare('GeoMOOSE.Tool.MeasureArea', null, {
 				'content' : p
 			});
 			GeoMOOSE.addTab('measure_area_tab', measure_tab);
-			dojo.connect(measure_tab, 'onHide', dojo.hitch(this, this.closeMeasure));
-			dojo.connect(measure_tab, 'onClose', dojo.hitch(this, this.onHide));
+			dojo.connect(measure_tab, 'onClose', dojo.hitch(this, this.onClose));
+			dojo.connect(measure_tab, 'onHide', dojo.hitch(this, this.onHide));
 			dojo.connect(measure_tab, 'onShow', dojo.hitch(this, this.onShow));
+
 		} else {
 			p = measure_tab.content;
 		}
@@ -237,7 +238,12 @@ dojo.declare('GeoMOOSE.Tool.MeasureArea', null, {
 		map.addControl(this.measure_tool); 
 	},
 
+	onClose: function() {
+		GeoMOOSE.activateDefaultTool();
+	},
+
 	closeMeasure: function(map) {
+		this.measure_tool.deactivate();
 		/* we want this tab to disappear when the measure tool is finished. */
 	//	dijit.byId('tabs').closeChild(GeoMOOSE.getTab('measure_area_tab'));
 		GeoMOOSE.removeTab('measure_area_tab');

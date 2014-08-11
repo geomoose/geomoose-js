@@ -813,6 +813,20 @@ window.GeoMOOSE = {
 		}
 
 
+	},
+
+	/*
+	 * Method: activateDefaultTool
+	 * This is a bit of a "pull the 'chute" call.  Starts up the pan tool.
+	 *  In the future this needs to be more configurable.
+	 */
+	activateDefaultTool: function() {
+		var toolbar = dijit.byId('toolbar');
+		if(GeoMOOSE.isDefined(toolbar.tools[CONFIGURATION.default_tool])) {
+			toolbar.tools[CONFIGURATION.default_tool].onClick();
+		} else {
+			GeoMOOSE.warning('Could not activateDefaultTool "'+CONFIGURATION.default_tool+'" as it is not defined in the toolbar.');
+		}
 	}
 	
 };
