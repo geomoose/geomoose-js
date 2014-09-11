@@ -55,12 +55,12 @@ dojo.declare('GeoMOOSE.Tab._CatalogLayer', null, {
 				dojo.addClass(layer_title, 'catalog-outscale');
 			}
 		});
-
 		this.updateLegends();
 	},
 
 	constructor: function(parent_id, layer_xml, multiple, group_name) {
 		/* render ... */
+		this.parent_id = parent_id;
 		var p = dojo.byId(parent_id);
 
 		var label = layer_xml.getAttribute('title');
