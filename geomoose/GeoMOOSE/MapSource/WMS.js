@@ -215,7 +215,7 @@ dojo.declare('GeoMOOSE.MapSource.WMS', [GeoMOOSE.MapSource], {
 		for(var i = 0, ii = keepers.length; i < ii; i++) {
 			new_params[keepers[i]] = this._ol_layer.DEFAULT_PARAMS[keepers[i]];
 		}
-			
+		this.params = {};		
 		this._ol_layer.params = new_params;
 	},
 

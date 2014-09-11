@@ -71,7 +71,7 @@ dojo.declare('GeoMOOSE.MapSource.MapServer', [GeoMOOSE.MapSource.WMS], {
 
 		/* create a param entry */
 		var param = doc.createElement('param');
-		param.setAttribute('name', 'map');
+		param.setAttribute('name', 'MAP');
 		//param.appendChild(doc.createTextNode(file));
 		param.setAttribute('value', file);
 		mapbook_xml.appendChild(param);
