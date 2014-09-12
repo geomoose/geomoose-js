@@ -36,7 +36,9 @@ THE SOFTWARE.
 ReferenceMap = new OpenLayers.Class(GeoMOOSE.UX.Extension, {
 
 	/* bbox stored as minx, miny, maxx, maxy */
-	bbox: [-11205056.111008, 4981247.88899195, -9458622.8889919, 6727681.11100805];
+//	bbox: [-11205056.111008, 4981247.88899195, -9458622.8889919, 6727681.11100805],
+//	bbox: [-10938443.756386649, 5247860.2436133, -9725235.24361325, 6461068.7563867],
+	bbox: [-11205056.111008,5247860.2436133,-9458622.8889919,6461068.7563867],
 
 	init: function(map) {
 		if(GeoMOOSE.isDefined(CONFIGURATION.reference_extent)) {
@@ -45,7 +47,6 @@ ReferenceMap = new OpenLayers.Class(GeoMOOSE.UX.Extension, {
 		var map_div = map.div;
 		this.map = map;
 
-		this.map.events.register('moveend', this, this.mapMoved);
 
 		/* create a div for the reference map */
 		this.div = document.createElement('div');
@@ -65,21 +66,38 @@ ReferenceMap = new OpenLayers.Class(GeoMOOSE.UX.Extension, {
 		this.reference_box = document.createElement('div');
 		this.reference_box.className = 'ReferenceBox';
 		this.div.appendChild(this.reference_box);
+
+		this.map.events.register('moveend', this, this.mapMoved);
+		//this.mapMoved();
 	},
 
 	mapMoved: function() {
 		var mapext = this.map.getExtent().toArray();
 		var bbox_w = this.bbox[2] - this.bbox[0];
 		var bbox_h = this.bbox[3] - this.bbox[1];
+
 		var x0 = (mapext[0] - this.bbox[0]) / bbox_w;
-		var y0 = (mapext[1] - this.bbox[1]) / bbox_h;
+		var y0 = (this.bbox[3] - mapext[1]) / bbox_h;
 		var x1 = (mapext[2] - this.bbox[0]) / bbox_w;
-		var y1 = (mapext[3] - this.bbox[1]) / bbox_h;
+		var y1 = (this.bbox[3] - mapext[3]) / bbox_h;
 
-		var pos = dojo.position(this.div);
+		var pos = dojo.position(dojo.query('.ReferenceMap')[0]);
 
+		var left = x0 * pos.w;
+		var bottom = y0 * pos.h;
+		var right = x1 * pos.w;
+		var top = y1 * pos.h;
 
-		console.log('Map moved', map_extent, this.reference_box); 
+		var width = right - left;
+		var height = Math.abs(bottom - top);
+
+		if(width < 1) { width = 1; }
+		if(height < 1) { height = 1; }
+
+		this.reference_box.style.left = left+'px';
+		this.reference_box.style.top = top+'px';
+		this.reference_box.style.width = width+'px';
+		this.reference_box.style.height = height+'px';
 	},
 
 	toggleMap: function() {
@@ -89,7 +107,6 @@ ReferenceMap = new OpenLayers.Class(GeoMOOSE.UX.Extension, {
 	load: function() {
 		/* load reference map style into the document */
 		var head = document.getElementsByTagName('head')[0];
-		//<link type="text/css" rel="stylesheet" href="css/common.css"/>
 		var link = document.createElement('link');
 		link.setAttribute('type', 'text/css');
 		link.setAttribute('rel', 'stylesheet');
