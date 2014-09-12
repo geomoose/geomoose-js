@@ -105,6 +105,8 @@ dojo.declare('GeoMOOSE.Tab.Service', [dijit.layout.BorderContainer], {
 		this._settingsObj = settingsObj;
 		this._forceStart = forceStart;
 
+		this._clearHighlightOnClose = parseBoolean(this.service_xml.getAttribute('clear-highlight'), true);
+
 		var steps = this.service_xml.getElementsByTagName('step');
 
 		var nInputs = 0;
@@ -814,6 +816,13 @@ dojo.declare('GeoMOOSE.Tab.Service', [dijit.layout.BorderContainer], {
 
 		if(this.header) { this.header.destroyRecursive(); }
 		if(this.footer) { this.footer.destroyRecursive(); }
+
+		if(this._clearHighlightOnClose) {
+			if(GeoMOOSE.isDefined(CONFIGURATION.services.highlight_layer)) {
+				GeoMOOSE.clearLayerParameters(CONFIGURATION.services.highlight_layer);
+				GeoMOOSE.changeLayerVisibility(CONFIGURATION.services.highlight_layer, false);
+			}
+		}
 		return ret_code;
 	},
 

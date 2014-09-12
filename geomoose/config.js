@@ -157,7 +157,8 @@ var CONFIGURATION = {
 	/** services - Options for controlling the behaviour of services. */
 	services: {
 		/** services.disable_hidden_tabs - Toggle whether to disable tables when they have been hidden. Defaults to false. */
-		disable_hidden_tabs: false
+		disable_hidden_tabs: false,
+		highlight_layer: 'highlight/highlight'
 	},
 	/** messages - Object of error messages. */
 	messages: {
