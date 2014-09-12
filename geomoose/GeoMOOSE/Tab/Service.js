@@ -105,7 +105,7 @@ dojo.declare('GeoMOOSE.Tab.Service', [dijit.layout.BorderContainer], {
 		this._settingsObj = settingsObj;
 		this._forceStart = forceStart;
 
-		this._clearHighlightOnClose = parseBoolean(this.service_xml.getAttribute('clear-highlight'), true);
+		this._clearHighlightOnClose = parseBoolean(this.service_xml.getAttribute('clear-highlight'), false);
 
 		var steps = this.service_xml.getElementsByTagName('step');
 
