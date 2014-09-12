@@ -1,0 +1,72 @@
+/*
+Copyright (c) 2009-2014, Dan "Ducky" Little & GeoMOOSE.org
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+*/
+
+.ReferenceMap {
+	background-color: #eee;
+	z-index: 20000;
+	position: absolute;
+	right: 0; bottom: 0;
+	padding-left: 150px;
+	padding-top: 150px;
+	background-image: url(reference_mn.png);
+	border-top: 2px solid #397c17;
+	border-left: 2px solid #397c17;
+}
+
+.ReferenceMap.Closed {
+	padding-left: 15px;
+	padding-top: 15px;
+	border: none;
+}
+
+.ReferenceMap .ToggleBox {
+	position: absolute;
+	bottom: 0; right: 0;
+	background: white;
+	border: dashed black 1px;
+	cursor: pointer;
+}
+
+.ReferenceMap .ToggleBox .Icon {
+	display: inline-block;
+	width: 15px; height: 15px;
+	text-align: center;
+	z-index: 10;
+}
+
+.ReferenceMap .ToggleBox .Icon:before {
+	content: "-";
+}
+
+.ReferenceMap.Closed .ToggleBox .Icon:before {
+	content: "+";
+}
+
+.ReferenceMap .ReferenceBox {
+	z-index: 5;
+	border: solid 1px red;
+	background: white;
+	opacity: .6;
+	position: absolute;
+	left: 10px; top: 10px;
+	width: 50px; height: 50px;
+}
