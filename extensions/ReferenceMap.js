@@ -36,13 +36,15 @@ THE SOFTWARE.
 ReferenceMap = new OpenLayers.Class(GeoMOOSE.UX.Extension, {
 
 	/* bbox stored as minx, miny, maxx, maxy */
-//	bbox: [-11205056.111008, 4981247.88899195, -9458622.8889919, 6727681.11100805],
-//	bbox: [-10938443.756386649, 5247860.2436133, -9725235.24361325, 6461068.7563867],
 	bbox: [-11205056.111008,5247860.2436133,-9458622.8889919,6461068.7563867],
 
 	init: function(map) {
 		if(GeoMOOSE.isDefined(CONFIGURATION.reference_extent)) {
 			this.bbox = CONFIGURATION.reference_extent;
+		}
+		var start_closed = 'Closed';
+		if(GeoMOOSE.isDefined(CONFIGURATION.reference_open) && CONFIGURATION.reference_open) {
+			start_closed = '';
 		}
 		var map_div = map.div;
 		this.map = map;
@@ -50,7 +52,7 @@ ReferenceMap = new OpenLayers.Class(GeoMOOSE.UX.Extension, {
 
 		/* create a div for the reference map */
 		this.div = document.createElement('div');
-		this.div.className = 'ReferenceMap';
+		this.div.className = 'ReferenceMap '+start_closed;
 		map_div.appendChild(this.div);
 
 		this.toggle = document.createElement('div');
@@ -67,8 +69,9 @@ ReferenceMap = new OpenLayers.Class(GeoMOOSE.UX.Extension, {
 		this.reference_box.className = 'ReferenceBox';
 		this.div.appendChild(this.reference_box);
 
+		dojo.connect(this.reference_box, 'mousedown', dojo.hitch(this, this.pickUp));
+
 		this.map.events.register('moveend', this, this.mapMoved);
-		//this.mapMoved();
 	},
 
 	mapMoved: function() {
@@ -100,8 +103,47 @@ ReferenceMap = new OpenLayers.Class(GeoMOOSE.UX.Extension, {
 		this.reference_box.style.height = height+'px';
 	},
 
+	pickUp: function(evt) {
+		var mouse_offset = dojo.position(this.reference_box, true);
+		mouse_offset.x -= evt.clientX;
+		mouse_offset.y -= evt.clientY;
+		this.offset = dojo.position(this.div, true);
+		this.offset.x -= mouse_offset.x;
+		this.offset.y -= mouse_offset.y;
+
+		this._mv_handle = dojo.connect(document, 'mousemove', dojo.hitch(this, this.boxMove));
+		this._up_handle = dojo.connect(document, 'mouseup', dojo.hitch(this, this.dropBox));
+	},
+
+	boxMove: function(evt) {
+		this.reference_box.style.left = (evt.clientX - this.offset.x)+'px';
+		this.reference_box.style.top = (evt.clientY - this.offset.y)+'px';
+	},
+
+	dropBox: function() {
+		if(this._mv_handle) {
+			dojo.disconnect(this._mv_handle);
+			dojo.disconnect(this._up_handle);
+			this._mv_handle = null;
+			this._up_handle = null;
+		}
+
+		var ref_pos = dojo.position(this.reference_box);
+		var pos = dojo.position(this.div);
+		ref_pos.x -= pos.x;
+		ref_pos.y -= pos.y;
+		var px0 = (ref_pos.x + ref_pos.w / 2.0) / pos.w;
+		var py0 = (ref_pos.y + ref_pos.h / 2.0) / pos.h;
+
+		var lat = this.bbox[0] + (this.bbox[2] - this.bbox[0]) * px0;
+		var lon = this.bbox[3] - (this.bbox[3] - this.bbox[1]) * py0;
+
+		this.map.setCenter(new OpenLayers.LonLat([lat, lon]));
+	},
+
 	toggleMap: function() {
 		dojo.toggleClass(this.div, 'Closed');
+		this.mapMoved();
 	},
 
 	load: function() {
