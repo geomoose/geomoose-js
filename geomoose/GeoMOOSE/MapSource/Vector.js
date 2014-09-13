@@ -40,6 +40,12 @@ dojo.declare('GeoMOOSE.MapSource.Vector', GeoMOOSE.MapSource, {
 	/* popupTemplate, an HTML template for showing feature information on "hover" */
 	popupTemplate: null,
 
+	/* 
+	 * Variable: displayInLayerSwitcher
+	 * Overrriden from the base class to not display by default.
+	 */
+	displayInLayerSwitcher: false,
+
 	checkPath: function(path) {
 		return (path == this.path)
 	},

@@ -109,13 +109,13 @@ window.GeoMOOSE = {
 		return layer_list;
 	},
 
-    /** Method: configureMapSource
-    * Parses a map-source XML fragment and adds it to the map.
-    * Important: this does not add anything to the catalog!
+	/** Method: configureMapSource
+	* Parses a map-source XML fragment and adds it to the map.
+	* Important: this does not add anything to the catalog!
 	*
-    * Parameters
-    *  map_source_xml - The <map-source> xml node
-    */
+	* Parameters
+	*  map_source_xml - The <map-source> xml node
+	*/
 	configureMapSource: function( map_source_xml ) {
 		Application.configureMapSource( map_source_xml, {} );
 	},

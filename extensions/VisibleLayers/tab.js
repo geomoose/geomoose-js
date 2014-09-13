@@ -51,15 +51,17 @@ dojo.declare('extensions.VisibleLayers.tab', [GeoMOOSE.Tab, dijit._Widget, dijit
 			} else {
 				if(path.indexOf("/") > -1) { /* This is a layer */
 					var group = path.split("/")[0];
-					var l = new extensions.VisibleLayers.layer(
-									{
-										title: path,
-										path: path,
-										map_source: this.layers[group]
-									});
-					this.layers[path] = l;
-					dojo.place(l.domNode, this.layers[group].layersNode, "last");
-				} else {
+					if(GeoMOOSE.isDefined(this.layers[group])) {
+						var l = new extensions.VisibleLayers.layer(
+										{
+											title: path,
+											path: path,
+											map_source: this.layers[group]
+										});
+						this.layers[path] = l;
+						dojo.place(l.domNode, this.layers[group].layersNode, "last");
+					}
+				} else if(Application.getMapSource(path).displayInLayerSwitcher) {
 					var g = new extensions.VisibleLayers.mapsource(
 									{
 										title: path,
