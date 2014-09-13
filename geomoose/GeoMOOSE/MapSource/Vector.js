@@ -61,8 +61,7 @@ dojo.declare('GeoMOOSE.MapSource.Vector', GeoMOOSE.MapSource, {
 	},
 
 	_createOLLayer: function(options) {
-		this._ol_layer_name = 'vector'+GeoMOOSE.id();
-		this._ol_layer = new OpenLayers.Layer.Vector(this._ol_layer_name,{
+		this._ol_layer = new OpenLayers.Layer.Vector(this.title,{
 			styleMap : this.style_map
 		});
 		this._ol_layer.setVisibility(this.isVisible());
@@ -125,7 +124,7 @@ dojo.declare('GeoMOOSE.MapSource.Vector', GeoMOOSE.MapSource, {
 
 		for(var control in this.controls) {
 			map.addControl(this.controls[control]);
-			Tools[this._ol_layer_name+'_'+control] = this.controls[control];
+			Tools[this.title+'_'+control] = this.controls[control];
 		}
 
 		this.controls['edit_attributes'].events.register('featurehighlighted', this, function(ev) {

@@ -45,9 +45,8 @@ dojo.declare('GeoMOOSE.MapSource.Google', [GeoMOOSE.MapSource], {
 	 *  options - OpenLayers Layer Options hash.
 	 */
 	_createOLLayer: function(options) {
-		this._ol_layer_name = 'google'+GeoMOOSE.id();
 		this._ol_layer = new OpenLayers.Layer.Google(
-			this._ol_layer_name,
+			this.title,
 			options
 		);	
 	},
@@ -64,8 +63,8 @@ dojo.declare('GeoMOOSE.MapSource.Google', [GeoMOOSE.MapSource], {
 			var message = "Warning, this application has a Google Maps layer defined in the mapbook, but the Google Maps library has not been included."
 			GeoMOOSE.error(message);
 
-			this._ol_layer_name = 'goog_error'+GeoMOOSE.id();
-			this._ol_layer = this._createBlankLayer(this._ol_layer_name);
+			this.title = 'No Google Lib';
+			this._ol_layer = this._createBlankLayer(this.title);
 			return false;
 		}
 		/* OpenLayers internal options */

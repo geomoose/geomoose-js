@@ -31,9 +31,6 @@ dojo.declare('GeoMOOSE.MapSource.Vector.WFS', [GeoMOOSE.MapSource.Vector], {
 	canSave: true,
 
 	_createOLLayer: function(options) {
-		this._ol_layer_name = 'wfs'+GeoMOOSE.id();
-
-
 		var strategies = [new OpenLayers.Strategy.BBOX()];
 		if(this.canSave) {
 			this.save_strategy = new OpenLayers.Strategy.Save();
@@ -42,7 +39,7 @@ dojo.declare('GeoMOOSE.MapSource.Vector.WFS', [GeoMOOSE.MapSource.Vector], {
 		if(this.clusteringEnabled) {
 			strategies.push(new OpenLayers.Strategy.Cluster());
 		}
-		this._ol_layer = new OpenLayers.Layer.Vector(this._ol_layer_name, {
+		this._ol_layer = new OpenLayers.Layer.Vector(this.title, {
 			strategies: strategies,
 			projection: new OpenLayers.Projection(CONFIGURATION.projection),
 			styleMap : this.style_map,

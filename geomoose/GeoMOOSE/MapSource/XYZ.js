@@ -45,9 +45,8 @@ dojo.declare('GeoMOOSE.MapSource.XYZ', [GeoMOOSE.MapSource.TMS], {
 	 *  options - OpenLayers Layer Options hash.
 	 */
 	_createOLLayer: function(options) {
-		this._ol_layer_name = 'xyz'+GeoMOOSE.id();
 		this._ol_layer = new OpenLayers.Layer.XYZ(
-			this._ol_layer_name,
+			this.title,
 			this.urls,
 			options
 		);	

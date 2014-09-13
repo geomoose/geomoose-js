@@ -45,9 +45,8 @@ dojo.declare('GeoMOOSE.MapSource.AGS', [GeoMOOSE.MapSource.WMS], {
 	 *  options - OpenLayers Layer Options hash.
 	 */
 	_createOLLayer: function(options) {
-		this._ol_layer_name = 'ags'+GeoMOOSE.id();
 		this._ol_layer = new OpenLayers.Layer.ArcGIS93Rest(
-			this._ol_layer_name,
+			this.title,
 			this.urls,
 			this.params,
 			options

@@ -46,7 +46,7 @@ dojo.declare('GeoMOOSE.MapSource.WMS', [GeoMOOSE.MapSource], {
 	 */
 	_createOLLayer: function(options) {
 		this._ol_layer = new OpenLayers.Layer.WMS(
-			this._ol_layer_name,
+			this.title,
 			this.urls,
 			this.params,
 			options
@@ -106,13 +106,6 @@ dojo.declare('GeoMOOSE.MapSource.WMS', [GeoMOOSE.MapSource], {
 			if(buffer) {
 				options.buffer = buffer;
 			}
-		}
-
-		var title = mapbook_entry.getAttribute('title');
-		if(GeoMOOSE.isDefined(title)) {
-			this._ol_layer_name = title;
-		} else {
-			this._ol_layer_name = this.path;
 		}
 
 		if(!GeoMOOSE.isDefined(this.params['FORMAT'])) {

@@ -97,6 +97,13 @@ dojo.declare('GeoMOOSE.MapSource', null, {
 	paths: [],
 
 	/**
+	 * Variable: title
+	 * 
+	 * Title for the layer
+	 */
+	title: null,
+
+	/**
 	 * Variable: titles
 	 *
 	 * A hash of the titles keyed on layer path.
@@ -276,6 +283,10 @@ dojo.declare('GeoMOOSE.MapSource', null, {
 		this.paths = [];
 
 		mapbook_entry = this.preParseNode(mapbook_entry);
+		this.title = mapbook_entry.getAttribute('title');
+		if(!GeoMOOSE.isDefined(this.title)) {
+			this.title = 'layer'+GeoMOOSE.id();
+		}
 		this.path = mapbook_entry.getAttribute('name');
 		// technically we supported "/" in the names and so we 
 		//  will replace them with css-friendly "-"s
