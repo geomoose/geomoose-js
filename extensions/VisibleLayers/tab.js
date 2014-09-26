@@ -15,14 +15,13 @@ dojo.declare('extensions.VisibleLayers.tab', [GeoMOOSE.Tab, dijit._Widget, dijit
 
 	startup: function() {
 		this.inherited(arguments);
-		this.layers = {}; 
+		this.layers = {};
 
 		if(CONFIGURATION['extensions.VisibleLayers.tab_name'])
 			this.set('title', CONFIGURATION['extensions.VisibleLayers.tab_name']);
 		
 		GeoMOOSE.register('onMapbookLoaded', this, this.setupEvents);
 		dojo.connect(Application, 'configureMapSources', dojo.hitch(this, this.renderTab));
-		window.vl = this;
 	},
 
 	setupEvents: function() {
@@ -50,17 +49,19 @@ dojo.declare('extensions.VisibleLayers.tab', [GeoMOOSE.Tab, dijit._Widget, dijit
 			if(this.layers[path]) {
 				; // update status
 			} else {
-				if(path.indexOf("/") > -1) { /* This is a layer (WMS Layer) */
+				if(path.indexOf("/") > -1) { /* This is a layer */
 					var group = path.split("/")[0];
-					var l = new extensions.VisibleLayers.layer(
-									{
-										title: path,
-										path: path,
-										map_source: this.layers[group]
-									});
-					this.layers[path] = l;
-					dojo.place(l.domNode, this.layers[group].layersNode, "last");
-				} else { /* This is a MapSource (OpenLayers Layer) */
+					if(GeoMOOSE.isDefined(this.layers[group])) {
+						var l = new extensions.VisibleLayers.layer(
+										{
+											title: path,
+											path: path,
+											map_source: this.layers[group]
+										});
+						this.layers[path] = l;
+						dojo.place(l.domNode, this.layers[group].layersNode, "last");
+					}
+				} else if(Application.getMapSource(path).displayInLayerSwitcher) {
 					var g = new extensions.VisibleLayers.mapsource(
 									{
 										title: path,
@@ -76,14 +77,14 @@ dojo.declare('extensions.VisibleLayers.tab', [GeoMOOSE.Tab, dijit._Widget, dijit
 		this._place_layers();
 	},
 
-  remove: function(path) {
+	remove: function(path) {
 		var group = path.split("/")[0];
 		var ms = this.layers[group];
 		
 		ms.destroyRecursive();
 		delete this.layers[group];
 		GeoMOOSE.turnLayerOff(path);
-  },
+	},
 
 	_place_layers: function() {
 		var map_sources = [ ];
@@ -92,7 +93,7 @@ dojo.declare('extensions.VisibleLayers.tab', [GeoMOOSE.Tab, dijit._Widget, dijit
 				map_sources.push(i);
 			}	
 		}	
-		map_sources = map_sources.sort( dojo.hitch(this, 
+		map_sources = map_sources.sort( dojo.hitch(this,
 			function(a,b) {
 				var al = this.layers[a];
 				var bl = this.layers[b];

@@ -125,6 +125,14 @@ dojo.declare('GeoMOOSE.MapSource', null, {
 	controls: {},
 
 	/**
+	 * Variable: displayInLayerSwitcher
+	 * 
+	 * Toggles whether the map source should be displayed in
+	 * any of the layer-by-layer catalogs.
+	 */
+	displayInLayerSwitcher: true,
+
+	/**
 	 * Method: _parseParams
 	 *
 	 * Parse the Mapbook parameters for a map-source
@@ -287,6 +295,12 @@ dojo.declare('GeoMOOSE.MapSource', null, {
 		if(!GeoMOOSE.isDefined(this.title)) {
 			this.title = 'layer'+GeoMOOSE.id();
 		}
+
+		var display_in_switcher = mapbook_entry.getAttribute('hide-from-layers-list');
+		if(GeoMOOSE.isDefined(display_in_switcher)) {
+			this.displayInLayerSwitcher = !parseBoolean(display_in_switcher, false);
+		}
+
 		this.path = mapbook_entry.getAttribute('name');
 		// technically we supported "/" in the names and so we 
 		//  will replace them with css-friendly "-"s
