@@ -45,7 +45,6 @@ dojo.require('GeoMOOSE.MapSource.MapServer');
 dojo.require('GeoMOOSE.MapSource.TMS');
 dojo.require('GeoMOOSE.MapSource.XYZ');
 dojo.require('GeoMOOSE.MapSource.Google');
-dojo.require('GeoMOOSE.MapSource.Yahoo');
 dojo.require('GeoMOOSE.MapSource.AGS');
 
 
