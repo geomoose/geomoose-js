@@ -22,6 +22,7 @@ dojo.declare('extensions.VisibleLayers.tab', [GeoMOOSE.Tab, dijit._Widget, dijit
 		
 		GeoMOOSE.register('onMapbookLoaded', this, this.setupEvents);
 		dojo.connect(Application, 'configureMapSources', dojo.hitch(this, this.renderTab));
+		window.vl = this;
 	},
 
 	setupEvents: function() {
@@ -49,7 +50,7 @@ dojo.declare('extensions.VisibleLayers.tab', [GeoMOOSE.Tab, dijit._Widget, dijit
 			if(this.layers[path]) {
 				; // update status
 			} else {
-				if(path.indexOf("/") > -1) { /* This is a layer */
+				if(path.indexOf("/") > -1) { /* This is a layer (WMS Layer) */
 					var group = path.split("/")[0];
 					var l = new extensions.VisibleLayers.layer(
 									{
@@ -59,7 +60,7 @@ dojo.declare('extensions.VisibleLayers.tab', [GeoMOOSE.Tab, dijit._Widget, dijit
 									});
 					this.layers[path] = l;
 					dojo.place(l.domNode, this.layers[group].layersNode, "last");
-				} else {
+				} else { /* This is a MapSource (OpenLayers Layer) */
 					var g = new extensions.VisibleLayers.mapsource(
 									{
 										title: path,
@@ -74,6 +75,15 @@ dojo.declare('extensions.VisibleLayers.tab', [GeoMOOSE.Tab, dijit._Widget, dijit
 		}
 		this._place_layers();
 	},
+
+  remove: function(path) {
+		var group = path.split("/")[0];
+		var ms = this.layers[group];
+		
+		ms.destroyRecursive();
+		delete this.layers[group];
+		GeoMOOSE.turnLayerOff(path);
+  },
 
 	_place_layers: function() {
 		var map_sources = [ ];

@@ -21,6 +21,7 @@ dojo.declare("extensions.VisibleLayers.mapsource", [dijit._Widget, dijit._Templa
 		this.unfadeBtn.onclick = dojo.hitch(this, this.unfadeLayer);
 		this.upBtn.onclick = dojo.hitch(this, this.upLayer);
 		this.downBtn.onclick = dojo.hitch(this, this.downLayer);
+		this.killBtn.onclick = dojo.hitch(this, this.killLayer);
 
 		this.titleNode.onclick = dojo.hitch(this, this.hideShow);
 
@@ -100,6 +101,9 @@ dojo.declare("extensions.VisibleLayers.mapsource", [dijit._Widget, dijit._Templa
 				break;
 			}
 		}
+	},
+	killLayer: function() {
+		vl.remove(this.path);
 	},
 	getLayerIndex: function() {
 		var mapSource = Application.getMapSource(this.path);
