@@ -249,7 +249,7 @@ dojo.declare('GeoMOOSE.MapSource.WMS', [GeoMOOSE.MapSource], {
 			param_array.push(k + "=" + params[k]); // URL encode
 		}
 
-		var legendURL = urls[0] + "?";  // loop over urls
+		var legendURL = urls[0].split('?')[0] + "?";  // loop over urls
 		legendURL += param_array.join('&');
 
 		// Loop over layers and get legend all legnd chips
@@ -280,7 +280,7 @@ dojo.declare('GeoMOOSE.MapSource.WMS', [GeoMOOSE.MapSource], {
 				legend_urls.push(legendURL + '&LAYER=' + layers[i] + '&STYLE=' + styles[layers[i]]);
 			}
 		}
-
+		for(var i = 0; i < legend_urls.length; i++) { console.log('legend url', legend_urls[i]); }
 		return legend_urls;
 	},
 
