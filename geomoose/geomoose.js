@@ -787,6 +787,17 @@ window.GeoMOOSE = {
 	},
 
 	/*
+	 * Method: deactivateTools
+	 * Turn off all current tools, including layer tools.
+	 */
+	deactivateTools: function() {
+		
+		for(var tool_name in Tools) {
+			Tools[tool_name].deactivate();
+		}
+	},
+
+	/*
 	 * Method: activateLayerTool
 	 * Activates a layer tool
 	 */
@@ -799,9 +810,8 @@ window.GeoMOOSE = {
 			var map_source = Application.getMapSource(active_map_source);
 			if(map_source.supports[action] === true) {
 				/* okay, let's go! */
-				if(this.selectable) {
-					this._deactivateTools();
-				}
+				GeoMOOSE.deactivateTools();
+
 				if(GeoMOOSE.isDefined(kwargs)) {
 					map_source.controls[action].activate(kwargs);
 				} else {
