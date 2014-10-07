@@ -280,7 +280,7 @@ dojo.declare('GeoMOOSE.MapSource.WMS', [GeoMOOSE.MapSource], {
 				legend_urls.push(legendURL + '&LAYER=' + layers[i] + '&STYLE=' + styles[layers[i]]);
 			}
 		}
-		for(var i = 0; i < legend_urls.length; i++) { console.log('legend url', legend_urls[i]); }
+
 		return legend_urls;
 	},
 
