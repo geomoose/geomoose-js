@@ -143,6 +143,7 @@ dojo.declare('GeoMOOSE.Dialog.AttributeEditor', [dijit.Dialog], {
 					this._updateAttribute(controls[i].getName(), controls[i].getValue());
 
 				}
+				this.feature.state = OpenLayers.State.UPDATE;
 				this.hide();
 			})
 		}));
