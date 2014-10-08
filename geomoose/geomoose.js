@@ -433,12 +433,27 @@ window.GeoMOOSE = {
 	 * Parameters:
 	 *  x - X-coordinate to place the popup.
 	 *  y - Y-coordinate to place the popup.
-	 *  w - The width of the popup.
-	 *  h - The height of the popup.
+	 *  w - Deprecated. The width of the popup.
+	 *  h - Deprecated. The height of the popup.
 	 *  html - The contents of the popup.
+	 *  title - The title of the popup
 	 */
-	addPopup : function(x,y,w,h,html) {
-		addPopup(x,y,w,h,html);
+	addPopup : function(x,y,w,h,html,title) {
+		var popup_id = 'popup-'+GeoMOOSE.id();
+		if(!GeoMOOSE.isDefined(title)) {
+			title = '';
+		}
+		Map.addPopup({
+			clearOnMove: false,
+			renderOnAdd: true,
+			renderXY: {x: x, y: y}, 
+			id: popup_id,
+			title: title,
+			classNames: ['LayerLess'],
+			content: html
+		});
+
+		//addPopup(x,y,w,h,html);
 	},
 
 	/*
