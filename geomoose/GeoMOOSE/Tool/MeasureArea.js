@@ -246,7 +246,7 @@ dojo.declare('GeoMOOSE.Tool.MeasureArea', null, {
 		this.measure_tool.deactivate();
 		/* we want this tab to disappear when the measure tool is finished. */
 	//	dijit.byId('tabs').closeChild(GeoMOOSE.getTab('measure_area_tab'));
-		GeoMOOSE.removeTab('measure_area_tab');
+		GeoMOOSE.closeTab('measure_area_tab');
 	},
 
 	_convertUnits: function(area) {

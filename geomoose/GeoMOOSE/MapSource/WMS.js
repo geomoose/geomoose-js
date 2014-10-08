@@ -242,7 +242,7 @@ dojo.declare('GeoMOOSE.MapSource.WMS', [GeoMOOSE.MapSource], {
 			param_array.push(k + "=" + params[k]); // URL encode
 		}
 
-		var legendURL = urls[0] + "?";  // loop over urls
+		var legendURL = urls[0].split('?')[0] + "?";  // loop over urls
 		legendURL += param_array.join('&');
 
 		// Loop over layers and get legend all legnd chips

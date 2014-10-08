@@ -392,7 +392,7 @@ MeasureWithBearingExtension = new OpenLayers.Class(GeoMOOSE.UX.Extension, {
 		this.measure_tool.deactivate();
 		var tab = GeoMOOSE.getTab('measure_tab');
 		if(tab) {
-			GeoMOOSE.removeTab('measure_tab');
+			GeoMOOSE.closeTab('measure_tab');
 		}
 	},
 
