@@ -37,7 +37,7 @@ dojo.require('dijit._Templated');
 dojo.declare('GeoMOOSE.Popup', [dijit._Widget, dijit._Templated], {
 	templateString: dojo.cache("GeoMOOSE", "popup_template.html"),
 	title: "&nbsp;",
-	contents: "",
+	content: "",
 	classNames: "",
 	x: 0, y: 0,
 
@@ -110,6 +110,8 @@ dojo.declare('GeoMOOSE.Popup', [dijit._Widget, dijit._Templated], {
 
 	postCreate: function() {
 		this.inherited(arguments);
+
+		this.contentsNode.innerHTML = this.content;
 
 		/* position the popup */
 		this.position();
