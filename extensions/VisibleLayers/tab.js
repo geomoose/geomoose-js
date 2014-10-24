@@ -65,7 +65,8 @@ dojo.declare('extensions.VisibleLayers.tab', [GeoMOOSE.Tab, dijit._Widget, dijit
 					var g = new extensions.VisibleLayers.mapsource(
 									{
 										title: path,
-										path: path
+										path: path,
+										tab: this
 									});
 					this.layers[path] = g;
 					//dojo.connect(g, 'upLayer', dojo.hitch(this, this._place_layers));
@@ -78,12 +79,23 @@ dojo.declare('extensions.VisibleLayers.tab', [GeoMOOSE.Tab, dijit._Widget, dijit
 	},
 
 	remove: function(path) {
-		var group = path.split("/")[0];
-		var ms = this.layers[group];
-		
-		ms.destroyRecursive();
-		delete this.layers[group];
-		GeoMOOSE.turnLayerOff(path);
+		path = path.split("/")[0];
+		/* Check if path is valid map-source */	
+		if(GeoMOOSE.isDefined(this.layers[path])) {
+			/* Delete layers in the map-source */		
+			for(var p in this.layers) {
+				if(p.indexOf(path+"/") == 0) {
+					dojo.destroy(this.layers[p].domNode);
+					delete this.layers[p];
+				}
+			}
+			/* Delete the map-source */
+			dojo.destroy(this.layers[path].domNode);
+			delete this.layers[path];
+	
+			/* Update the list - do we need to do this?*/
+			this.renderTab();
+		}
 	},
 
 	_place_layers: function() {

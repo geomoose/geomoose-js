@@ -8,6 +8,7 @@ dojo.declare("extensions.VisibleLayers.mapsource", [dijit._Widget, dijit._Templa
 
 	title: "Unknown",
 	path: "Unknown",
+	tab: null,
 	visible: true,
 
 	attributeMap: {
@@ -103,7 +104,16 @@ dojo.declare("extensions.VisibleLayers.mapsource", [dijit._Widget, dijit._Templa
 		}
 	},
 	killLayer: function() {
-		vl.remove(this.path);
+		var mapSource = Application.getMapSource(this.path);
+
+		/* First turn off all layers in this map-source. */
+		for(var i in mapSource.layers) {
+			var layer = mapSource.layers[i];
+			GeoMOOSE.changeLayerVisibility(this.path + "/" + layer.name, 0);
+		}
+
+		/* Now remove the map-source from the UI */
+		this.tab.remove(this.path);
 	},
 	getLayerIndex: function() {
 		var mapSource = Application.getMapSource(this.path);
