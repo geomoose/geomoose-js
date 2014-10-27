@@ -61,6 +61,16 @@ dojo.declare('GeoMOOSE.Tab.Service', [dijit.layout.BorderContainer], {
 		Map.addLayers([this.drawing_layer]);
 
 		this.tools = {};
+		this.tools['pan'] = {
+			activate: function() {
+				Tools['pan'].activate();
+			},
+			deactivate: function() {
+				Tools['pan'].deactivate();
+			},
+			setMap: function () { },
+			draw: function () {}
+		}
 		this.tools['point'] = new OpenLayers.Control.DrawFeature(this.drawing_layer, OpenLayers.Handler.Point);
 		this.tools['line'] = new OpenLayers.Control.DrawFeature(this.drawing_layer, OpenLayers.Handler.Path);
 		this.tools['polygon'] = new OpenLayers.Control.DrawFeature(this.drawing_layer, OpenLayers.Handler.Polygon);
