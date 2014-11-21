@@ -23,10 +23,16 @@ dojo.declare("extensions.VisibleLayers.mapsource", [dijit._Widget, dijit._Templa
 		this.upBtn.onclick = dojo.hitch(this, this.upLayer);
 		this.downBtn.onclick = dojo.hitch(this, this.downLayer);
 		this.killBtn.onclick = dojo.hitch(this, this.killLayer);
+		this.activateBtn.onclick = dojo.hitch(this, this.activateLayer);
+		this.popupBtn.onclick = dojo.hitch(this, this.popupsLayer);
 
 		this.titleNode.onclick = dojo.hitch(this, this.hideShow);
 
 		this.set("title", this._getTitle());
+
+		dojo.style(this.activateBtn, { display: "none" } );
+		/* TODO: need to figure out when to show popups tool */
+		/* dojo.style(this.popupBtn, { display: "none" } ); */
 	},
 
 	_getTitle: function() {
@@ -114,6 +120,13 @@ dojo.declare("extensions.VisibleLayers.mapsource", [dijit._Widget, dijit._Templa
 
 		/* Now remove the map-source from the UI */
 		this.tab.remove(this.path);
+	},
+	activateLayer: function() {
+		return GeoMOOSE.activateMapSource(this.path);
+	},
+	popupsLayer: function() {
+		GeoMOOSE.activateMapSource(this.path);
+		GeoMOOSE.activateLayerTool('popups');
 	},
 	getLayerIndex: function() {
 		var mapSource = Application.getMapSource(this.path);
