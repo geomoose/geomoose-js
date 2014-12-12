@@ -152,7 +152,9 @@ var CONFIGURATION = {
 	/** popups - options for controlling the behavior of popups. */
 	popups: {
 		/** popups.left_offset - This is used in conjunction with popup CSS styling to properly position the mouse after a popup has been dragged. */
-		left_offset: 43
+		left_offset: 43,
+		/** popups.clearOnMove - Toggle whether popups should clear themselves when the user moves from the focus. */
+		clearOnMove: true
 	},
 	/** services - Options for controlling the behaviour of services. */
 	services: {

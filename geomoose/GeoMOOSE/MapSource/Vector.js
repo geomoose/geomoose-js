@@ -167,6 +167,7 @@ dojo.declare('GeoMOOSE.MapSource.Vector', GeoMOOSE.MapSource, {
 				ev.feature._popup = popup_id;
 
 				this._ol_layer.map.addPopup({
+					clearOnMove: this.clearPopupsOnMove,
 					id: popup_id,
 					classNames: [this.cssName],
 					content: html

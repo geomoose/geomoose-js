@@ -31,7 +31,7 @@ import os
 # All of these images are assumed to be 20x20.
 # It's fine if they are smaller because they'll just get more padding,
 # larger than 20x20 and it'll get a little trickier.
-imagesRoot = '../htdocs/images/';
+imagesRoot = '../images/';
 spriteFolders = ['toolbar/'];
 
 try:
@@ -57,6 +57,13 @@ sprite = Image.new('RGBA', (40,len(images)*30), (0,0,0,0))
 i = 0
 
 cssHeader = """
+/* Notice: 
+ * 
+ * This file is generated (along with ../images/all.png) 
+ * from the images in images/toolbar by createSprite.py 
+ * in the ../util directory
+ */
+
 .sprite-control {
 	background-image: url('../images/all.png');
 	background-repeat: no-repeat;
