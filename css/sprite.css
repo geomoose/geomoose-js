@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2009-2012, Dan "Ducky" Little & GeoMOOSE.org
+Copyright (c) 2009-2013, Dan "Ducky" Little & GeoMOOSE.org
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -20,6 +20,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+
+/* Notice: 
+ * 
+ * This file is generated (along with ../images/all.png) 
+ * from the images in images/toolbar by createSprite.py 
+ * in the ../util directory
+ */
 
 .sprite-control {
 	background-image: url('../images/all.png');
@@ -69,13 +76,14 @@ THE SOFTWARE.
  .sprite-control-popups { background-position: 0px -970px; }  .sprite-control-popups-selected { background-position: -20px -970px !important; } 
  .sprite-control-previous { background-position: 0px -1000px; }  .sprite-control-previous-selected { background-position: -20px -1000px !important; } 
  .sprite-control-printer { background-position: 0px -1030px; }  .sprite-control-printer-selected { background-position: -20px -1030px !important; } 
- .sprite-control-select { background-position: 0px -1060px; }  .sprite-control-select-selected { background-position: -20px -1060px !important; } 
- .sprite-control-showMetadata { background-position: 0px -1090px; }  .sprite-control-showMetadata-selected { background-position: -20px -1090px !important; } 
- .sprite-control-streetview { background-position: 0px -1120px; }  .sprite-control-streetview-selected { background-position: -20px -1120px !important; } 
- .sprite-control-super_identify { background-position: 0px -1150px; }  .sprite-control-super_identify-selected { background-position: -20px -1150px !important; } 
- .sprite-control-unfade { background-position: 0px -1180px; }  .sprite-control-unfade-selected { background-position: -20px -1180px !important; } 
- .sprite-control-up { background-position: 0px -1210px; }  .sprite-control-up-selected { background-position: -20px -1210px !important; } 
- .sprite-control-zoomin { background-position: 0px -1240px; }  .sprite-control-zoomin-selected { background-position: -20px -1240px !important; } 
- .sprite-control-zoomout { background-position: 0px -1270px; }  .sprite-control-zoomout-selected { background-position: -20px -1270px !important; } 
- .sprite-control-zoomto { background-position: 0px -1300px; }  .sprite-control-zoomto-selected { background-position: -20px -1300px !important; } 
+ .sprite-control-reload { background-position: 0px -1060px; }  .sprite-control-reload-selected { background-position: -20px -1060px !important; } 
+ .sprite-control-select { background-position: 0px -1090px; }  .sprite-control-select-selected { background-position: -20px -1090px !important; } 
+ .sprite-control-showMetadata { background-position: 0px -1120px; }  .sprite-control-showMetadata-selected { background-position: -20px -1120px !important; } 
+ .sprite-control-streetview { background-position: 0px -1150px; }  .sprite-control-streetview-selected { background-position: -20px -1150px !important; } 
+ .sprite-control-super_identify { background-position: 0px -1180px; }  .sprite-control-super_identify-selected { background-position: -20px -1180px !important; } 
+ .sprite-control-unfade { background-position: 0px -1210px; }  .sprite-control-unfade-selected { background-position: -20px -1210px !important; } 
+ .sprite-control-up { background-position: 0px -1240px; }  .sprite-control-up-selected { background-position: -20px -1240px !important; } 
+ .sprite-control-zoomin { background-position: 0px -1270px; }  .sprite-control-zoomin-selected { background-position: -20px -1270px !important; } 
+ .sprite-control-zoomout { background-position: 0px -1300px; }  .sprite-control-zoomout-selected { background-position: -20px -1300px !important; } 
+ .sprite-control-zoomto { background-position: 0px -1330px; }  .sprite-control-zoomto-selected { background-position: -20px -1330px !important; } 
 
