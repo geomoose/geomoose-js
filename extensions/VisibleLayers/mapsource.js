@@ -25,6 +25,7 @@ dojo.declare("extensions.VisibleLayers.mapsource", [dijit._Widget, dijit._Templa
 		this.killBtn.onclick = dojo.hitch(this, this.killLayer);
 		this.activateBtn.onclick = dojo.hitch(this, this.activateLayer);
 		this.popupBtn.onclick = dojo.hitch(this, this.popupsLayer);
+		this.reloadBtn.onclick = dojo.hitch(this, this.reloadLayer);
 
 		this.titleNode.onclick = dojo.hitch(this, this.hideShow);
 
@@ -127,6 +128,10 @@ dojo.declare("extensions.VisibleLayers.mapsource", [dijit._Widget, dijit._Templa
 	popupsLayer: function() {
 		GeoMOOSE.activateMapSource(this.path);
 		GeoMOOSE.activateLayerTool('popups');
+	},
+	reloadLayer: function() {
+		console.log("Refresh " + this.path);
+		return GeoMOOSE.updateParameters(this.path, {MOOSETIME: (new Date).getTime()});
 	},
 	getLayerIndex: function() {
 		var mapSource = Application.getMapSource(this.path);
