@@ -117,6 +117,15 @@ dojo.declare('GeoMOOSE.MapSource', null, {
 	 */
 	controls: {},
 
+	/** 
+	 * Variable: clearPopupsOnMove
+	 * 
+	 * Toggle whether to clear popups when the user moves the mouse.
+	 * Defaults to CONFIGURATION.popups.clearOnMove
+	 *
+	 */
+	clearPopupsOnMove: false,
+
 	/**
 	 * Method: _parseParams
 	 *
@@ -273,6 +282,8 @@ dojo.declare('GeoMOOSE.MapSource', null, {
 	 *	mapbook_entry - The XML fragment pertaining to the mapbook entry.
 	 */
 	constructor: function(mapbook_entry) {
+		this.clearPopupsOnMove = CONFIGURATION.popups.clearOnMove;
+
 		this.paths = [];
 
 		mapbook_entry = this.preParseNode(mapbook_entry);

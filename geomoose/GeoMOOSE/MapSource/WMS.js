@@ -167,7 +167,7 @@ dojo.declare('GeoMOOSE.MapSource.WMS', [GeoMOOSE.MapSource], {
 			var popup_id = 'popup'+GeoMOOSE.id();
 			if(ev.text && ev.text.length > 1) {
 				ol_map.addPopup({
-					clearOnMove: true,
+					clearOnMove: this.layer.clearPopupsOnMove,
 					renderOnAdd: true,
 					renderXY: ev.xy, 
 					id: popup_id,
