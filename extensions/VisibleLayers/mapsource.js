@@ -131,7 +131,7 @@ dojo.declare("extensions.VisibleLayers.mapsource", [dijit._Widget, dijit._Templa
 	},
 	reloadLayer: function() {
 		console.log("Refresh " + this.path);
-		return GeoMOOSE.updateParameters(this.path, {MOOSETIME: (new Date).getTime()});
+		return GeoMOOSE.updateLayerParameters(this.path, {MOOSETIME: (new Date).getTime()});
 	},
 	getLayerIndex: function() {
 		var mapSource = Application.getMapSource(this.path);
