@@ -327,40 +327,13 @@ dojo.declare('GeoMOOSE.Tab.Service', [dijit.layout.BorderContainer], {
 			}
 		}
 
+		this.afterInputStep(step, parentId, settingsObj);
+
 		return nUserInputs;
 	},
 
-
-	/* Maybe I should move this into configuration ... maybe ... */
-	geotools: {
-		'pan' : {
-			'status' : true,
-			'title': 'Pan'
-		}, 
-		'edit-polygon' : {
-			'status' : false,
-			'title' : 'Edit Shape'
-		},
-		'point' : {
-			'status' : true,
-			'title' : 'Draw Point'
-		}, 
-		'line' : {
-			'status' : true,
-			'title' : 'Draw Line'
-		}, 
-		'polygon' : {
-			'status' : true,
-			'title' : 'Draw Polygon'
-		},
-		'box' : {
-			'status' : false,
-			'title' : 'Draw Box'
-		}
+	afterInputStep: function() {
 	},
-
-
-
 
 	renderSpatialStep: function(step, parentId, settingsObj) {
 		/* put our drawing layer at the top, and set it visible */
@@ -421,17 +394,20 @@ dojo.declare('GeoMOOSE.Tab.Service', [dijit.layout.BorderContainer], {
 		var radio_buttons = {};
 		var first_non_navigate_tool = null;
 
-		for(var v in this.geotools) {
-			if(parseBoolean(step.getAttribute(v), this.geotools[v]['status'])) {
+		var geotools = CONFIGURATION.services.tools;
+
+		for(var v in geotools) {
+			var geotool = geotools[v];
+
+			if(parseBoolean(step.getAttribute(v), geotools[v]['status'])) {
 				var input_div = dojo.create('div', {}, p);
 				var radio_span = dojo.create('span', {}, input_div);
 				var label_span = dojo.create('span', {
-					'innerHTML' : this.geotools[v].title
+					'innerHTML' : geotools[v].title
 				}, input_div);
 				if(!GeoMOOSE.isDefined(first_non_navigate_tool) && v != 'pan') {
 					first_non_navigate_tool = v;
 				}
-
 
 				radio_buttons[v] = new dijit.form.RadioButton({
 					'name' : step_id,
@@ -461,9 +437,15 @@ dojo.declare('GeoMOOSE.Tab.Service', [dijit.layout.BorderContainer], {
 			radio_buttons[first_non_navigate_tool].set('checked', true);
 		}
 
+		this.afterSpatialStep(step, parentId, settingsObj);
+
 		/* return the number of inputs, since the spatial step is one,
 			include it in the count */
 		return 1 + this.renderInputStep(step, parentId, settingsObj);
+	},
+
+	afterSpatialStep: function(step, parentId, settingsObj) {
+
 	},
 
 

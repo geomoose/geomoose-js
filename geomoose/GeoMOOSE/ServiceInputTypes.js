@@ -606,7 +606,7 @@ GeoMOOSE.Services.InputType.Length = OpenLayers.Class(GeoMOOSE.Services.InputTyp
 		GeoMOOSE.Services.InputType.prototype.initialize.apply(this, arguments);
 		this.options.renderable = true;
 		this.units = CONFIGURATION.measure_tool.line_units;
-		if(input.getAttribute('units')) {
+		if(input && input.getAttribute('units')) {
 			this.units = input.getAttribute('units');
 		}
 	},

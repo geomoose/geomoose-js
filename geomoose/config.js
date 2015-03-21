@@ -162,7 +162,41 @@ var CONFIGURATION = {
 		disable_hidden_tabs: false,
 		highlight_layer: 'highlight/highlight',
 		/** services.disable_others - Toggle whether tools and other tabs should be disabled when starting a service. */
-		disable_others: true
+		disable_others: true,
+
+		/** services.tools - default tools for spatial steps. */
+		tools: {
+			/** services.tools.pan - Show the pan tool for spatial steps. */ 
+			'pan' : {
+				'status' : true,
+				'title': 'Navigate'
+			}, 
+			/** services.tools.edit-polygon - Show the edit polygon tool for spatial steps. */ 
+			'edit-polygon' : {
+				'status' : false,
+				'title' : 'Edit Polygon'
+			},
+			/** services.tools.point - Show the edit draw point for spatial steps. */ 
+			'point' : {
+				'status' : true,
+				'title' : 'Draw Point'
+			}, 
+			/** services.tools.line - Show the edit draw line for spatial steps. */ 
+			'line' : {
+				'status' : true,
+				'title' : 'Draw Line'
+			}, 
+			/** services.tools.polgon - Show the edit draw polgon for spatial steps. */ 
+			'polygon' : {
+				'status' : true,
+				'title' : 'Draw Polygon'
+			},
+			/** services.tools.box - Show the edit draw box for spatial steps. */ 
+			'box' : {
+				'status' : false,
+				'title' : 'Draw Box'
+			}
+		}
 	},
 	/** messages - Object of error messages. */
 	messages: {
