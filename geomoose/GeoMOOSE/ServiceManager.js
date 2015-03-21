@@ -396,9 +396,9 @@ window.ServiceManager = function(Catalog, ParentId) {
 			this.service_tabs = [];
 		}
 
-
 		if(service) {
 			ReturnedResults = false;
+
 			this.onStart(service);
 			//var p = document.getElementById(ParentId);
 			var service_title = service.getAttribute('title');

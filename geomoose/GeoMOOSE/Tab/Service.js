@@ -124,6 +124,11 @@ dojo.declare('GeoMOOSE.Tab.Service', [dijit.layout.BorderContainer], {
 		/* oops, no steps! */
 		this.steps = [];
 		var rootName = 'service-'+this.unique_name;
+
+		if(CONFIGURATION.services.disable_others) {
+			dijit.byId('toolbar').disableTools();
+		}
+
 		if(steps.length == 0) {
 			var step0_name = rootName + '0';
 			var step0 = dojo.create('div', {'id' : step0_name}, content);
@@ -680,6 +685,12 @@ dojo.declare('GeoMOOSE.Tab.Service', [dijit.layout.BorderContainer], {
 				this._lastTool = t;
 			}
 		}
+
+		// restore outside tools
+		if(CONFIGURATION.services.disable_others) {
+			dijit.byId('toolbar').restoreTools();
+		}
+
 	},
 
 	/*
@@ -689,6 +700,10 @@ dojo.declare('GeoMOOSE.Tab.Service', [dijit.layout.BorderContainer], {
 	restoreTools: function() {
 		if(GeoMOOSE.isDefined(this._lastTool)) {
 			this.tools[this._lastTool].activate();
+		}
+		// disable outside tools
+		if(CONFIGURATION.services.disable_others) {
+			dijit.byId('toolbar').disableTools();
 		}
 	},
 
@@ -838,9 +853,7 @@ dojo.declare('GeoMOOSE.Tab.Service', [dijit.layout.BorderContainer], {
 
 	onHide: function() {
 		this.inherited(arguments);
-		if(CONFIGURATION.services.disable_hidden_tabs) {
-			this.disableTools();
-		}
+		this.disableTools();
 	},
 
 	onShow: function() {
@@ -849,6 +862,7 @@ dojo.declare('GeoMOOSE.Tab.Service', [dijit.layout.BorderContainer], {
 	},
 
 	_closeMe: function() {
+		this.disableTools();
 		dijit.byId('tabs').closeChild(this);
 	},
 

@@ -173,5 +173,30 @@ dojo.declare('GeoMOOSE.UI.Toolbar', [dijit.Toolbar], {
 
 	onActivateMapSource: function(map_source_name) {
 		this.activeMapSource = map_source_name;
+	},
+
+
+	toolsDisabled: false,
+
+	disableTools: function() {
+		if(!this.toolsDisabled) {
+			for(var tool in this.tools) {
+				var t = this.tools[tool];
+				t.set('old-state', t.get('disabled'));
+				t.set('disabled', true);
+			}
+
+			this.toolsDisabled = true;
+		}
+	},
+
+	restoreTools: function() {
+		if(this.toolsDisabled) {
+			for(var tool in this.tools ){
+				var t = this.tools[tool];
+				t.set('disabled', t.get('old-state'));
+			}
+			this.toolsDisabled = false;
+		}
 	}
 });
