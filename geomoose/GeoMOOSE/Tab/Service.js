@@ -88,6 +88,10 @@ dojo.declare('GeoMOOSE.Tab.Service', [dijit.layout.BorderContainer], {
 			this.tools[add_tools[i]].events.register('featureadded', this, this._onFeatureAdded);
 		}
 
+		// modified features go through the layer and 
+		//  *not* the tool
+		this.drawing_layer.events.register('afterfeaturemodified', this, this._onFeatureAdded);
+
 		/* TODO: Make this right.  It is VERY, VERY, VERY wrong... */
 		this.input_types = {};
 		for(var x in GeoMOOSE.Services.InputType) {
@@ -331,11 +335,11 @@ dojo.declare('GeoMOOSE.Tab.Service', [dijit.layout.BorderContainer], {
 	geotools: {
 		'pan' : {
 			'status' : true,
-			'title': 'Navigate'
+			'title': 'Pan'
 		}, 
 		'edit-polygon' : {
 			'status' : false,
-			'title' : 'Edit Polygon'
+			'title' : 'Edit Shape'
 		},
 		'point' : {
 			'status' : true,
