@@ -24,3 +24,12 @@ Installing
 	# this will download "jsts" to the "node_modules" directory.
 	npm install 
 
+Add JSTS and Client Buffer to `geomoose.html`
+---------------------------------------------
+
+::
+
+	<script type="text/javascript" src="extensions/ClientBuffer/node_modules/jsts/lib/javascript.util.js"></script>
+	<script type="text/javascript" src="extensions/ClientBuffer/node_modules/jsts/lib/jsts.js"></script>
+	<script type="text/javascript" src="extensions/ClientBuffer/ClientBuffer.js"></script>
+
