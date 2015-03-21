@@ -1,0 +1,8 @@
+{
+	"name" : "ClientBuffer",
+	"version" : "0.1.0",
+	"description" : "GeoMOOSE Extension to Allow Client-side Shape Bufffering",
+	"dependencies" : {
+		"jsts" : "0.15.0"
+	}
+}
