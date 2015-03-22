@@ -700,6 +700,8 @@ dojo.declare('GeoMOOSE.Tab.Service', [dijit.layout.BorderContainer], {
 	onFinish: function() {
 	},
 
+	onSelectionFeatureChanged: function(event) {
+	},
 
 	_onFeatureAdded: function(event) {
 		/* clear the other features */
@@ -719,6 +721,8 @@ dojo.declare('GeoMOOSE.Tab.Service', [dijit.layout.BorderContainer], {
 			}
 		}
 		step.setAttribute('wkt', wkt);
+
+		this.onSelectionFeatureChanged(event);
 
 		var OutputFormat = OpenLayers.Format.WKT;
 		var outputType = new String(step.getAttribute('format')).toLowerCase();

@@ -28,7 +28,7 @@ BufferLengthInput = OpenLayers.Class(GeoMOOSE.Services.InputType.Length, {
 	},
 
 	getTitle: function() {
-		return 'Buffer: ';
+		return 'Selection Shape Buffer: ';
 	},
 
 	_setValue: function() {
@@ -53,12 +53,34 @@ dojo.declare('ClientBufferServiceTab', [GeoMOOSE.Tab.Service], {
 	previewLayer: null,
 	/** Input for buffer values. */
 	bufferInput: null,
+
+	/** Style applied to the preview layer. */
+	previewLayerStyle: {
+		strokeColor: "#aa33aa",
+		fillOpacity: 0.0
+	},
 	
 	constructor: function() {
-		this.previewLayer = new OpenLayers.Layer.Vector(GeoMOOSE.id());
+		var style_map = new OpenLayers.StyleMap(this.previewLayerStyle);
+		this.previewLayer = new OpenLayers.Layer.Vector(GeoMOOSE.id(), {styleMap: style_map});
 		Map.addLayer(this.previewLayer);
 
 		this.inherited(arguments);
+	},
+
+	onSelectionFeatureChanged: function(event) {
+		var wkt_format = new OpenLayers.Format.WKT();
+		var buffer_length = this.bufferInput.getValue();
+		// get the new WKT
+		var wkt = wkt_format.write(event.feature);
+		// buffer it
+		var new_wkt = this.bufferDrawnShape(wkt, buffer_length);
+
+		// set the feature geometry to the new buffered
+		//  geo before it is saved in the XML.
+		event.feature = wkt_format.read(new_wkt);
+
+		//step.setAttribute('wkt', new_wkt);
 	},
 
 	renderPreviewFeatures: function(features) {
@@ -72,26 +94,26 @@ dojo.declare('ClientBufferServiceTab', [GeoMOOSE.Tab.Service], {
 		Map.setLayerIndex(this.drawing_layer, Map.getNumLayers()-1);
 	},
 
-	bufferDrawnShape: function(step, buffer) {
-		var wkt = step.getAttribute('wkt');
-
-		var wkt_reader = new jsts.io.WKTReader();
-		var wkt_writer = new jsts.io.WKTWriter();
-
+	bufferDrawnShape: function(wkt, bufferLength) {
 		var buffered_wkt = wkt;
-		var buffer = parseFloat(buffer);
 
-		if(buffer != 0) {
+		var buffer = parseFloat(bufferLength);
+
+		if(buffer != 0 && !isNaN(buffer)) {
+			var wkt_reader = new jsts.io.WKTReader();
+			var wkt_writer = new jsts.io.WKTWriter();
+
 			var feature = wkt_reader.read(wkt);
 			var buffered_feature = feature.buffer(buffer);
 
 			buffered_wkt = wkt_writer.write(buffered_feature);
 
 			// convert the buffered_wkt to the a feature
-			//var ol_parser = new jsts.io.OpenLayersParser();
 			var parser = new OpenLayers.Format.WKT();
 			this.renderPreviewFeatures(parser.read(buffered_wkt));
 		}
+
+		return buffered_wkt;
 	},
 
 	afterSpatialStep: function(step, parentId, settingsObj) {
@@ -102,10 +124,28 @@ dojo.declare('ClientBufferServiceTab', [GeoMOOSE.Tab.Service], {
 			id: buffer_id
 		}, p);
 
-		var input = new BufferLengthInput();
+		var options = {};
+		if(step.getAttribute('buffer-length')) {
+			options.value = parseFloat(step.getAttribute('buffer-length'));
+		}
+		if(step.getAttribute('buffer-units')) {
+			options.units = step.getAttribute('buffer-units'); 
+		}
+
+		var input = new BufferLengthInput(null, options);
+		this.bufferInput = input;
+
 		input.renderHTML(buffer_id);
 		input.onChange = dojo.hitch(this, function(meters) {
-			this.bufferDrawnShape(step, meters);
+			//this.bufferDrawnShape(step.getAttribute('wkt'), meters);
+			var wkt_format = new OpenLayers.Format.WKT();
+			var feature = wkt_format.read(step.getAttribute('wkt'));
+
+			this._onFeatureAdded({feature: feature});
+			step.setAttribute('buffer-length', meters);
+
+			var units = this.bufferInput._select.get('value');
+			step.setAttribute('buffer-units', units);
 		});
 
 		// nice break

@@ -609,6 +609,16 @@ GeoMOOSE.Services.InputType.Length = OpenLayers.Class(GeoMOOSE.Services.InputTyp
 		if(input && input.getAttribute('units')) {
 			this.units = input.getAttribute('units');
 		}
+
+		if(options) {
+			console.log('options set', options.units, options.value);
+			if(options.units) {
+				this.units = options.units;
+			}
+			if(options.value) {
+				this.value = options.value;
+			}
+		}
 	},
 
 	renderHTML: function(parent_id) {
