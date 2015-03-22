@@ -28,22 +28,30 @@ THE SOFTWARE.
  */
 
 HashTrack = new OpenLayers.Class(GeoMOOSE.UX.Extension, {
-	initialCenter: null,
-	initialZoom: null,
+	center: null,
+	zoomLevel: null,
 
-	init: function(map) {
+
+	parseHashTag: function() {
 		var args = dojo.queryToObject(''+window.location.hash.substring(1));
-		console.log('Args?', args);
+
+		this.center = null;
 		if(args.l) {
 			var split = args.l.split(',');
 
-			this.initialCenter = new OpenLayers.LonLat();
-			this.initialCenter.lat = parseFloat(split[0]);
-			this.initialCenter.lon = parseFloat(split[1]);
-			this.initialZoom = parseFloat(split[2]);
+			this.center = new OpenLayers.LonLat();
+			this.center.lat = parseFloat(split[0]);
+			this.center.lon = parseFloat(split[1]);
+			this.zoomLevel = parseFloat(split[2]);
+		}
 
+	},
+
+	init: function(map) {
+		this.parseHashTag();
+		if(this.center != null) {
 			GeoMOOSE.register('onMapbookLoaded', this, function() {
-				map.setCenter(this.initialCenter, this.initialZoom);
+				map.setCenter(this.center, this.zoomLevel);
 			});
 		}
 		map.events.register('moveend', this, this.mapMoved);
@@ -58,6 +66,13 @@ HashTrack = new OpenLayers.Class(GeoMOOSE.UX.Extension, {
 
 	load: function() {
 		GeoMOOSE.register('onMapCreated', this, this.init);
+
+		dojo.connect(window, 'hashchange', dojo.hitch(this, function() {
+			this.parseHashTag();
+			if(this.center != null) {
+				Map.setCenter(this.center, this.zoomLevel);
+			}
+		}));
 	},
 	
 	CLASS_NAME: "HashTrack"
