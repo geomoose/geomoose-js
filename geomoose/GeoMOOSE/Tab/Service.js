@@ -107,7 +107,7 @@ dojo.declare('GeoMOOSE.Tab.Service', [dijit.layout.BorderContainer], {
 		this.drawing_layer.events.register('afterfeaturemodified', this, this._onFeatureAdded);
 
 		this.tools['select_feature'].events.register('featurehighlighted', this, function(event) {
-			this.tools['select_feature'].unhighlight(event.feature);
+			this.tools['select_feature'].unselect(event.feature);
 			var useful_feature = event.feature.clone();
 
 			this._onFeatureAdded({feature: useful_feature});
