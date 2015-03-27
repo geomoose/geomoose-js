@@ -1,10 +1,10 @@
 <div data-dojo-attach-point="popupNode" 
 			class="GeoMoosePopup Popup ${classNames}">
 	<div class="Tail"></div>
-	<div data-dojo-attach-point="titleNode" class="PopupContents">
-		<div class="title">
+	<div class="PopupContents">
+		<div data-dojo-attach-point="closeBox" class="CloseBox"></div>
+		<div class="title" data-dojo-attach-point="titleNode"> 
 			${title}
-			<div data-dojo-attach-point="closeBox" class="CloseBox"></div>
 		</div>
 		<div class="content" data-dojo-attach-point="contentsNode">
 		</div>

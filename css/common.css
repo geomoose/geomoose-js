@@ -278,6 +278,10 @@ body {
 /*** This is some new stuff for 2.6.  It will get reorg'd in a new minor revision to supprot
  CSS Compilation ***/
 
+#toolbar .dijitDisabled {
+ 	opacity: .5;
+}
+
 .sprite-control-activate {
 	background-image: url('../images/activate.png') !important;
 	background-position: 0px 0px !important;

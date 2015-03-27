@@ -88,6 +88,10 @@ dojo.declare('GeoMOOSE.Tab.Service', [dijit.layout.BorderContainer], {
 			this.tools[add_tools[i]].events.register('featureadded', this, this._onFeatureAdded);
 		}
 
+		// modified features go through the layer and 
+		//  *not* the tool
+		this.drawing_layer.events.register('afterfeaturemodified', this, this._onFeatureAdded);
+
 		/* TODO: Make this right.  It is VERY, VERY, VERY wrong... */
 		this.input_types = {};
 		for(var x in GeoMOOSE.Services.InputType) {
@@ -124,6 +128,11 @@ dojo.declare('GeoMOOSE.Tab.Service', [dijit.layout.BorderContainer], {
 		/* oops, no steps! */
 		this.steps = [];
 		var rootName = 'service-'+this.unique_name;
+
+		if(CONFIGURATION.services.disable_others) {
+			dijit.byId('toolbar').disableTools();
+		}
+
 		if(steps.length == 0) {
 			var step0_name = rootName + '0';
 			var step0 = dojo.create('div', {'id' : step0_name}, content);
@@ -318,40 +327,13 @@ dojo.declare('GeoMOOSE.Tab.Service', [dijit.layout.BorderContainer], {
 			}
 		}
 
+		this.afterInputStep(step, parentId, settingsObj);
+
 		return nUserInputs;
 	},
 
-
-	/* Maybe I should move this into configuration ... maybe ... */
-	geotools: {
-		'pan' : {
-			'status' : true,
-			'title': 'Navigate'
-		}, 
-		'edit-polygon' : {
-			'status' : false,
-			'title' : 'Edit Polygon'
-		},
-		'point' : {
-			'status' : true,
-			'title' : 'Draw Point'
-		}, 
-		'line' : {
-			'status' : true,
-			'title' : 'Draw Line'
-		}, 
-		'polygon' : {
-			'status' : true,
-			'title' : 'Draw Polygon'
-		},
-		'box' : {
-			'status' : false,
-			'title' : 'Draw Box'
-		}
+	afterInputStep: function() {
 	},
-
-
-
 
 	renderSpatialStep: function(step, parentId, settingsObj) {
 		/* put our drawing layer at the top, and set it visible */
@@ -412,17 +394,20 @@ dojo.declare('GeoMOOSE.Tab.Service', [dijit.layout.BorderContainer], {
 		var radio_buttons = {};
 		var first_non_navigate_tool = null;
 
-		for(var v in this.geotools) {
-			if(parseBoolean(step.getAttribute(v), this.geotools[v]['status'])) {
+		var geotools = CONFIGURATION.services.tools;
+
+		for(var v in geotools) {
+			var geotool = geotools[v];
+
+			if(parseBoolean(step.getAttribute(v), geotools[v]['status'])) {
 				var input_div = dojo.create('div', {}, p);
 				var radio_span = dojo.create('span', {}, input_div);
 				var label_span = dojo.create('span', {
-					'innerHTML' : this.geotools[v].title
+					'innerHTML' : geotools[v].title
 				}, input_div);
 				if(!GeoMOOSE.isDefined(first_non_navigate_tool) && v != 'pan') {
 					first_non_navigate_tool = v;
 				}
-
 
 				radio_buttons[v] = new dijit.form.RadioButton({
 					'name' : step_id,
@@ -452,9 +437,15 @@ dojo.declare('GeoMOOSE.Tab.Service', [dijit.layout.BorderContainer], {
 			radio_buttons[first_non_navigate_tool].set('checked', true);
 		}
 
+		this.afterSpatialStep(step, parentId, settingsObj);
+
 		/* return the number of inputs, since the spatial step is one,
 			include it in the count */
 		return 1 + this.renderInputStep(step, parentId, settingsObj);
+	},
+
+	afterSpatialStep: function(step, parentId, settingsObj) {
+
 	},
 
 
@@ -680,6 +671,12 @@ dojo.declare('GeoMOOSE.Tab.Service', [dijit.layout.BorderContainer], {
 				this._lastTool = t;
 			}
 		}
+
+		// restore outside tools
+		if(CONFIGURATION.services.disable_others) {
+			dijit.byId('toolbar').restoreTools();
+		}
+
 	},
 
 	/*
@@ -690,6 +687,10 @@ dojo.declare('GeoMOOSE.Tab.Service', [dijit.layout.BorderContainer], {
 		if(GeoMOOSE.isDefined(this._lastTool)) {
 			this.tools[this._lastTool].activate();
 		}
+		// disable outside tools
+		if(CONFIGURATION.services.disable_others) {
+			dijit.byId('toolbar').disableTools();
+		}
 	},
 
 	onStart: function() {
@@ -699,6 +700,8 @@ dojo.declare('GeoMOOSE.Tab.Service', [dijit.layout.BorderContainer], {
 	onFinish: function() {
 	},
 
+	onSelectionFeatureChanged: function(event) {
+	},
 
 	_onFeatureAdded: function(event) {
 		/* clear the other features */
@@ -718,6 +721,8 @@ dojo.declare('GeoMOOSE.Tab.Service', [dijit.layout.BorderContainer], {
 			}
 		}
 		step.setAttribute('wkt', wkt);
+
+		this.onSelectionFeatureChanged(event);
 
 		var OutputFormat = OpenLayers.Format.WKT;
 		var outputType = new String(step.getAttribute('format')).toLowerCase();
@@ -838,9 +843,7 @@ dojo.declare('GeoMOOSE.Tab.Service', [dijit.layout.BorderContainer], {
 
 	onHide: function() {
 		this.inherited(arguments);
-		if(CONFIGURATION.services.disable_hidden_tabs) {
-			this.disableTools();
-		}
+		this.disableTools();
 	},
 
 	onShow: function() {
@@ -849,6 +852,7 @@ dojo.declare('GeoMOOSE.Tab.Service', [dijit.layout.BorderContainer], {
 	},
 
 	_closeMe: function() {
+		this.disableTools();
 		dijit.byId('tabs').closeChild(this);
 	},
 
