@@ -62,6 +62,8 @@ dojo.require('GeoMOOSE.Tab.Catalog.LayerControl.DrawLine');
 dojo.require('GeoMOOSE.Tab.Catalog.LayerControl.DrawPolygon');
 dojo.require('GeoMOOSE.Tab.Catalog.LayerControl.EditShape');
 dojo.require('GeoMOOSE.Tab.Catalog.LayerControl.EditAttributes');
+dojo.require('GeoMOOSE.Tab.Catalog.LayerControl.RemoveFeature');
+dojo.require('GeoMOOSE.Tab.Catalog.LayerControl.RemoveAllFeatures');
 
 dojo.require('GeoMOOSE.ServiceManager');
 

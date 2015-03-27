@@ -62,6 +62,7 @@ var CONFIGURATION = {
 		'refresh',
 		'draw-point','draw-line','draw-polygon',
 		'edit-shape', 'edit-attributes',
+		'remove-feature', 'remove-all-features',
 		'cycle','legend','metadata'
 	],
 	/** layer_controls - object containing objects describing the layer controls. */
@@ -73,6 +74,8 @@ var CONFIGURATION = {
 		'draw-line' : {on: false, tip: 'Draw Line on ${layer}'},
 		'edit-shape' : {on: false, tip: 'Edit a shape in ${layer}'},
 		'edit-attributes' : {on: false, tip: 'Change attributes for a feature in ${layer}'},
+		'remove-feature' : {on: false, tip: 'Remove Feature from ${layer}'},
+		'remove-all-features' : {on: false, tip: 'Remove ALL Features from ${layer}'},
 		/* Up and down are essentially deprecated, Duck 06/09/2012 */
 		'up' : {on: false, tip: 'Move ${layer} up on the stack'},
 		'down' : {on: false, tip: 'Move ${layer} down on the stack'},
