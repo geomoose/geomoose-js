@@ -611,7 +611,6 @@ GeoMOOSE.Services.InputType.Length = OpenLayers.Class(GeoMOOSE.Services.InputTyp
 		}
 
 		if(options) {
-			console.log('options set', options.units, options.value);
 			if(options.units) {
 				this.units = options.units;
 			}
