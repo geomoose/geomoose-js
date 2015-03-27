@@ -65,6 +65,13 @@ dojo.declare('ClientBufferServiceTab', [GeoMOOSE.Tab.Service], {
 		this.previewLayer = new OpenLayers.Layer.Vector(GeoMOOSE.id(), {styleMap: style_map});
 		Map.addLayer(this.previewLayer);
 
+		dojo.connect(this, 'onClose', dojo.hitch(this, function() {
+			if(GeoMOOSE.isDefined(this.previewLayer)) {
+				Map.removeLayer(this.previewLayer);
+				this.previewLayer = null;
+			}
+		}));
+
 		this.inherited(arguments);
 	},
 
@@ -139,29 +146,21 @@ dojo.declare('ClientBufferServiceTab', [GeoMOOSE.Tab.Service], {
 		input.onChange = dojo.hitch(this, function(meters) {
 			//this.bufferDrawnShape(step.getAttribute('wkt'), meters);
 			var wkt_format = new OpenLayers.Format.WKT();
-			var feature = wkt_format.read(step.getAttribute('wkt'));
+			var wkt = step.getAttribute('wkt');
+			if(wkt) {
+				var feature = wkt_format.read(step.getAttribute('wkt'));
 
-			this._onFeatureAdded({feature: feature});
-			step.setAttribute('buffer-length', meters);
+				this._onFeatureAdded({feature: feature});
+				step.setAttribute('buffer-length', meters);
 
-			var units = this.bufferInput._select.get('value');
-			step.setAttribute('buffer-units', units);
+				var units = this.bufferInput._select.get('value');
+				step.setAttribute('buffer-units', units);
+			}
 		});
 
 		// nice break
 		dojo.create('br', {}, p);
-	},
-
-	onClose: function() {
-		if(GeoMOOSE.isDefined(this.previewLayer)) {
-			Map.removeLayer(this.previewLayer);
-			this.previewLayer = null;
-		}
-
-		this.inherited(arguments);
 	}
-
-
 });
 
 /** Client Buffer Extension loads the new ClientBufferServiceTab
