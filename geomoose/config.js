@@ -195,6 +195,11 @@ var CONFIGURATION = {
 			'box' : {
 				'status' : false,
 				'title' : 'Draw Box'
+			},
+			/** services.tools.choose_shape - Select a shape from a vector layer. */
+			'select-feature' : {
+				'status' : false,
+				'title' : 'Select a Drawing'
 			}
 		}
 	},

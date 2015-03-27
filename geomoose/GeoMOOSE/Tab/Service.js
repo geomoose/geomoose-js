@@ -77,6 +77,20 @@ dojo.declare('GeoMOOSE.Tab.Service', [dijit.layout.BorderContainer], {
 		this.tools['box'] = new OpenLayers.Control.DrawFeature(this.drawing_layer, GeoMOOSE.Handler.Box);
 		this.tools['edit-polygon'] = new OpenLayers.Control.ModifyFeature(this.drawing_layer);
 
+		// find the list of vector layers
+		var all_layers = [];
+		var vis_layers = GeoMOOSE.getVisibleLayers();
+
+		for(var i  = 0; i < vis_layers.length; i++) {
+			if(GeoMOOSE.isEditable(vis_layers[i])) {
+				all_layers.push(Application.getMapSource(vis_layers[i])._ol_layer);
+			}
+		}
+		this.tools['select-feature'] = new OpenLayers.Control.SelectFeature(all_layers, {
+							highlightOnly: true,
+							multiple: false
+						});
+
 		this.unique_name = GeoMOOSE.id();
 
 		for(var t in this.tools) {
@@ -91,6 +105,13 @@ dojo.declare('GeoMOOSE.Tab.Service', [dijit.layout.BorderContainer], {
 		// modified features go through the layer and 
 		//  *not* the tool
 		this.drawing_layer.events.register('afterfeaturemodified', this, this._onFeatureAdded);
+
+		this.tools['select-feature'].events.register('featurehighlighted', this, function(event) {
+			this.tools['select-feature'].unhighlight(event.feature);
+			var useful_feature = event.feature.clone();
+
+			this._onFeatureAdded({feature: useful_feature});
+		});
 
 		/* TODO: Make this right.  It is VERY, VERY, VERY wrong... */
 		this.input_types = {};
