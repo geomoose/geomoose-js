@@ -811,9 +811,10 @@ dojo.declare('GeoMOOSE.Tab.Service', [dijit.layout.BorderContainer], {
 	},
 
 	onClose: function() {
+		this.disableTools();
+
 		/** deactivate all our controls **/
 		for(var t in this.tools) {
-			this.tools[t].deactivate();
 			Map.removeControl(this.tools[t]);
 			delete this.tools[t];
 		}
@@ -842,8 +843,9 @@ dojo.declare('GeoMOOSE.Tab.Service', [dijit.layout.BorderContainer], {
 	},
 
 	onHide: function() {
-		this.inherited(arguments);
+		console.log('onHide');
 		this.disableTools();
+		this.inherited(arguments);
 	},
 
 	onShow: function() {
