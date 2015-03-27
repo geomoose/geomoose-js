@@ -57,6 +57,9 @@ dojo.require('GeoMOOSE.Tab.Catalog.LayerControl.Popups');
 dojo.require('GeoMOOSE.Tab.Catalog.LayerControl.Up');
 dojo.require('GeoMOOSE.Tab.Catalog.LayerControl.Fade');
 dojo.require('GeoMOOSE.Tab.Catalog.LayerControl.Legend');
+dojo.require('GeoMOOSE.Tab.Catalog.LayerControl.DrawPoint');
+dojo.require('GeoMOOSE.Tab.Catalog.LayerControl.DrawLine');
+dojo.require('GeoMOOSE.Tab.Catalog.LayerControl.DrawPolygon');
 
 dojo.require('GeoMOOSE.ServiceManager');
 
