@@ -86,7 +86,7 @@ dojo.declare('GeoMOOSE.Tab.Service', [dijit.layout.BorderContainer], {
 				all_layers.push(Application.getMapSource(vis_layers[i])._ol_layer);
 			}
 		}
-		this.tools['select-feature'] = new OpenLayers.Control.SelectFeature(all_layers, {
+		this.tools['select_feature'] = new OpenLayers.Control.SelectFeature(all_layers, {
 							highlightOnly: true,
 							multiple: false
 						});
@@ -106,8 +106,8 @@ dojo.declare('GeoMOOSE.Tab.Service', [dijit.layout.BorderContainer], {
 		//  *not* the tool
 		this.drawing_layer.events.register('afterfeaturemodified', this, this._onFeatureAdded);
 
-		this.tools['select-feature'].events.register('featurehighlighted', this, function(event) {
-			this.tools['select-feature'].unhighlight(event.feature);
+		this.tools['select_feature'].events.register('featurehighlighted', this, function(event) {
+			this.tools['select_feature'].unhighlight(event.feature);
 			var useful_feature = event.feature.clone();
 
 			this._onFeatureAdded({feature: useful_feature});
