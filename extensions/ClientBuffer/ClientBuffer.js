@@ -22,6 +22,8 @@ THE SOFTWARE.
 
 dojo.require('GeoMOOSE.Tab.Service');
 dojo.require('dijit.form.TextBox');
+dojo.require('dijit.Dialog');
+dojo.require('dijit.form.Button');
 
 
 /** Created a buffered shape
@@ -57,11 +59,13 @@ GeoMOOSE.bufferWkt = function(wkt, bufferLength) {
  *  
  */
 BufferLengthInput = OpenLayers.Class(GeoMOOSE.Services.InputType.Length, {
+	title: 'Selection Shape Buffer: ',
+
 	onChange: function() {
 	},
 
 	getTitle: function() {
-		return 'Selection Shape Buffer: ';
+		return this.title;
 	},
 
 	_setValue: function() {
@@ -75,6 +79,81 @@ BufferLengthInput = OpenLayers.Class(GeoMOOSE.Services.InputType.Length, {
 	},
 
 	"CLASS_NAME" : "BufferLengthInput"
+});
+
+/** Dialog to get the value of the buffer on a feature.
+ */
+dojo.declare('ClientBufferSizeDialog', [dijit.Dialog], {
+	promise: null,
+
+	title: "Buffer Size",
+
+	show: function() {
+		this.promise = new dojo.Deferred();
+		this.inherited(arguments);
+		return this.promise;
+	},
+
+	postCreate: function() {
+		this.inherited(arguments);
+
+		var parent_div = dojo.create('div', {});
+		this.set('content', parent_div);
+		dojo.style(parent_div, {
+			'width' : '300px', 'height' : '100px'
+		});
+
+		var message_div = dojo.create('div', {
+			innerHTML: "<b>Please enter the buffer size for this feature.</b>"
+		}, parent_div);
+
+		dojo.style(message_div, {
+			'padding' : '4px'
+		});
+
+		var edit_div = dojo.create('div', {}, parent_div);
+
+		var input = new BufferLengthInput(null, {});
+		input.title = "Buffer Size: ";
+		var buffer_id = GeoMOOSE.id();
+
+		// add a target for the input
+		dojo.create('div', {id: buffer_id}, edit_div);
+		input.renderHTML(buffer_id);
+
+		dojo.style(edit_div, {
+			paddingLeft: '4px',
+			paddingTop: '1em'
+		});
+
+		var control_div = dojo.create('div', {}, parent_div);
+
+		dojo.style(control_div, {
+			position: 'absolute',
+			bottom: 0,
+			padding: '4px'
+		});
+
+
+		var close_btn = dojo.create('button', {innerHTML: "Close"}, control_div);
+		new dijit.form.Button({
+			onClick: dojo.hitch(this, function() {
+				this.promise.reject();
+				this.hide();
+			})
+		}, close_btn);
+
+		var okay_btn = dojo.create('button', {innerHTML: "Okay"}, control_div);
+		new dijit.form.Button({
+			onClick: dojo.hitch(this, function() {
+				// TODO: read the buffer length input value.
+				this.promise.resolve(input.getValue());
+				this.hide();
+			})
+		}, okay_btn);
+
+			
+	}
 });
 
 /** Adds a Layer Control to allow drawn shapes to be buffered.
@@ -97,27 +176,42 @@ dojo.declare('ClientBufferLayerControl', [GeoMOOSE.Tab.Catalog.LayerControl], {
 		choose_feature.events.register('featurehighlighted', this, function(event) {
 			// clone the feature
 			var new_feature = event.feature.clone();
-			// remove it from the old layer
+
+			// unselect the old one
 			choose_feature.unselect(event.feature);
-			ol_layer.removeFeatures([event.feature]);
 
 			// buffer it
 			var parser = new OpenLayers.Format.WKT();
 			var wkt = parser.write(new_feature);
 
-			//TODO: Add dialog to add distance.
-			var buffered_wkt = GeoMOOSE.bufferWkt(wkt, 1000);
-			var buffered_feature = parser.read(buffered_wkt);
 
-			// add the new feature back to the layer
-			new_feature.geometry = buffered_feature.geometry;
-			ol_layer.addFeatures([new_feature]);
-			ol_layer.redraw();
-			
-			// deactivate the "choose feature" tool.
-			choose_feature.deactivate();
-			Map.removeControl(choose_feature);
-			choose_feature = null;
+			var d = new ClientBufferSizeDialog();
+			var promise = d.show();
+			promise.then(function(length) {
+				// remove it from the old layer
+				ol_layer.removeFeatures([event.feature]);
+
+				var buffered_wkt = GeoMOOSE.bufferWkt(wkt, length);
+				var buffered_feature = parser.read(buffered_wkt);
+
+				// add the new feature back to the layer
+				new_feature.geometry = buffered_feature.geometry;
+				ol_layer.addFeatures([new_feature]);
+				ol_layer.redraw();
+				
+				// deactivate the "choose feature" tool.
+				choose_feature.deactivate();
+				Map.removeControl(choose_feature);
+				choose_feature = null;
+			}, function() {
+				// failed/cancel
+
+				// deactivate the "choose feature" tool.
+				choose_feature.deactivate();
+				Map.removeControl(choose_feature);
+				choose_feature = null;
+			});
+
 		});
 
 		Map.addControl(choose_feature);
