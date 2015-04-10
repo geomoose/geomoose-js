@@ -32,7 +32,7 @@ import os
 # It's fine if they are smaller because they'll just get more padding,
 # larger than 20x20 and it'll get a little trickier.
 imagesRoot = '../images/';
-spriteFolders = ['toolbar/'];
+spriteFolders = ['silk/', 'geosilk/img/'];
 
 try:
 	os.remove(imageRoot+'all.png')
