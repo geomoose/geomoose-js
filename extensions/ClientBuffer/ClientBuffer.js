@@ -24,11 +24,19 @@ dojo.require('GeoMOOSE.Tab.Service');
 dojo.require('dijit.form.TextBox');
 
 
+/** Created a buffered shape
+ *  
+ *  @param wkt  Well Known Text of the feature.
+ *  @param bufferLength Float of ground units to buffer.
+ *
+ *  @returns New WKT of the buffered shape.
+ */
 GeoMOOSE.bufferWkt = function(wkt, bufferLength) {
 	var buffered_wkt = wkt;
 
 	var buffer = parseFloat(bufferLength);
 
+	// JSTS does all of the heavy lifting of the buffer.
 	if(buffer != 0 && !isNaN(buffer)) {
 		var wkt_reader = new jsts.io.WKTReader();
 		var wkt_writer = new jsts.io.WKTWriter();
@@ -37,7 +45,6 @@ GeoMOOSE.bufferWkt = function(wkt, bufferLength) {
 		var buffered_feature = feature.buffer(buffer);
 
 		buffered_wkt = wkt_writer.write(buffered_feature);
-
 	}
 
 	return buffered_wkt;
@@ -46,6 +53,9 @@ GeoMOOSE.bufferWkt = function(wkt, bufferLength) {
 
 
 
+/** A special class to describe a length for a buffer opeation.
+ *  
+ */
 BufferLengthInput = OpenLayers.Class(GeoMOOSE.Services.InputType.Length, {
 	onChange: function() {
 	},
@@ -67,6 +77,8 @@ BufferLengthInput = OpenLayers.Class(GeoMOOSE.Services.InputType.Length, {
 	"CLASS_NAME" : "BufferLengthInput"
 });
 
+/** Adds a Layer Control to allow drawn shapes to be buffered.
+ */
 dojo.declare('ClientBufferLayerControl', [GeoMOOSE.Tab.Catalog.LayerControl], {
 	classes: ['sprite-control-pan'],
 
@@ -83,23 +95,26 @@ dojo.declare('ClientBufferLayerControl', [GeoMOOSE.Tab.Catalog.LayerControl], {
 		});
 
 		choose_feature.events.register('featurehighlighted', this, function(event) {
-			console.log('selected feature');
+			// clone the feature
 			var new_feature = event.feature.clone();
+			// remove it from the old layer
+			choose_feature.unselect(event.feature);
+			ol_layer.removeFeatures([event.feature]);
+
+			// buffer it
 			var parser = new OpenLayers.Format.WKT();
-			var wkt = parser.write(event.feature);
+			var wkt = parser.write(new_feature);
+
+			//TODO: Add dialog to add distance.
 			var buffered_wkt = GeoMOOSE.bufferWkt(wkt, 1000);
 			var buffered_feature = parser.read(buffered_wkt);
 
-			console.log('buffered feature');
+			// add the new feature back to the layer
 			new_feature.geometry = buffered_feature.geometry;
-			console.log('updated geometry');
 			ol_layer.addFeatures([new_feature]);
-			ol_layer.removeFeatures([event.feature]);
 			ol_layer.redraw();
-			//refresh({force: true});
-			console.log('refreshed layer');
-
-			//choose_feature.unselect(event.feature);
+			
+			// deactivate the "choose feature" tool.
 			choose_feature.deactivate();
 			Map.removeControl(choose_feature);
 			choose_feature = null;
@@ -108,9 +123,6 @@ dojo.declare('ClientBufferLayerControl', [GeoMOOSE.Tab.Catalog.LayerControl], {
 		Map.addControl(choose_feature);
 
 		choose_feature.activate();
-
-
-	//	GeoMOOSE.activateLayerTool('point', {title: this.layer.title});
 	}
 });
 
@@ -160,7 +172,7 @@ dojo.declare('ClientBufferServiceTab', [GeoMOOSE.Tab.Service], {
 
 		// set the feature geometry to the new buffered
 		//  geo before it is saved in the XML.
-		return buffered_feature;
+		event.feature = buffered_feature;
 	},
 
 	renderPreviewFeatures: function(features) {
