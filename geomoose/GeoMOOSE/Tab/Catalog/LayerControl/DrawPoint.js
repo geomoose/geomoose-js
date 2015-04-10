@@ -23,7 +23,7 @@ THE SOFTWARE.
 dojo.provide('GeoMOOSE.Tab.Catalog.LayerControl.DrawPoint');
 
 dojo.declare('GeoMOOSE.Tab.Catalog.LayerControl.DrawPoint', [GeoMOOSE.Tab.Catalog.LayerControl], {
-	classes: ['sprite-control-draw_point'],
+	classes: ['sprite-control-drawPoint'],
 
 	tip: 'CONFIGURATION.layer_controls["draw-point"].tip',
 

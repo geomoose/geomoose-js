@@ -23,7 +23,7 @@ THE SOFTWARE.
 dojo.provide('GeoMOOSE.Tab.Catalog.LayerControl.DrawPolygon');
 
 dojo.declare('GeoMOOSE.Tab.Catalog.LayerControl.DrawPolygon', [GeoMOOSE.Tab.Catalog.LayerControl], {
-	classes: ['sprite-control-draw_polygon'],
+	classes: ['sprite-control-drawPolygon'],
 
 	tip: 'CONFIGURATION.layer_controls["draw-polygon"].tip',
 

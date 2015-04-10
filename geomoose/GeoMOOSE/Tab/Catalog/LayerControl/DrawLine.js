@@ -23,7 +23,7 @@ THE SOFTWARE.
 dojo.provide('GeoMOOSE.Tab.Catalog.LayerControl.DrawLine');
 
 dojo.declare('GeoMOOSE.Tab.Catalog.LayerControl.DrawLine', [GeoMOOSE.Tab.Catalog.LayerControl], {
-	classes: ['sprite-control-draw_line'],
+	classes: ['sprite-control-drawPath'],
 
 	tip: 'CONFIGURATION.layer_controls["draw-line"].tip',
 
