@@ -241,12 +241,12 @@ body {
 
 .olControlOverviewMapMaximizeButton {
 	background-repeat: no-repeat;
-	background-image: url('../images/toolbar/add.png');
+	background-image: url('../images/silk/add.png');
 }
 
 .olControlOverviewMapMinimizeButton {
 	background-repeat: no-repeat;
-	background-image: url('../images/toolbar/delete.png');
+	background-image: url('../images/silk/delete.png');
 }
 
 *.olControlOverviewMapMinimizeButton > img {

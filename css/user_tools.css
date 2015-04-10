@@ -4,7 +4,7 @@
  */
 
 #tool-add_point {
-	background-image: url('../images/toolbar/add.png');
+	background-image: url('../images/silk/add.png');
 	background-position: 2 2;
 	background-repeat: no-repeat;
 	padding-left: 2px;
@@ -22,7 +22,7 @@
 }
 
 #tool-add_polygon {
-	background-image: url('../images/toolbar/add.png');
+	background-image: url('../images/silk/add.png');
 	background-position: 2 2;
 	background-repeat: no-repeat;
 	padding-left: 2px;
@@ -46,7 +46,7 @@
 #tool-print {
 	width: auto;
 	background-position: 2 2;
-	background-image: url('../images/toolbar/printer.png');
+	background-image: url('../images/silk/printer.png');
 }
 
 #tool-print .ToolContent {
@@ -135,7 +135,7 @@
 .sprite-control-animate_layers { background-position: 0 -40; }  .sprite-control-animate_layers-selected { background-position: -20 -40 !important; } 
 
 .my_tool_icon {
-background-image: url("images/toolbar/bell.png");
+background-image: url("images/silk/bell.png");
 width: 18px;
 height: 18px;
 }
