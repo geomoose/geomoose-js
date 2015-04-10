@@ -80,7 +80,7 @@ BufferLengthInput = OpenLayers.Class(GeoMOOSE.Services.InputType.Length, {
 /** Adds a Layer Control to allow drawn shapes to be buffered.
  */
 dojo.declare('ClientBufferLayerControl', [GeoMOOSE.Tab.Catalog.LayerControl], {
-	classes: ['sprite-control-pan'],
+	classes: ['sprite-control-transformFeature'],
 
 	tip: "CONFIGURATION.layer_controls.buffer.tip",
 
