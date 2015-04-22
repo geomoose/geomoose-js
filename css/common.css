@@ -442,3 +442,7 @@ body {
 	height: 300px;
 	padding: 2px;
 }
+
+.service-button {
+	font-size: 15px !important;
+}

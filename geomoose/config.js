@@ -179,6 +179,8 @@ var CONFIGURATION = {
 		highlight_layer: 'highlight/highlight',
 		/** services.disable_others - Toggle whether tools and other tabs should be disabled when starting a service. */
 		disable_others: true,
+		/** services.cancel_label - The label for the cancel button in the service tab. */
+		cancel_label: 'Close',
 
 		/** services.tools - default tools for spatial steps. */
 		tools: {

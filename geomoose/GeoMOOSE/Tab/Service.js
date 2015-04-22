@@ -208,12 +208,12 @@ dojo.declare('GeoMOOSE.Tab.Service', [dijit.layout.BorderContainer], {
 					prevButton.step = i-1;
 					prevButton.onclick = this._changeStep;
 				} else {
-					var cancelButton = document.createElement('input');
-					cancelButton.type = 'button';
-					cancelButton.value = 'Cancel';
-					left.appendChild(cancelButton);
-					cancelButton.className = 'service-button-back';
-					dojo.connect(cancelButton, 'onclick', dojo.hitch(this, this._closeMe));
+					new dijit.form.Button({
+						label: CONFIGURATION.services.cancel_label,
+						onClick: dojo.hitch(this, this._closeMe),
+						"iconClass" : "dijitIconDelete",
+						"class": "service-button"
+					}, dojo.create('button', {}, left));
 				}
 				if(i < steps.length - 1) {
 					var nextButton = document.createElement('button');
@@ -234,10 +234,7 @@ dojo.declare('GeoMOOSE.Tab.Service', [dijit.layout.BorderContainer], {
 		}
 
 		if(parseBoolean(this.service_xml.getAttribute('display-submit'), true) && parseBoolean(this.service_xml.getAttribute('display'), true)) {
-			var button = document.createElement('button');
-			button.id = 'submit-service';
-			button.innerHTML = buttonTitle;
-			button.onclick = dojo.hitch(this, function () {
+			var onclick = dojo.hitch(this, function () {
 				if(this.meetsRequirements()) {
 					//this.callService(this.service_xml.getAttribute('service-name'));	
 					this.callService();
@@ -246,10 +243,15 @@ dojo.declare('GeoMOOSE.Tab.Service', [dijit.layout.BorderContainer], {
 				}
 			});
 
-			var buttonParent = document.getElementById(submitParent);
-			buttonParent.appendChild(button);
+			new dijit.form.Button({
+				onClick: onclick,
+				"class": "service-button",
+				"iconClass" : "dijitIconFunction",
+				label: buttonTitle
+			}, dojo.create('button', {}, submitParent));
+
 			if(nInputs <= 0 || forceStart) {
-				button.onclick();
+				onclick();
 			}
 		/* this is duplicate logic from above,  but works in the case when we haven't
 		   actualy displayed the tab. */
