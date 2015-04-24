@@ -174,6 +174,22 @@ dojo.declare('GeoMOOSE.Tab.Service', [dijit.layout.BorderContainer], {
 				/* add this step the stack */
 				this.steps.push(div.id);
 
+				// render a help bubble as requested.
+				var help_texts = steps[i].getElementsByTagName('help-text');
+				var help_html = '';
+				for(var h = 0, hh = help_texts.length; h < hh; h++) {
+					help_html = OpenLayers.Util.getXmlNodeValue(help_texts[h]);
+				}
+
+				if(help_html != '') {
+					var help_div = document.createElement('div');
+					div.appendChild(help_div);
+					help_div.className = 'help-text';
+					help_div.innerHTML = help_html;
+				}
+
+
+
 				if(stepType == 'input') {
 					nInputs += this.renderInputStep(steps[i], div.id, settingsObj);
 				} else if(stepType == 'select' || stepType == 'spatial') {
