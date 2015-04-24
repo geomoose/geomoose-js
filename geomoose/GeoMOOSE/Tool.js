@@ -97,7 +97,7 @@ dojo.declare('GeoMOOSE.Tool', [GeoMOOSE._Tool, dijit.form.ToggleButton], {
  * Creates a tool that cannot be selcted.
  */
 
-dojo.declare('GeoMOOSE.UnselectableTool', [GeoMOOSE._Tool, dijit.form.Button], {
+dojo.declare('GeoMOOSE.UnselectableTool', [GeoMOOSE.Tool], {
 	selectable: false
 });
 
