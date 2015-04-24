@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2009, Dan "Ducky" Little & GeoMOOSE.org
+Copyright (c) 2009-2015, Dan "Ducky" Little & GeoMOOSE.org
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -20,12 +20,18 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-OpenLayers.Handler.MeasurePolygon = OpenLayers.Class(OpenLayers.Handler.Polygon, {
-	mousemove: function(evt) {
-		if(this.drawing) { 
-			this.callback("mousemove", [this.point.geometry, this.getGeometry()]);
-		}
-		OpenLayers.Handler.Polygon.prototype.mousemove.apply(this, arguments);
-		return true;
+dojo.provide('GeoMOOSE.Tab.Catalog.LayerControl.DrawLine');
+
+dojo.declare('GeoMOOSE.Tab.Catalog.LayerControl.DrawLine', [GeoMOOSE.Tab.Catalog.LayerControl], {
+	classes: ['sprite-control-drawPath'],
+
+	tip: 'CONFIGURATION.layer_controls["draw-line"].tip',
+
+	onClick: function() {
+		GeoMOOSE.activateMapSource(this.layer.src);
+		GeoMOOSE.activateLayerTool('line', {title: this.layer.title});
 	}
 });
+
+GeoMOOSE._registerLayerControl('draw-line', GeoMOOSE.Tab.Catalog.LayerControl.DrawLine);
+

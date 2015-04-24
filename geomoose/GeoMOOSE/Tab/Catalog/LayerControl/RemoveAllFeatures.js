@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2009-2012, Dan "Ducky" Little & GeoMOOSE.org
+Copyright (c) 2009-2015, Dan "Ducky" Little & GeoMOOSE.org
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -20,68 +20,18 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-ul.catalog {
-	list-style: none;
-	margin-left: 0px;
-	padding-left: 0px;
-	margin-top: 0px;
-	padding-top: 0px;
-}
+dojo.provide('GeoMOOSE.Tab.Catalog.LayerControl.RemoveAllFeatures');
 
-ul.catalog ul.catalog {
-	list-style: none;
-	margin-left: 0px;
-	padding-left: 15px;
-}
+dojo.declare('GeoMOOSE.Tab.Catalog.LayerControl.RemoveAllFeatures', [GeoMOOSE.Tab.Catalog.LayerControl], {
+	classes: ['sprite-control-clear_drawings'],
 
-.catalog-group {
-	background-image: url('../images/silk/folder.png');
-	background-repeat: no-repeat;
-}
+	tip: 'CONFIGURATION.layer_controls["remove-all-features"].tip',
 
-.catalog-group {
-	cursor: pointer;
-	display: block;
-}
+	onClick: function() {
+		GeoMOOSE.activateMapSource(this.layer.src);
+		GeoMOOSE.activateLayerTool('remove_all', {title: this.layer.title});
+	}
+});
 
-.catalog-indent,.catalog-group {
-	padding-left: 18px;
-}
+GeoMOOSE._registerLayerControl('remove-all-features', GeoMOOSE.Tab.Catalog.LayerControl.RemoveAllFeatures);
 
-
-ul.catalog-group-collapsed {
-	display: none;
-}
-
-ul.catalog-group-expanded {
-	display: static;
-}
-
-/* Changes the display of the tools in the catalog
- * display: block;  displays the tools on their own line
- * display: auto; displays the tools inline with the layer name
- */
-.catalog-controls-container {
-	display: block;
-}
-
-.catalog-legend-image {
-	display: block;
-}
-
-.catalog-inscale {
-}
-
-.catalog-outscale {
-	color: #999;
-
-
-}
-
-.ToggleControls {
-	cursor: pointer;
-}
-
-.catalog_legend_container {
-	padding-left: 18px;
-}

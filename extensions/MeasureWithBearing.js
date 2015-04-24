@@ -372,10 +372,12 @@ MeasureWithBearingExtension = new OpenLayers.Class(GeoMOOSE.UX.Extension, {
 	},
 
 	onHide: function () {
+		this.finish_measure();
 		this.measure_tool.deactivate();
 	},
 
 	onClose: function() {
+		this.finish_measure();
 		this.closeMeasure();
 		GeoMOOSE.activateDefaultTool();
 	},

@@ -22,13 +22,50 @@ THE SOFTWARE.
 
 dojo.require('GeoMOOSE.Tab.Service');
 dojo.require('dijit.form.TextBox');
+dojo.require('dijit.Dialog');
+dojo.require('dijit.form.Button');
 
+
+/** Created a buffered shape
+ *  
+ *  @param wkt  Well Known Text of the feature.
+ *  @param bufferLength Float of ground units to buffer.
+ *
+ *  @returns New WKT of the buffered shape.
+ */
+GeoMOOSE.bufferWkt = function(wkt, bufferLength) {
+	var buffered_wkt = wkt;
+
+	var buffer = parseFloat(bufferLength);
+
+	// JSTS does all of the heavy lifting of the buffer.
+	if(buffer != 0 && !isNaN(buffer)) {
+		var wkt_reader = new jsts.io.WKTReader();
+		var wkt_writer = new jsts.io.WKTWriter();
+
+		var feature = wkt_reader.read(wkt);
+		var buffered_feature = feature.buffer(buffer);
+
+		buffered_wkt = wkt_writer.write(buffered_feature);
+	}
+
+	return buffered_wkt;
+
+}
+
+
+
+/** A special class to describe a length for a buffer opeation.
+ *  
+ */
 BufferLengthInput = OpenLayers.Class(GeoMOOSE.Services.InputType.Length, {
+	title: 'Selection Shape Buffer: ',
+
 	onChange: function() {
 	},
 
 	getTitle: function() {
-		return 'Selection Shape Buffer: ';
+		return this.title;
 	},
 
 	_setValue: function() {
@@ -42,6 +79,145 @@ BufferLengthInput = OpenLayers.Class(GeoMOOSE.Services.InputType.Length, {
 	},
 
 	"CLASS_NAME" : "BufferLengthInput"
+});
+
+/** Dialog to get the value of the buffer on a feature.
+ */
+dojo.declare('ClientBufferSizeDialog', [dijit.Dialog], {
+	promise: null,
+
+	title: "Buffer Size",
+
+	show: function() {
+		this.promise = new dojo.Deferred();
+		this.inherited(arguments);
+		return this.promise;
+	},
+
+	postCreate: function() {
+		this.inherited(arguments);
+
+		var parent_div = dojo.create('div', {});
+		this.set('content', parent_div);
+		dojo.style(parent_div, {
+			'width' : '300px', 'height' : '100px'
+		});
+
+		var message_div = dojo.create('div', {
+			innerHTML: "<b>Please enter the buffer size for this feature.</b>"
+		}, parent_div);
+
+		dojo.style(message_div, {
+			'padding' : '4px'
+		});
+
+		var edit_div = dojo.create('div', {}, parent_div);
+
+		var input = new BufferLengthInput(null, {});
+		input.title = "Buffer Size: ";
+		var buffer_id = GeoMOOSE.id();
+
+		// add a target for the input
+		dojo.create('div', {id: buffer_id}, edit_div);
+		input.renderHTML(buffer_id);
+
+		dojo.style(edit_div, {
+			paddingLeft: '4px',
+			paddingTop: '1em'
+		});
+
+		var control_div = dojo.create('div', {}, parent_div);
+
+		dojo.style(control_div, {
+			position: 'absolute',
+			bottom: 0,
+			padding: '4px'
+		});
+
+
+		var close_btn = dojo.create('button', {innerHTML: "Close"}, control_div);
+		new dijit.form.Button({
+			onClick: dojo.hitch(this, function() {
+				this.promise.reject();
+				this.hide();
+			})
+		}, close_btn);
+
+		var okay_btn = dojo.create('button', {innerHTML: "Okay"}, control_div);
+		new dijit.form.Button({
+			onClick: dojo.hitch(this, function() {
+				// TODO: read the buffer length input value.
+				this.promise.resolve(input.getValue());
+				this.hide();
+			})
+		}, okay_btn);
+
+			
+	}
+});
+
+/** Adds a Layer Control to allow drawn shapes to be buffered.
+ */
+dojo.declare('ClientBufferLayerControl', [GeoMOOSE.Tab.Catalog.LayerControl], {
+	classes: ['sprite-control-transformFeature'],
+
+	tip: "CONFIGURATION.layer_controls.buffer.tip",
+
+	onClick: function() {
+		GeoMOOSE.activateMapSource(this.layer.src);
+		var ol_layer = Application.getMapSource(GeoMOOSE.getActiveMapSource())._ol_layer;
+
+		alert('Select a feature on the map.');
+		
+		var choose_feature = new OpenLayers.Control.SelectFeature(ol_layer, {
+			multiple: false
+		});
+
+		choose_feature.events.register('featurehighlighted', this, function(event) {
+			// clone the feature
+			var new_feature = event.feature.clone();
+
+			// unselect the old one
+			choose_feature.unselect(event.feature);
+
+			// buffer it
+			var parser = new OpenLayers.Format.WKT();
+			var wkt = parser.write(new_feature);
+
+
+			var d = new ClientBufferSizeDialog();
+			var promise = d.show();
+			promise.then(function(length) {
+				// remove it from the old layer
+				ol_layer.removeFeatures([event.feature]);
+
+				var buffered_wkt = GeoMOOSE.bufferWkt(wkt, length);
+				var buffered_feature = parser.read(buffered_wkt);
+
+				// add the new feature back to the layer
+				new_feature.geometry = buffered_feature.geometry;
+				ol_layer.addFeatures([new_feature]);
+				ol_layer.redraw();
+				
+				// deactivate the "choose feature" tool.
+				choose_feature.deactivate();
+				Map.removeControl(choose_feature);
+				choose_feature = null;
+			}, function() {
+				// failed/cancel
+
+				// deactivate the "choose feature" tool.
+				choose_feature.deactivate();
+				Map.removeControl(choose_feature);
+				choose_feature = null;
+			});
+
+		});
+
+		Map.addControl(choose_feature);
+
+		choose_feature.activate();
+	}
 });
 
 /** Overrides the default GeoMOOSE.Tab.Service methods to create
@@ -76,18 +252,21 @@ dojo.declare('ClientBufferServiceTab', [GeoMOOSE.Tab.Service], {
 	},
 
 	onSelectionFeatureChanged: function(event) {
-		var wkt_format = new OpenLayers.Format.WKT();
 		var buffer_length = this.bufferInput.getValue();
+		var wkt_format = new OpenLayers.Format.WKT();
 		// get the new WKT
 		var wkt = wkt_format.write(event.feature);
 		// buffer it
-		var new_wkt = this.bufferDrawnShape(wkt, buffer_length);
+		var new_wkt = GeoMOOSE.bufferWkt(wkt, buffer_length);
+
+		// convert the buffered_wkt to the a feature
+		var parser = new OpenLayers.Format.WKT();
+		var buffered_feature = parser.read(new_wkt);
+		this.renderPreviewFeatures(buffered_feature);
 
 		// set the feature geometry to the new buffered
 		//  geo before it is saved in the XML.
-		event.feature = wkt_format.read(new_wkt);
-
-		//step.setAttribute('wkt', new_wkt);
+		event.feature = buffered_feature;
 	},
 
 	renderPreviewFeatures: function(features) {
@@ -99,28 +278,6 @@ dojo.declare('ClientBufferServiceTab', [GeoMOOSE.Tab.Service], {
 
 		// this layer should be "1 under" the drawing layer.
 		Map.setLayerIndex(this.drawing_layer, Map.getNumLayers()-1);
-	},
-
-	bufferDrawnShape: function(wkt, bufferLength) {
-		var buffered_wkt = wkt;
-
-		var buffer = parseFloat(bufferLength);
-
-		if(buffer != 0 && !isNaN(buffer)) {
-			var wkt_reader = new jsts.io.WKTReader();
-			var wkt_writer = new jsts.io.WKTWriter();
-
-			var feature = wkt_reader.read(wkt);
-			var buffered_feature = feature.buffer(buffer);
-
-			buffered_wkt = wkt_writer.write(buffered_feature);
-
-			// convert the buffered_wkt to the a feature
-			var parser = new OpenLayers.Format.WKT();
-			this.renderPreviewFeatures(parser.read(buffered_wkt));
-		}
-
-		return buffered_wkt;
 	},
 
 	afterSpatialStep: function(step, parentId, settingsObj) {
@@ -177,6 +334,15 @@ ClientBuffer = new OpenLayers.Class(GeoMOOSE.UX.Extension, {
 			console.error("ClientBuffer disabled, JSTS is not present");
 			return false;
 		}
+
+		GeoMOOSE._registerLayerControl('buffer', ClientBufferLayerControl);
+
+		CONFIGURATION.layer_control_order.push('buffer');
+		CONFIGURATION.layer_controls['buffer'] = {
+			on: false,
+			tip: 'Buffer a feature from ${layer}'
+		}
+
 		GeoMOOSE.register('onMapbookLoaded', this, this.init);
 	},
 

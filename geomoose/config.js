@@ -55,11 +55,27 @@ var CONFIGURATION = {
 		'show_labels' : false /** toolbar.show_labels - Toggles whether the toolbar should render all labels by default. Defaults to false. */
 	},
 	/** layer_control_order - Changes the display order of the layer controls.  Stored as an array. */
-	'layer_control_order' : ['activate', 'popups', 'up','down','fade','unfade','refresh','cycle','legend','metadata'],
+	'layer_control_order' : [
+		'activate', 'popups', 
+		'up','down',
+		'fade','unfade',
+		'refresh',
+		'draw-point','draw-line','draw-polygon',
+		'edit-shape', 'edit-attributes',
+		'remove-feature', 'remove-all-features',
+		'cycle','legend','metadata'
+	],
 	/** layer_controls - object containing objects describing the layer controls. */
 	'layer_controls' : {
 		'activate' : {on: false, tip: 'Activate ${layer} for use with layer contextual tools.'},
 		'popups' : {on: false, tip: 'Show Floating Popups for ${layer}'},
+		'draw-polygon' : {on: false, tip: 'Draw Polygon on ${layer}'},
+		'draw-point' : {on: false, tip: 'Draw Point on ${layer}'},
+		'draw-line' : {on: false, tip: 'Draw Line on ${layer}'},
+		'edit-shape' : {on: false, tip: 'Edit a shape in ${layer}'},
+		'edit-attributes' : {on: false, tip: 'Change attributes for a feature in ${layer}'},
+		'remove-feature' : {on: false, tip: 'Remove Feature from ${layer}'},
+		'remove-all-features' : {on: false, tip: 'Remove ALL Features from ${layer}'},
 		/* Up and down are essentially deprecated, Duck 06/09/2012 */
 		'up' : {on: false, tip: 'Move ${layer} up on the stack'},
 		'down' : {on: false, tip: 'Move ${layer} down on the stack'},
@@ -163,6 +179,8 @@ var CONFIGURATION = {
 		highlight_layer: 'highlight/highlight',
 		/** services.disable_others - Toggle whether tools and other tabs should be disabled when starting a service. */
 		disable_others: true,
+		/** services.cancel_label - The label for the cancel button in the service tab. */
+		cancel_label: 'Close',
 
 		/** services.tools - default tools for spatial steps. */
 		tools: {
