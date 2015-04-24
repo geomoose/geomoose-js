@@ -106,6 +106,8 @@ MeasureWithBearingExtension = new OpenLayers.Class(GeoMOOSE.UX.Extension, {
 	 * Clear out the tab and setup the necessary bits for display.
 	 */
 	start_measure: function() {
+		this.measure_tool.cancel();
+		this.measure_tool.deactivate();
 		this.measure_tool.activate();
 
 		/* default this to being a "length" tool. */
@@ -226,6 +228,8 @@ MeasureWithBearingExtension = new OpenLayers.Class(GeoMOOSE.UX.Extension, {
 		this.id_ref['tbody'] = this.id();
 		tbody.id = this.id_ref['tbody'];
 		table.appendChild(tbody);
+
+		this.clear_log();
 	},
 
 	/*
