@@ -39,9 +39,7 @@ dojo.declare('GeoMOOSE.UI.Toolbar', [dijit.Toolbar], {
 	untoggleOthers: function() {
 		for(var tool_name in this.parent.tools) {
 			var tool = this.parent.tools[tool_name];
-			if(tool != this) {
-				tool.set('checked', false);
-			}
+			tool.set('checked', tool == this);
 		}
 	},
 
@@ -105,16 +103,16 @@ dojo.declare('GeoMOOSE.UI.Toolbar', [dijit.Toolbar], {
 			 */
 			if(tool_type == 'internal') {
 				tool.action = tool_xml.getAttribute('action');
-				dojo.connect(tool, 'onClick', this._internalToolAction);
+				dojo.connect(tool, 'onStart', this._internalToolAction);
 			} else if(tool_type == 'service') {
 				tool.service_name = tool_xml.getAttribute('service');
-				dojo.connect(tool, 'onClick', this._serviceToolAction);
+				dojo.connect(tool, 'onStart', this._serviceToolAction);
 			} else if(tool_type == 'javascript') {
 				tool.stuff_to_do = OpenLayers.Util.getXmlNodeValue(tool_xml);
-				dojo.connect(tool, 'onClick', this._javascriptToolAction);
+				dojo.connect(tool, 'onStart', this._javascriptToolAction);
 			} else if(tool_type == 'layer') {
 				tool.action = tool_xml.getAttribute('action');
-				dojo.connect(tool, 'onClick', this._layerToolAction);
+				dojo.connect(tool, 'onStart', this._layerToolAction);
 			}
 
 			tool._deactivateTools = this._deactivateTools;
