@@ -862,11 +862,13 @@ dojo.declare('GeoMOOSE.Tab.Service', [dijit.layout.BorderContainer], {
 				GeoMOOSE.changeLayerVisibility(CONFIGURATION.services.highlight_layer, false);
 			}
 		}
+
+		GeoMOOSE.activateDefaultTool();
+
 		return ret_code;
 	},
 
 	onHide: function() {
-		console.log('onHide');
 		this.disableTools();
 		this.inherited(arguments);
 	},
