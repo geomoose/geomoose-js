@@ -58,6 +58,8 @@ MeasureWithBearingExtension = new OpenLayers.Class(GeoMOOSE.UX.Extension, {
 		'clear' : 'Clear Log'
 	},
 
+	helpText: "Click on the map to start measuring. Double-click to finish measuring.",
+
 	is_area: false,
 
 	id_ref: {},
@@ -207,6 +209,11 @@ MeasureWithBearingExtension = new OpenLayers.Class(GeoMOOSE.UX.Extension, {
 			this.update_log_table();
 			this.update_measurements();
 		}, this);
+
+		var help = document.createElement('div');
+		p.appendChild(help);
+		help.className = 'help-text';
+		help.innerHTML = this.helpText;
 
 		/* startup log table */
 		var table = document.createElement('table');

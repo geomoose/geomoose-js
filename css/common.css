@@ -446,3 +446,18 @@ body {
 .service-button {
 	font-size: 15px !important;
 }
+
+.help-text {
+	font-size: 12px;
+	line-height: 14px;
+	color: #02149E;
+	background-color: #D8DCFF;
+	border: solid 1px #02149E;
+	border-radius: 3px;
+	margin: 5px;
+	padding: 4px 4px 4px 24px;
+
+	background-repeat: no-repeat;
+	background-image: url('../images/silk/help.png');
+	background-position: 4px 4px;
+}
