@@ -381,7 +381,7 @@ dojo.declare('GeoMOOSE.MapSource', null, {
 
 	redraw: function() {
 		if(this._ol_layer) {
-			this._ol_layer.redraw();
+			this._ol_layer.redraw(true);
 		}
 	},
 

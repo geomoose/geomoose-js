@@ -192,7 +192,7 @@ dojo.declare('GeoMOOSE.MapSource.WMS', [GeoMOOSE.MapSource], {
 	onLayersChange: function(path, visibility) {
 		this._ol_layer.params['LAYERS'] = this._getLayersList().join(',');
 		this.inherited(arguments);
-		this._ol_layer.redraw();
+		this._ol_layer.redraw(true);
 	},
 
 	getUrl: function() {
