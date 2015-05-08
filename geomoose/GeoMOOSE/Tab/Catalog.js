@@ -31,6 +31,7 @@ THE SOFTWARE.
 
 dojo.provide('GeoMOOSE.Tab.Catalog');
 dojo.require('GeoMOOSE.Tab');
+dojo.require('GeoMOOSE.Layer');
 
 dojo.require('dijit.form.RadioButton');
 dojo.require('dijit.form.CheckBox');
@@ -58,49 +59,25 @@ dojo.declare('GeoMOOSE.Tab._CatalogLayer', null, {
 		this.updateLegends();
 	},
 
-	constructor: function(parent_id, layer_xml, multiple, group_name) {
+	constructor: function(parent_id, layer, multiple, group_name) {
+		this.layer = layer;
+
 		/* render ... */
 		this.parent_id = parent_id;
 		var p = dojo.byId(parent_id);
 
-		var label = layer_xml.getAttribute('title');
-		var tip = layer_xml.getAttribute('tip');
 		var container;
-
-		if (tip != null) {
-			container = dojo.create('div', {title: tip}, p);
+		if (layer.tip != null) {
+			container = dojo.create('div', {title: layer.tip}, p);
 		} else {
 			container = dojo.create('div', null, p);
 		}
-
 		this.div = container;
 
 		var title = dojo.create('div', {}, container);
 
 		this.checkbox_id = GeoMOOSE.id();
 		var checkbox = dojo.create('span', {'id' : this.checkbox_id}, title);
-
-		/* convert the known layers into a hash of booleans */
-		this.paths = {};
-		var src = layer_xml.getAttribute('src');
-		this.src = src;
-		var paths;
-		if(GeoMOOSE.isDefined(src)) {
-			paths = src.split(':');
-			for(var i = 0; i < paths.length; i++) {
-				this.paths[paths[i]] = false;
-			}
-		}
-
-		/* Default to MapSource.Layer title if not given in catalog */
-		if(!label && paths && paths.length == 1) {
-			var ms = Application.getMapSource(paths[0]);
-			if(ms) {
-				label = ms.titles[paths[0]];
-			}
-		}
-		this.title = label;
-
 		var checkbox_class = dijit.form.CheckBox;
 		var construct_opts = {};
 
@@ -109,28 +86,34 @@ dojo.declare('GeoMOOSE.Tab._CatalogLayer', null, {
 			construct_opts['name'] = group_name;
 		}
 
+		// check the box if it has any layers on.
+		for(var path in this.layer.paths) {
+			if(this.layer.paths[path] === true) {
+				construct_opts['checked'] = true;
+				break;
+			}
+		}
+
 		var cbox = new checkbox_class(construct_opts, checkbox);
 		dojo.connect(cbox, 'onChange', dojo.hitch(this, function(v) {
 			/* toggle the paths values */
 			var paths = [];
-			for(var src in this.paths) {
-				this.paths[src] = v;
+			for(var src in this.layer.paths) {
+				this.layer.paths[src] = v;
 				paths.push(src);
 			}
 			GeoMOOSE.changeLayerVisibility(paths, v);
 		}));
 
-		var minscale = layer_xml.getAttribute('minscale');
-		var maxscale = layer_xml.getAttribute('maxscale');
 		/* store min/maxscale in the dom */
 		var label_span = dojo.create('span', {
-			'innerHTML' : label,
-			'data-minscale' : minscale,
-			'data-maxscale' : maxscale
+			'innerHTML' : layer.label,
+			'data-minscale' : layer.minscale,
+			'data-maxscale' : layer.maxscale
 		}, title);
 		dojo.addClass(label_span, 'catalog-layer-title');
 
-		if(!GeoMOOSE.inScale(parseFloat(minscale),parseFloat(maxscale))) {
+		if(!GeoMOOSE.inScale(parseFloat(layer.minscale),parseFloat(layer.maxscale))) {
 			dojo.addClass(label_span, 'catalog-outscale');
 		}
 
@@ -142,13 +125,10 @@ dojo.declare('GeoMOOSE.Tab._CatalogLayer', null, {
 		}
 		for(var i = 0; i < CONFIGURATION.layer_control_order.length; i++) {
 			var control_name = CONFIGURATION.layer_control_order[i];
-			var control_on = parseBoolean(layer_xml.getAttribute(control_name), CONFIGURATION.layer_controls[control_name].on);
-
-//			if(CONFIGURATION.layer_controls[control_name].on) {
-			if(control_on) {
+			if(layer.controls[control_name]) {
 				var control_class = GeoMOOSE._getLayerControl(control_name);
 				if(GeoMOOSE.isDefined(control_class)) {
-					var control = new control_class({layer: this});
+					var control = new control_class({layer: layer});
 					control.draw(controls);
 				}
 			}
@@ -160,15 +140,14 @@ dojo.declare('GeoMOOSE.Tab._CatalogLayer', null, {
 		}
 
 		/** check for the drawing tools **/
-		var drawing_tools = parseBoolean(layer_xml.getAttribute('drawing'), false);
-		if(drawing_tools) {	
-			if(!GeoMOOSE.isDefined(src)) {
+		if(layer.drawingTools) {	
+			if(!GeoMOOSE.isDefined(layer.src)) {
 				GeoMOOSE.warning('Cannot draw on this layer, the SRC is not defined.');
-			} else if(GeoMOOSE.isEditable(src)) {
+			} else if(GeoMOOSE.isEditable(layer.src)) {
 				/* Ahh, the sweet spot where things should actually work */
 
 			} else {
-				GeoMOOSE.warning('Drawing tool will not work on layer "'+src+'", it is not an editable map source type.');
+				GeoMOOSE.warning('Drawing tool will not work on layer "'+layer.src+'", it is not an editable map source type.');
 			}
 		}
 
@@ -179,42 +158,15 @@ dojo.declare('GeoMOOSE.Tab._CatalogLayer', null, {
 		dojo.addClass(legends, ['catalog_legend_container']);
 
 		/* check to see if we show the legends by default */
-		var show_legends = parseBoolean(layer_xml.getAttribute('show-legend'), true);
-		if(!show_legends) {
+		if(!layer.showLegends) {
 			dojo.style(legends, {'height' : 'auto', 'display' : 'none'});
-		}
-
-		var legends_xml = layer_xml.getElementsByTagName('legend');
-		this.dynamic_legends = (legends_xml.length <= 0);
-		if(!this.dynamic_legends) {
-			this.legend_urls = [];
-			for(var i = 0, len = legends_xml.length; i < len; i++) {
-				this.legend_urls.push(OpenLayers.Util.getXmlNodeValue(legends_xml[i]));
-			}
-		}
-
-		/** pull the metadata (as available( **/
-		this.metadata_url = '';
-		var metadata = layer_xml.getElementsByTagName('metadata');
-		if(metadata.length > 0) {
-			this.metadata_url = OpenLayers.Util.getXmlNodeValue(metadata[0]);
-		}
-		
-		var stat = parseBoolean(layer_xml.getAttribute('status'));
-		if(GeoMOOSE.isDefined(stat)) {
-			var paths = [];
-			for(var src in this.paths) {
-				this.paths[src] = stat;
-				paths.push(src);
-			}
-			GeoMOOSE.changeLayerVisibility(paths, stat);
 		}
 		p = null;
 	},
 
 	activateMapSource: function(activated_map_source) {
 		var found = false;
-		for(var p in this.paths) {
+		for(var p in this.layer.paths) {
 			if(activated_map_source == p) {
 				found = true;
 				break;
@@ -233,14 +185,14 @@ dojo.declare('GeoMOOSE.Tab._CatalogLayer', null, {
 		var changed = false;
 
 		for(var i = 0; i < changed_layers.length; i++) {
-			if(typeof(this.paths[changed_layers[i]]) == 'boolean') {
-				this.paths[changed_layers[i]] = change_state;
+			if(typeof(this.layer.paths[changed_layers[i]]) == 'boolean') {
+				this.layer.paths[changed_layers[i]] = change_state;
 				changed = true;
 			}
 		}
 
-		for(var path in this.paths) {
-			if(this.paths[path] === true) {
+		for(var path in this.layer.paths) {
+			if(this.layer.paths[path] === true) {
 				this.active_paths.push(path);
 			}
 		}
@@ -264,10 +216,10 @@ dojo.declare('GeoMOOSE.Tab._CatalogLayer', null, {
 		/* load the new legends */
 		if(dijit.byId(this.checkbox_id).get('checked')) {
 			var legend_urls = [];
-			if(this.dynamic_legends) {
+			if(this.layer.dynamicLegends) {
 				legend_urls = GeoMOOSE.getLegendUrls(this.active_paths);
 			} else {
-				legend_urls = this.legend_urls;
+				legend_urls = this.layer.legendUrls;
 			}
 			/* update the legends */
 			for(var i = 0, ii = legend_urls.length; i < ii; i++) {
@@ -327,7 +279,9 @@ dojo.declare('GeoMOOSE.Tab.Catalog', [GeoMOOSE.Tab], {
 		if(multiple == false) {
 			group_name = layer_xml.parentNode.getAttribute('title');
 		}
-		var layer = new GeoMOOSE.Tab._CatalogLayer(groupElementId, layer_xml, multiple, group_name);
+		var layerObj = new GeoMOOSE.Layer();
+		layerObj.parseLayerXml(layer_xml);
+		var layer = new GeoMOOSE.Tab._CatalogLayer(groupElementId, layerObj, multiple, group_name);
 		this.catalog_layers.push(layer);
 	},
 
