@@ -35,6 +35,16 @@ dojo.require('GeoMOOSE.MapSource');
 
 dojo.declare('GeoMOOSE.MapSource.Google', [GeoMOOSE.MapSource], {
 
+	/** Keeps the state as to whether google layers are
+	 *  actually available.
+	 */
+	googleAvailable: false,
+
+	/** It is not always necessary to show the warning message, this toggles
+	 *  whether it will be shown.
+	 */
+	showWarningMessage: true,
+
 	/**
 	 * Method: _createOLLayer(options)
 	 * Internal method to create the OpenLayers Layer object. 
@@ -59,12 +69,11 @@ dojo.declare('GeoMOOSE.MapSource.Google', [GeoMOOSE.MapSource], {
 	 *  mapbook_entry - XML fragment defining the MapSource
 	 */
 	constructor: function(mapbook_entry) {
-		if(!GeoMOOSE.isDefined(window.google) || !GeoMOOSE.isDefined(google.maps) || !GeoMOOSE.isDefined(google.maps.MapTypeId.TERRAIN)) {
-			var message = "Warning, this application has a Google Maps layer defined in the mapbook, but the Google Maps library has not been included."
-			GeoMOOSE.error(message);
-
-			this.title = 'No Google Lib';
+		this.googleAvailable = !(!GeoMOOSE.isDefined(window.google) || !GeoMOOSE.isDefined(google.maps) || !GeoMOOSE.isDefined(google.maps.MapTypeId.TERRAIN));
+		if(!this.googleAvailable) { 
+			// create a dummy layer
 			this._ol_layer = this._createBlankLayer(this.title);
+			// abort the creation early.
 			return false;
 		}
 		/* OpenLayers internal options */
@@ -94,6 +103,7 @@ dojo.declare('GeoMOOSE.MapSource.Google', [GeoMOOSE.MapSource], {
 	 */
 	addToMap: function(map) {
 		this.inherited(arguments);
+		this.showWarningMessage = false;
 		this.onLayersChange();
 	},
 
@@ -103,8 +113,15 @@ dojo.declare('GeoMOOSE.MapSource.Google', [GeoMOOSE.MapSource], {
 	 */
 
 	onLayersChange: function(path, visibility) {
-		this.inherited(arguments);
-		this._ol_layer.redraw();
+		if(this.googleAvailable) {
+			this.inherited(arguments);
+			this._ol_layer.redraw();
+		} else if(this.showWarningMessage) {
+			// throw up a warning to the user
+			var message = "Warning, this application has a Google Maps layer defined in the mapbook, but the Google Maps library has not been included. This could be due to a configuration error by the Administrator or a lack of access to the Internet.";
+			GeoMOOSE.error(message);
+		}
+		this.showWarningMessage = true;
 	}
 });
 
