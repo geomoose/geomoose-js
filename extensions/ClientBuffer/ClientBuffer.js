@@ -26,6 +26,18 @@ dojo.require('dijit.Dialog');
 dojo.require('dijit.form.Button');
 
 
+/** Get the UTM Zone for a Shape
+ *
+ * @param longitude - Representative Longitude for the shape
+ *
+ * @returns An EPSG for the appropriate UTM Zone
+ */
+GeoMOOSE.getUtmZone = function(longitude) {
+	// This is the same formula as is in the config.php code,
+	//  I do not have a citation for the validity of the forumula.
+	return Math.ceil((longitude / 6.0) + 30)+1;
+}
+
 /** Created a buffered shape
  *  
  *  @param wkt  Well Known Text of the feature.
@@ -40,13 +52,34 @@ GeoMOOSE.bufferWkt = function(wkt, bufferLength) {
 
 	// JSTS does all of the heavy lifting of the buffer.
 	if(buffer != 0 && !isNaN(buffer)) {
+		// OpenLayers has built-in projection capabilities
+		//  while JSTS has the ability to do transformation,
+		//  everything here is laundered around as WKT
+		var wkt_format = new OpenLayers.Format.WKT();
+		var ol_feature = wkt_format.read(wkt);
+		// to lat,lon
+		ol_feature.geometry.transform(Map.getProjection(), 'EPSG:4326')
+		// get the UTM zone for the shape
+		var bounds = ol_feature.geometry.getBounds();
+		var utm_zone = GeoMOOSE.getUtmZone(bounds.left);
+		var north = bounds.top > 0 ? 'north' : 'south';
+		// define a UTM projection
+		var proj_id = 'EPSG:'+(32600+utm_zone);
+		var proj_string = '+proj=utm +zone='+utm_zone+' +'+north+'+datum=WGS84 +units=m +no_defs'
+		// definte the projection for PROJ
+		Proj4js.defs[proj_id] = proj_string;
+
+		ol_feature.geometry.transform('EPSG:4326', proj_id);
+		var projected_wkt = wkt_format.write(ol_feature);
+
 		var wkt_reader = new jsts.io.WKTReader();
 		var wkt_writer = new jsts.io.WKTWriter();
 
-		var feature = wkt_reader.read(wkt);
-		var buffered_feature = feature.buffer(buffer);
-
-		buffered_wkt = wkt_writer.write(buffered_feature);
+		var feature = wkt_reader.read(projected_wkt);
+		var buffered_feature = wkt_format.read(wkt_writer.write(feature.buffer(buffer)));
+		// back to map projection
+		buffered_feature.geometry.transform(proj_id, Map.getProjection())
+		buffered_wkt = wkt_format.write(buffered_feature);
 	}
 
 	return buffered_wkt;

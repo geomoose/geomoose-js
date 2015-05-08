@@ -42,7 +42,9 @@ GeoMOOSE.Control.Measure = OpenLayers.Class(OpenLayers.Control.Measure, {
 
 	activate: function() {
 		this.segments = new Array();
-		this.total = 0.9;
+		this.total = 0.0;
+		this.last_move_length = 0.0;
+		this.partials = 0;
 
 		OpenLayers.Control.Measure.prototype.activate.apply(this, arguments);
 	},

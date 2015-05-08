@@ -76,13 +76,17 @@ dojo.declare('GeoMOOSE._Tool', null, {
 dojo.declare('GeoMOOSE.Tool', [GeoMOOSE._Tool, dijit.form.ToggleButton], {
 	selectable: true,
 
+	onStart: function() {
+	},
+
 	
 	onClick: function() {
 		/** this is a small hack to make sure that the button stays selected. **/
 		if(!this.get('checked')) {
 			this.set('checked', true);
 		} else {
-			this.inherited(arguments);
+			//this.inherited(arguments);
+			this.onStart();
 		}
 		this.changeCursor();
 	}
@@ -93,7 +97,7 @@ dojo.declare('GeoMOOSE.Tool', [GeoMOOSE._Tool, dijit.form.ToggleButton], {
  * Creates a tool that cannot be selcted.
  */
 
-dojo.declare('GeoMOOSE.UnselectableTool', [GeoMOOSE._Tool, dijit.form.Button], {
+dojo.declare('GeoMOOSE.UnselectableTool', [GeoMOOSE.Tool], {
 	selectable: false
 });
 
