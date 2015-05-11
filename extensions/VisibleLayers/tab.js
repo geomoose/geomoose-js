@@ -69,7 +69,7 @@ dojo.declare('extensions.VisibleLayers.tab', [GeoMOOSE.Tab, dijit._Widget, dijit
 				} else if(Application.getMapSource(path).displayInLayerSwitcher) {
 					this.layers[group] = new GeoMOOSE.Tab._CatalogLayer(this.parentId,
 								Application.getMapSource(path).asLayer(),
-								false, '');
+								true, '');
 
 					this.layers[group].getLayerIndex = function() {
 						var mapSource = Application.getMapSource(this.layer.src);
