@@ -49,6 +49,10 @@ dojo.declare('GeoMOOSE.Layer', null, {
 
 	_commonParser: function(xml) {
 		this.label = xml.getAttribute('title');
+		// fall back to the "name" attribute if "title" is not available.
+		if(!GeoMOOSE.isDefined(this.label)) {
+			this.label = xml.getAttribute('name');
+		}
 		this.title = this.label;
 
 		this.tip = xml.getAttribute('tip');
@@ -110,7 +114,23 @@ dojo.declare('GeoMOOSE.Layer', null, {
 		}
 	},
 
-	parseFromMapSource: function() {
+	parseFromMapSource: function(mapSourceXml) {
+		this._commonParser(mapSourceXml);
+
+		var layers = mapSourceXml.getElementsByTagName('layer');
+		var name = mapSourceXml.getAttribute('name');
+
+		this.src = name;
+
+		this.paths = {};
+		for(var i = 0; i < layers.length; i++) {
+			var l = layers[i];
+			var on = parseBoolean(l.getAttribute('status'));
+			var layer_name = l.getAttribute('name');
+			var path = name+'/'+layer_name;
+			this.paths[path] = on;
+		}
+
 	}
 
 });

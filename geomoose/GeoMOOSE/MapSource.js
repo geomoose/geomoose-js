@@ -30,6 +30,8 @@ THE SOFTWARE.
 
 dojo.provide('GeoMOOSE.MapSource');
 
+dojo.require('GeoMOOSE.Layer');
+
 /*
  * Small internal _Layer object for tracking the layers from
  * a WMS request, et al.
@@ -299,6 +301,9 @@ dojo.declare('GeoMOOSE.MapSource', null, {
 	constructor: function(mapbook_entry) {
 		this.clearPopupsOnMove = CONFIGURATION.popups.clearOnMove;
 
+		this._layer = new GeoMOOSE.Layer();
+		this._layer.parseFromMapSource(mapbook_entry);
+
 		this.paths = [];
 
 		mapbook_entry = this.preParseNode(mapbook_entry);
@@ -488,6 +493,14 @@ dojo.declare('GeoMOOSE.MapSource', null, {
 		for(var control in this.controls) {
 			this.controls[control].deactivate();
 		}
+	},
+
+	/*
+	 * Method: asLayer
+	 * Return a representation of the MapSource as a GeoMOOSE.Layer class.
+	 */
+	asLayer: function() {
+		return this._layer;
 	}
 
 });
