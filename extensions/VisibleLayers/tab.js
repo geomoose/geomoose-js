@@ -24,6 +24,12 @@ dojo.declare('extensions.VisibleLayers.tab', [GeoMOOSE.Tab, dijit._Widget, dijit
 		dojo.connect(Application, 'configureMapSources', dojo.hitch(this, this.renderTab));
 	},
 
+	postCreate: function() {
+		this.inherited(arguments);
+		this.parentId = GeoMOOSE.id();
+		dojo.attr(this.layersNode, 'id', this.parentId);
+	},
+
 	setupEvents: function() {
 		dojo.connect(Application, 'onLayersChange', dojo.hitch(this, this.onLayerChange));
 		dojo.connect(Application, 'configureMapSource', dojo.hitch(this, this.onLayerAdd));
@@ -31,18 +37,17 @@ dojo.declare('extensions.VisibleLayers.tab', [GeoMOOSE.Tab, dijit._Widget, dijit
 	},
 
 	onLayerAdd: function(xml, options) {
-		this.renderTab();
+		this.renderTab(xml);
 	},
 
 	onLayerChange: function(layer_id, vis) {
-		console.log("Layer " + layer_id + " changed.");
 		if(this.layers[layer_id]) {
 			this.layers[layer_id].onLayerChange(vis);
 		}
 		this.renderTab();
 	},
 
-	renderTab: function(evt) {
+	renderTab: function(xml) {
 		var layerList = GeoMOOSE.getVisibleLayers();
 		for(var i in layerList) {
 			var path = layerList[i];
@@ -62,6 +67,17 @@ dojo.declare('extensions.VisibleLayers.tab', [GeoMOOSE.Tab, dijit._Widget, dijit
 						dojo.place(l.domNode, this.layers[group].layersNode, "last");
 					}
 				} else if(Application.getMapSource(path).displayInLayerSwitcher) {
+					this.layers[group] = new GeoMOOSE.Tab._CatalogLayer(this.parentId,
+								Application.getMapSource(path).asLayer(),
+								false, '');
+
+					this.layers[group].getLayerIndex = function() {
+						var mapSource = Application.getMapSource(this.layer.src);
+						var ol_layer = mapSource._ol_layer;
+						return(Map.getLayerIndex(ol_layer));
+					};
+
+					/*
 					var g = new extensions.VisibleLayers.mapsource(
 									{
 										title: path,
@@ -69,6 +85,15 @@ dojo.declare('extensions.VisibleLayers.tab', [GeoMOOSE.Tab, dijit._Widget, dijit
 										tab: this
 									});
 					this.layers[path] = g;
+					*/
+
+					// parent_id, layer_xml, multiple, group_name
+					/*
+					this.layers[group] = new GeoMOOSE.Tab._CatalogLayer(this.parentId, 
+								xml,
+								false,
+								'');
+					*/
 					//dojo.connect(g, 'upLayer', dojo.hitch(this, this._place_layers));
 					//dojo.connect(g, 'downLayer', dojo.hitch(this, this._place_layers));
 					//dojo.place(g.domNode, this.layersNode, "last");
@@ -113,7 +138,8 @@ dojo.declare('extensions.VisibleLayers.tab', [GeoMOOSE.Tab, dijit._Widget, dijit
 			}));
 
 		for(var i in map_sources) {
-			dojo.place(this.layers[map_sources[i]].domNode, this.layersNode, "last");
+			//dojo.place(this.layers[map_sources[i]].domNode, this.layersNode, "last");
+			dojo.place(this.layers[map_sources[i]].div, this.layersNode, "last");
 		}
 	}
 
