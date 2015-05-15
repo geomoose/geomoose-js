@@ -28,20 +28,34 @@ dojo.declare('GeoMOOSE.Tab.Catalog.LayerControl.Up', [GeoMOOSE.Tab.Catalog.Layer
 
 	tip: 'CONFIGURATION.layer_controls.up.tip',
 
-	onClick: function() {
+	
+	getRepresentativePaths: function() {
+		var found_srcs = {};
+		var paths = {};
 		for(var path in this.layer.paths) {
+			var src = path.split('/')[0];
+			if(!found_srcs[src]) {
+				found_srcs[src] = true;
+				paths[path] = true;
+			}
+		}
+		return paths;
+	},
+
+	onClick: function() {
+		for(var path in this.getRepresentativePaths()) {
 			GeoMOOSE.moveLayerUp(path);
 		}
 	}
 });
 
-dojo.declare('GeoMOOSE.Tab.Catalog.LayerControl.Down', [GeoMOOSE.Tab.Catalog.LayerControl], {
+dojo.declare('GeoMOOSE.Tab.Catalog.LayerControl.Down', [GeoMOOSE.Tab.Catalog.LayerControl.Up], {
 	classes: ['sprite-control-down'],
 
 	tip: 'CONFIGURATION.layer_controls.down.tip',
 
 	onClick: function() {
-		for(var path in this.layer.paths) {
+		for(var path in this.getRepresentativePaths()) {
 			GeoMOOSE.moveLayerDown(path);
 		}
 	}

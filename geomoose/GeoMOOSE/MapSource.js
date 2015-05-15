@@ -442,11 +442,30 @@ dojo.declare('GeoMOOSE.MapSource', null, {
 	},
 
 	moveUp: function() {
-		Map.raiseLayer(this._ol_layer, 1);
+		// find the next visible layer in the order
+		var my_index = Map.getLayerIndex(this._ol_layer);
+		var len = Map.layers.length;
+		var raise = 1;
+		for(var i = my_index+1; i < len; i++) {
+			if(Map.layers[i].getVisibility()) {
+				raise = i - my_index;
+				break;
+			}
+		}
+		Map.raiseLayer(this._ol_layer, raise);
 	},
 
 	moveDown: function() {
-		Map.raiseLayer(this._ol_layer, -1);
+		// find the next visible layer in the order, going down!
+		var my_index = Map.getLayerIndex(this._ol_layer);
+		var lower = 1;
+		for(var i = my_index - 1; i >= 0; i--) {
+			if(Map.layers[i].getVisibility()) {
+				lower = i - 1;
+				break;
+			}
+		}
+		Map.setLayerIndex(this._ol_layer, lower);
 	},
 
 	updateParameters: function(params) {

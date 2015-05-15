@@ -33,7 +33,8 @@ dojo.declare('extensions.VisibleLayers.tab', [GeoMOOSE.Tab, dijit._Widget, dijit
 	setupEvents: function() {
 		dojo.connect(Application, 'onLayersChange', dojo.hitch(this, this.onLayerChange));
 		dojo.connect(Application, 'configureMapSource', dojo.hitch(this, this.onLayerAdd));
-		dojo.connect(Map, 'setLayerIndex', dojo.hitch(this, this._place_layers));
+		//dojo.connect(Map, 'setLayerIndex', dojo.hitch(this, this._place_layers));
+		Map.events.register('changelayer', this, this._place_layers);
 	},
 
 	onLayerAdd: function(xml, options) {
@@ -41,8 +42,10 @@ dojo.declare('extensions.VisibleLayers.tab', [GeoMOOSE.Tab, dijit._Widget, dijit
 	},
 
 	onLayerChange: function(layer_id, vis) {
+		console.log('Layer changed', layer_id, vis, this.layers[layer_id]);
 		if(this.layers[layer_id]) {
-			this.layers[layer_id].onLayerChange(vis);
+			//this.layers[layer_id].onLayerChange(vis);
+			this.layers[layer_id].updateListing(path,vis);
 		}
 		this.renderTab();
 	},
@@ -79,7 +82,9 @@ dojo.declare('extensions.VisibleLayers.tab', [GeoMOOSE.Tab, dijit._Widget, dijit
 						this.layers[group].getLayerIndex = function() {
 							var mapSource = Application.getMapSource(this.layer.src);
 							var ol_layer = mapSource._ol_layer;
-							return(Map.getLayerIndex(ol_layer));
+							var index = Map.getLayerIndex(ol_layer);
+							console.log(this.layer.src, index);
+							return index;
 						};
 					}
 
@@ -130,6 +135,7 @@ dojo.declare('extensions.VisibleLayers.tab', [GeoMOOSE.Tab, dijit._Widget, dijit
 	},
 
 	_place_layers: function() {
+		console.log("_place_layers");
 		var map_sources = [ ];
 		for(var i in this.layers) {
 			if(i.indexOf("/") < 0) {
@@ -143,7 +149,7 @@ dojo.declare('extensions.VisibleLayers.tab', [GeoMOOSE.Tab, dijit._Widget, dijit
 				return (bl.getLayerIndex() - al.getLayerIndex());
 			}));
 
-		for(var i in map_sources) {
+		for(var i = 0, len = map_sources.length; i < len; i++) {
 			//dojo.place(this.layers[map_sources[i]].domNode, this.layersNode, "last");
 			dojo.place(this.layers[map_sources[i]].div, this.layersNode, "last");
 		}
