@@ -162,6 +162,8 @@ dojo.declare('GeoMOOSE.Tab._CatalogLayer', null, {
 			dojo.style(legends, {'height' : 'auto', 'display' : 'none'});
 		}
 		p = null;
+
+		dojo.subscribe('geomoose/activate-map-source', dojo.hitch(this, this.activateMapSource));
 	},
 
 	activateMapSource: function(activated_map_source) {
@@ -415,12 +417,6 @@ dojo.declare('GeoMOOSE.Tab.Catalog', [GeoMOOSE.Tab], {
 		if(typeof(visibility) == 'undefined') { visibility = true; }
 		for(var i = 0, len = this.catalog_layers.length; i < len; i++) {
 			this.catalog_layers[i].updateListing(layers,visibility);
-		}
-	},
-
-	onActivateMapSource: function(map_source_name) {
-		for(var i = 0, len = this.catalog_layers.length; i < len; i++) {
-			this.catalog_layers[i].activateMapSource(map_source_name);
 		}
 	},
 

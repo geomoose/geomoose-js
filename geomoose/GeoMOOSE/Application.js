@@ -561,6 +561,7 @@ dojo.declare('GeoMOOSE.Application', null, {
 	 */
 
 	onActivateMapSource: function(path) {
+		dojo.publish('geomoose/activate-map-source', [path]);
 	},
 
 	/*

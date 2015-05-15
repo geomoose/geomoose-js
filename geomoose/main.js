@@ -51,7 +51,6 @@ dojo.addOnLoad(function() {
 	GeoMOOSE.addTab('catalog', catalog);
 
 	dojo.connect(Application, 'onLayersChange', dojo.hitch(catalog, catalog.onLayersChange));
-	dojo.connect(Application, 'onActivateMapSource', dojo.hitch(catalog, catalog.onActivateMapSource));
 	dojo.connect(Application, 'onGotMapbook', dojo.hitch(catalog, catalog.onGotMapbook));
 
 	var toolbar = new GeoMOOSE.UI.Toolbar({application: Application, layout: layout}, 'toolbar');
