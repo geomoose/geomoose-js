@@ -45,6 +45,8 @@ dojo.declare('GeoMOOSE.Layer', null, {
 	metadataUrl: '',
 	src: '',
 
+	displayInCatalog: true,
+
 	paths: {},
 
 	_commonParser: function(xml) {
@@ -55,12 +57,16 @@ dojo.declare('GeoMOOSE.Layer', null, {
 		}
 		this.title = this.label;
 
+		this.displayInCatalog = parseBoolean(xml.getAttribute("display-in-catalog"), true);
+
 		this.tip = xml.getAttribute('tip');
 
 		this.minscale = parseFloat(xml.getAttribute('minscale'));
 		this.maxscale = parseFloat(xml.getAttribute('maxscale'));
 
 		this.drawingTools = parseBoolean(xml.getAttribute('drawing'), false);
+
+		this.controls = {};
 
 		for(var i = 0; i < CONFIGURATION.layer_control_order.length; i++) {
 			var control_name = CONFIGURATION.layer_control_order[i];
@@ -129,6 +135,12 @@ dojo.declare('GeoMOOSE.Layer', null, {
 			var layer_name = l.getAttribute('name');
 			var path = name+'/'+layer_name;
 			this.paths[path] = on;
+		}
+		// handle the cases where the map-source IS the layer,
+		//  ala Vector Drawings.
+		if(layers.length == 0) {
+			var status = parseBoolean(mapSourceXml.getAttribute('status')); 
+			this.paths[name] = status;
 		}
 
 	}

@@ -55,6 +55,7 @@ dojo.declare('extensions.VisibleLayers.tab', [GeoMOOSE.Tab, dijit._Widget, dijit
 				; // update status
 			} else {
 				if(path.indexOf("/") > -1) { /* This is a layer */
+				/*
 					var group = path.split("/")[0];
 					if(GeoMOOSE.isDefined(this.layers[group])) {
 						var l = new extensions.VisibleLayers.layer(
@@ -66,16 +67,21 @@ dojo.declare('extensions.VisibleLayers.tab', [GeoMOOSE.Tab, dijit._Widget, dijit
 						this.layers[path] = l;
 						dojo.place(l.domNode, this.layers[group].layersNode, "last");
 					}
-				} else if(Application.getMapSource(path).displayInLayerSwitcher) {
-					this.layers[group] = new GeoMOOSE.Tab._CatalogLayer(this.parentId,
-								Application.getMapSource(path).asLayer(),
-								true, '');
+				*/
+				} else {
+					var layer = Application.getMapSource(path).asLayer();
+					if(layer.displayInCatalog) {
+						var group = path.split("/")[0];
+						this.layers[group] = new GeoMOOSE.Tab._CatalogLayer(this.parentId,
+									layer,
+									true, '');
 
-					this.layers[group].getLayerIndex = function() {
-						var mapSource = Application.getMapSource(this.layer.src);
-						var ol_layer = mapSource._ol_layer;
-						return(Map.getLayerIndex(ol_layer));
-					};
+						this.layers[group].getLayerIndex = function() {
+							var mapSource = Application.getMapSource(this.layer.src);
+							var ol_layer = mapSource._ol_layer;
+							return(Map.getLayerIndex(ol_layer));
+						};
+					}
 
 					/*
 					var g = new extensions.VisibleLayers.mapsource(
@@ -110,12 +116,12 @@ dojo.declare('extensions.VisibleLayers.tab', [GeoMOOSE.Tab, dijit._Widget, dijit
 			/* Delete layers in the map-source */		
 			for(var p in this.layers) {
 				if(p.indexOf(path+"/") == 0) {
-					dojo.destroy(this.layers[p].domNode);
+					dojo.destroy(this.layers[p].div);
 					delete this.layers[p];
 				}
 			}
 			/* Delete the map-source */
-			dojo.destroy(this.layers[path].domNode);
+			dojo.destroy(this.layers[path].div);
 			delete this.layers[path];
 	
 			/* Update the list - do we need to do this?*/
