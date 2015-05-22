@@ -1,4 +1,5 @@
 dojo.require("extensions.VisibleLayers.tab");
+dojo.require("extensions.VisibleLayers.RemoveLayerControl");
 
 dojo.provide("extensions.VisibleLayers");
 dojo.declare('VisibleLayers', null, {

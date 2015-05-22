@@ -82,6 +82,9 @@ dojo.declare('extensions.VisibleLayers.tab', [GeoMOOSE.Tab, dijit._Widget, dijit
 				} else {
 					var layer = Application.getMapSource(path).asLayer();
 					if(layer.displayInCatalog) {
+						// add the remove-layer control.
+						layer.controls['remove-layer'] = true;
+
 						var group = path.split("/")[0];
 						this.layers[group] = new GeoMOOSE.Tab._CatalogLayer(this.parentId,
 									layer,
