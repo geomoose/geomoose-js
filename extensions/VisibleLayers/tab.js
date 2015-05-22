@@ -35,17 +35,25 @@ dojo.declare('extensions.VisibleLayers.tab', [GeoMOOSE.Tab, dijit._Widget, dijit
 		dojo.connect(Application, 'configureMapSource', dojo.hitch(this, this.onLayerAdd));
 		//dojo.connect(Map, 'setLayerIndex', dojo.hitch(this, this._place_layers));
 		Map.events.register('changelayer', this, this._place_layers);
+		Map.events.register('moveend', this, this.onRefreshMap);
 	},
 
 	onLayerAdd: function(xml, options) {
 		this.renderTab(xml);
 	},
 
-	onLayerChange: function(layer_id, vis) {
-		console.log('Layer changed', layer_id, vis, this.layers[layer_id]);
-		if(this.layers[layer_id]) {
+	onRefreshMap: function() {
+		for(var group in this.layers) {
+			this.layers[group].updateLegends();
+		}
+	},
+
+	onLayerChange: function(path, vis) {
+		// since we update based on the group, pull the group.
+		var group = path.split('/')[0];
+		if(this.layers[group]) {
 			//this.layers[layer_id].onLayerChange(vis);
-			this.layers[layer_id].updateListing(path,vis);
+			this.layers[group].updateListing([path], vis);
 		}
 		this.renderTab();
 	},
@@ -83,7 +91,6 @@ dojo.declare('extensions.VisibleLayers.tab', [GeoMOOSE.Tab, dijit._Widget, dijit
 							var mapSource = Application.getMapSource(this.layer.src);
 							var ol_layer = mapSource._ol_layer;
 							var index = Map.getLayerIndex(ol_layer);
-							console.log(this.layer.src, index);
 							return index;
 						};
 					}
@@ -135,7 +142,6 @@ dojo.declare('extensions.VisibleLayers.tab', [GeoMOOSE.Tab, dijit._Widget, dijit
 	},
 
 	_place_layers: function() {
-		console.log("_place_layers");
 		var map_sources = [ ];
 		for(var i in this.layers) {
 			if(i.indexOf("/") < 0) {
