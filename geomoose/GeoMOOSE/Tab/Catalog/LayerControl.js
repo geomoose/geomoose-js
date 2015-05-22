@@ -38,6 +38,8 @@ dojo.declare('GeoMOOSE.Tab.Catalog.LayerControl', null, {
 	draw: function(parent) {
 		this.control_id = GeoMOOSE.id();
 
+		this.parentNode = parent;
+
 		var control = dojo.create('div', {
 			'id' : this.control_id
 		}, parent);

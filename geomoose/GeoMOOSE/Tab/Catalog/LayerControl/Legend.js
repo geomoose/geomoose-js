@@ -29,8 +29,8 @@ dojo.declare('GeoMOOSE.Tab.Catalog.LayerControl.Legend', [GeoMOOSE.Tab.Catalog.L
 	tip: 'CONFIGURATION.layer_controls.legend.tip',
 
 	onClick: function() {
-		var legend = dojo.byId(this.layer.legends_id);
-		var wipe_params = {'node' : this.layer.legends_id};
+		var legend = dojo.query('.catalog_legend_container', this.parentNode.parentNode)[0];
+		var wipe_params = {'node' : legend};
 		if(legend.style.display != 'none') {
 			if(CONFIGURATION.flashy_bits) {
 				dojo.fx.wipeOut(wipe_params).play();
