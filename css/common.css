@@ -284,7 +284,7 @@ body {
 
 .sprite-control-activate {
 	background-image: url('../images/activate.png') !important;
-	background-position: 0px 0px !important;
+	background-position: bottom left !important;
 }
 
 .catalog-active-map-source {
