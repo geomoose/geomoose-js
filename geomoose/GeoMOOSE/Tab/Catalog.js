@@ -213,7 +213,7 @@ dojo.declare('GeoMOOSE.Tab._CatalogLayer', null, {
 		}
 		
 		/** update the legends as appropriate **/
-		if(changed) {
+		if(this.active_paths.length > 0) {
 			this.updateLegends();
 		}
 	},
@@ -227,7 +227,13 @@ dojo.declare('GeoMOOSE.Tab._CatalogLayer', null, {
 		if(dijit.byId(this.checkbox_id).get('checked')) {
 			var legend_urls = [];
 			if(this.layer.dynamicLegends) {
-				legend_urls = GeoMOOSE.getLegendUrls(this.active_paths);
+				var paths = [];
+				for(var path in this.layer.paths) {
+					if(this.layer.paths[path] === true) {
+						paths.push(path);
+					}
+				}
+				legend_urls = GeoMOOSE.getLegendUrls(paths);
 			} else {
 				legend_urls = this.layer.legendUrls;
 			}
