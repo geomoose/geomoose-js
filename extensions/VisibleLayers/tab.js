@@ -36,6 +36,8 @@ dojo.declare('extensions.VisibleLayers.tab', [GeoMOOSE.Tab, dijit._Widget, dijit
 		//dojo.connect(Map, 'setLayerIndex', dojo.hitch(this, this._place_layers));
 		Map.events.register('changelayer', this, this._place_layers);
 		Map.events.register('moveend', this, this.onRefreshMap);
+
+		dojo.subscribe('visible-layers-remove', dojo.hitch(this, this.remove));
 	},
 
 	onLayerAdd: function(xml, options) {
