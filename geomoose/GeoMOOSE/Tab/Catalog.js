@@ -87,6 +87,14 @@ dojo.declare('GeoMOOSE.Tab._CatalogLayer', null, {
 		}
 
 		// check the box if it has any layers on.
+		var visible_layers = GeoMOOSE.getVisibleLayers();
+		// update this.layer.paths by what is turned on now.
+		for(var l = 0, ll = visible_layers.length; l < ll; l++) {
+			if(GeoMOOSE.isDefined(this.layer.paths[visible_layers[l]])) {
+				this.layer.paths[visible_layers[l]] = true;
+				
+			}
+		}
 		for(var path in this.layer.paths) {
 			if(this.layer.paths[path] === true) {
 				construct_opts['checked'] = true;
