@@ -106,7 +106,7 @@ dojo.declare('GeoMOOSE.UnselectableTool', [GeoMOOSE.Tool], {
  * Renders a tool as a menu item.
  */
 
-dojo.declare('GeoMOOSE.ToolMenu', [GeoMOOSE._Tool, dijit.CheckedMenuItem], {
+dojo.declare('GeoMOOSE.ToolMenu', [GeoMOOSE.Tool, dijit.CheckedMenuItem], {
 	selectable: true,
 
 	postCreate: function() {
@@ -119,16 +119,23 @@ dojo.declare('GeoMOOSE.ToolMenu', [GeoMOOSE._Tool, dijit.CheckedMenuItem], {
 
 	onClick: function() {
 		this.inherited(arguments);
+		console.log('ON CLICK!!!');
 		this.changeCursor();
 	}
 });
 
 /*
- * Class: GeoMOOSE.ToolMenu
+ * Class: GeoMOOSE.UnselectableToolMenu
  * Renders a tool as a menu item that cannot be selected.
  */
 dojo.declare('GeoMOOSE.UnselectableToolMenu', [GeoMOOSE._Tool, dijit.MenuItem], {
-	selectable: false 
+	selectable: false,
+
+	onClick: function() {
+		this.onStart();
+		this.changeCursor();
+
+	}
 });
 
 
