@@ -127,6 +127,7 @@ dojo.declare('GeoMOOSE.UI.Toolbar', [dijit.Toolbar], {
 		var toolbar_xml = mapbook.getElementsByTagName('toolbar')[0];
 
 		this.tools = {};
+		this.drawers = [];
 
 		for(var i = 0, len = toolbar_xml.childNodes.length; i < len; i++) {
 			var node = toolbar_xml.childNodes[i];
@@ -154,6 +155,8 @@ dojo.declare('GeoMOOSE.UI.Toolbar', [dijit.Toolbar], {
 				});
 
 				this.addChild(drawer);
+
+				this.drawers.push(drawer);
 
 				/* I really don't feel like writing recursion. */
 				var tools = node.getElementsByTagName('tool');
@@ -184,6 +187,12 @@ dojo.declare('GeoMOOSE.UI.Toolbar', [dijit.Toolbar], {
 				t.set('disabled', true);
 			}
 
+			for(var d = 0, dd = this.drawers.length; d < dd; d++) {
+				var drw = this.drawers[d];
+				drw.set('old-state', drw.get('disabled'));
+				drw.set('disabled', true);
+			}
+
 			this.toolsDisabled = true;
 		}
 	},
@@ -193,6 +202,11 @@ dojo.declare('GeoMOOSE.UI.Toolbar', [dijit.Toolbar], {
 			for(var tool in this.tools ){
 				var t = this.tools[tool];
 				t.set('disabled', t.get('old-state'));
+			}
+			for(var d = 0, dd = this.drawers.length; d < dd; d++) {
+				var drw = this.drawers[d];
+				drw.set('disabled', drw.get('old-state'));
+				
 			}
 			this.toolsDisabled = false;
 		}
