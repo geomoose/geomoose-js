@@ -36,8 +36,8 @@ HashTrack = new OpenLayers.Class(GeoMOOSE.UX.Extension, {
 		var args = dojo.queryToObject(''+window.location.hash.substring(1));
 
 		this.center = null;
-		if(args.l) {
-			var split = args.l.split(',');
+		if(args.xy) {
+			var split = args.xy.split(',');
 
 			this.center = new OpenLayers.LonLat();
 			this.center.lat = parseFloat(split[0]);
@@ -61,7 +61,7 @@ HashTrack = new OpenLayers.Class(GeoMOOSE.UX.Extension, {
 		var center = Map.getCenter();
 		var zoom = Map.getZoom();
 		var position = center.lat + ',' + center.lon + ',' + zoom;
-		window.location.hash = '#l='+position 
+		window.location.hash = '#xy='+position 
 	},
 
 	load: function() {
