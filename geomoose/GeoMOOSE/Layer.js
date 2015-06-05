@@ -107,7 +107,25 @@ dojo.declare('GeoMOOSE.Layer', null, {
 			for(var i = 0; i < paths.length; i++) {
 				this.paths[paths[i]] = false;
 			}
+
 		}
+
+		if(this.title == null || !GeoMOOSE.isDefined(this.title)) {
+			var title = '(untitled)';
+			// try to pull it from the map source
+			for(var path in this.paths) {
+				var mapsource = Application.getMapSource(path);
+				if(mapsource && mapsource.title) {
+					title = mapsource.title;
+					break;
+				}
+			}
+
+			this.title = title;
+			this.label = title;
+		}
+
+
 
 		var stat = parseBoolean(layerXml.getAttribute('status'));
 		if(GeoMOOSE.isDefined(stat)) {
