@@ -143,6 +143,14 @@ dojo.declare('GeoMOOSE.Layer', null, {
 			this.paths[name] = status;
 		}
 
+	},
+
+	pathsAsArray: function() {
+		var path_array = [];
+		for(var name in this.paths) {
+			path_array.push(name);
+		}
+		return path_array;
 	}
 
 });

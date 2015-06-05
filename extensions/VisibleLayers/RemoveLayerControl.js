@@ -16,6 +16,7 @@ dojo.declare("extensions.VisibleLayers.RemoveLayerControl", [GeoMOOSE.Tab.Catalo
 	},
 
 	onClick: function() {
+		GeoMOOSE.turnLayerOff(this.layer.pathsAsArray());
 		dojo.publish('visible-layers-remove', [this.layer.src]);
 	}
 });
