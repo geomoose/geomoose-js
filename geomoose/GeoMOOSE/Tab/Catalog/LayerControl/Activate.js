@@ -22,6 +22,8 @@ THE SOFTWARE.
 
 dojo.provide('GeoMOOSE.Tab.Catalog.LayerControl.Activate');
 
+dojo.require('GeoMOOSE.Tab.Catalog.LayerControl');
+
 dojo.declare('GeoMOOSE.Tab.Catalog.LayerControl.Activate', [GeoMOOSE.Tab.Catalog.LayerControl], {
 	classes: ['sprite-control-activate'],
 

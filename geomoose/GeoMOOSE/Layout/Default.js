@@ -27,11 +27,12 @@ THE SOFTWARE.
 
 dojo.provide('GeoMOOSE.Layout.Default');
 
+dojo.require('GeoMOOSE.Layout');
 dojo.require('dijit.layout.ContentPane');
 dojo.require('dijit.layout.BorderContainer');
 dojo.require('dijit.layout.TabContainer');
 
-dojo.declare('GeoMOOSE.Layout.Default', null, {
+dojo.declare('GeoMOOSE.Layout.Default', [GeoMOOSE.Layout], {
 	/*
 	 * constructor: constructor
 	 * Do the layout.

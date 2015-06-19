@@ -1,3 +1,4 @@
+dojo.require("GeoMOOSE.Tab.Catalog.LayerControl");
 dojo.provide("extensions.VisibleLayers.RemoveLayerControl");
 
 dojo.declare("extensions.VisibleLayers.RemoveLayerControl", [GeoMOOSE.Tab.Catalog.LayerControl], {

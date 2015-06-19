@@ -21,6 +21,7 @@ THE SOFTWARE.
 */
 
 dojo.provide('GeoMOOSE.Tab.Catalog.LayerControl');
+dojo.require('GeoMOOSE.Tab.Catalog');
 
 dojo.declare('GeoMOOSE.Tab.Catalog.LayerControl', null, {
 	layer: null,

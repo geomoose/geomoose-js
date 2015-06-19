@@ -28,6 +28,9 @@ dojo.registerModulePath('GeoMOOSE', '../../../geomoose/GeoMOOSE');
 dojo.require('GeoMOOSE.Popup');
 dojo.require('GeoMOOSE.Application');
 
+dojo.require('GeoMOOSE.Layout');
+dojo.require('GeoMOOSE.Layout.Default');
+
 dojo.require('GeoMOOSE.Handler.Box');
 dojo.require('GeoMOOSE.Handler.MeasurePath');
 dojo.require('GeoMOOSE.Control.Measure');
@@ -35,6 +38,7 @@ dojo.require('GeoMOOSE.Control.DeleteFeature');
 
 dojo.require('GeoMOOSE.Dialog.AttributeEditor');
 dojo.require('GeoMOOSE.Dialog.Download');
+dojo.require('GeoMOOSE.Dialog.Error');
 
 dojo.require('GeoMOOSE.MapSource');
 dojo.require('GeoMOOSE.MapSource.Vector');
@@ -68,7 +72,6 @@ dojo.require('GeoMOOSE.Tab.Catalog.LayerControl.RemoveAllFeatures');
 dojo.require('GeoMOOSE.ServiceManager');
 
 dojo.require('GeoMOOSE.UI.Toolbar');
-dojo.require('GeoMOOSE.Layout.Default');
 dojo.require('GeoMOOSE.UI.CoordinateDisplay');
 dojo.require('GeoMOOSE.UI.ScaleJumper');
 dojo.require('GeoMOOSE.UI.ZoomTo');
