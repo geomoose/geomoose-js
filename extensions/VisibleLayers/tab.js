@@ -24,7 +24,7 @@ dojo.declare('extensions.VisibleLayers.tab', [GeoMOOSE.Tab, dijit._Widget, dijit
 		dojo.connect(Application, 'configureMapSource', dojo.hitch(this, this.onLayerAdd));
 		dojo.subscribe('visible-layers-remove', dojo.hitch(this, this.remove));
 		
-		GeoMOOSE.register('onMapbookLoaded', this, this.setupMapEvents);
+		GeoMOOSE.register('onMapCreated', this, this.setupMapEvents);
 		dojo.connect(Application, 'configureMapSources', dojo.hitch(this, this.renderTab));
 	},
 
