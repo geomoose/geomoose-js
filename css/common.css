@@ -461,3 +461,19 @@ body {
 	background-image: url('../images/silk/help.png');
 	background-position: 4px 4px;
 }
+
+.error-text {
+	font-size: 12px;
+	line-height: 14px;
+	color: #9E1420;
+	background-color: #FFDCDE;
+	border: solid 1px #9E1420;
+	border-radius: 3px;
+	margin: 5px;
+	padding: 4px 4px 4px 24px;
+
+	background-repeat: no-repeat;
+	background-image: url('../images/silk/exclamation.png');
+	background-position: 4px 4px;
+}
+
