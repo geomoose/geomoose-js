@@ -1,0 +1,29 @@
+{
+  "name": "ClientBuffer",
+  "main": "ClientBuffer.js",
+  "version": "0.1.0",
+  "homepage": "https://github.com/geomoose/geomoose-js",
+  "authors": [
+    "Dan Little <danlittle@yahoo.com>"
+  ],
+  "description": "Client Side Buffer Extension for GeoMOOSE",
+  "moduleType": [
+    "amd"
+  ],
+  "keywords": [
+    "buffer",
+    "geomoose",
+    "extension"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jsts": "~0.15.0"
+  }
+}

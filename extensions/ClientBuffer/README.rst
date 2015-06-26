@@ -16,20 +16,32 @@ Cons
 * Some confusion. There are now three different ways to do a buffer.
 * Some browsers may bite the dust trying to calculate the buffers on more complex shapes. 
 
+Requirements
+------------
+
+This requires the use of JSTS. The instructions below will install a tested version of JSTS using bower.
+
+To install bower globally::
+
+	npm install -g bower
+
+
 Installing
 ----------
 
 ::
 
-	# this will download "jsts" to the "node_modules" directory.
-	npm install 
+	# this will install all the required components
+	bower install
+
+	
 
 Add JSTS and Client Buffer to `geomoose.html`
 ---------------------------------------------
 
 ::
 
-	<script type="text/javascript" src="extensions/ClientBuffer/node_modules/jsts/lib/javascript.util.js"></script>
-	<script type="text/javascript" src="extensions/ClientBuffer/node_modules/jsts/lib/jsts.js"></script>
+	<script type="text/javascript" src="extensions/ClientBuffer/bower_components/jsts/lib/javascript.util.js"></script>
+	<script type="text/javascript" src="extensions/ClientBuffer/bower_components/jsts/lib/jsts.js"></script>
 	<script type="text/javascript" src="extensions/ClientBuffer/ClientBuffer.js"></script>
 
