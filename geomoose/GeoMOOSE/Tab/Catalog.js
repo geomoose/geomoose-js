@@ -220,6 +220,8 @@ dojo.declare('GeoMOOSE.Tab._CatalogLayer', null, {
 
 	updateLegends: function() {
 		var legends_div = dojo.byId(this.legends_id);
+		if(!legends_div) { return false; }
+
 		/* remove all the current legends */
 		while(legends_div.firstChild) { legends_div.removeChild(legends_div.firstChild); }
 
