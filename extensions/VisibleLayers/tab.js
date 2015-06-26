@@ -19,8 +19,12 @@ dojo.declare('extensions.VisibleLayers.tab', [GeoMOOSE.Tab, dijit._Widget, dijit
 
 		if(CONFIGURATION['extensions.VisibleLayers.tab_name'])
 			this.set('title', CONFIGURATION['extensions.VisibleLayers.tab_name']);
+
+		dojo.connect(Application, 'onLayersChange', dojo.hitch(this, this.onLayerChange));
+		dojo.connect(Application, 'configureMapSource', dojo.hitch(this, this.onLayerAdd));
+		dojo.subscribe('visible-layers-remove', dojo.hitch(this, this.remove));
 		
-		GeoMOOSE.register('onMapbookLoaded', this, this.setupEvents);
+		GeoMOOSE.register('onMapbookLoaded', this, this.setupMapEvents);
 		dojo.connect(Application, 'configureMapSources', dojo.hitch(this, this.renderTab));
 	},
 
@@ -30,14 +34,11 @@ dojo.declare('extensions.VisibleLayers.tab', [GeoMOOSE.Tab, dijit._Widget, dijit
 		dojo.attr(this.layersNode, 'id', this.parentId);
 	},
 
-	setupEvents: function() {
-		dojo.connect(Application, 'onLayersChange', dojo.hitch(this, this.onLayerChange));
-		dojo.connect(Application, 'configureMapSource', dojo.hitch(this, this.onLayerAdd));
+	setupMapEvents: function() {
 		//dojo.connect(Map, 'setLayerIndex', dojo.hitch(this, this._place_layers));
 		Map.events.register('changelayer', this, this._place_layers);
 		Map.events.register('moveend', this, this.onRefreshMap);
 
-		dojo.subscribe('visible-layers-remove', dojo.hitch(this, this.remove));
 	},
 
 	onLayerAdd: function(xml, options) {
