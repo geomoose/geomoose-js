@@ -92,6 +92,12 @@ dojo.declare('GeoMOOSE.Layer', null, {
 			this.hasMetadata = true;
 			this.metadataUrl = OpenLayers.Util.getXmlNodeValue(metadata[0]);
 		}
+
+		// enable auto refresh is auto-refresh is tagged.
+		this.autoRefresh = parseFloat(xml.getAttribute('auto-refresh'));
+		if(isNaN(this.autoRefresh)) {
+			this.autoRefresh = 0;
+		}
 	},
 
 	parseLayerXml: function(layerXml) {

@@ -304,6 +304,10 @@ dojo.declare('GeoMOOSE.MapSource', null, {
 		this._layer = new GeoMOOSE.Layer();
 		this._layer.parseFromMapSource(mapbook_entry);
 
+		if(this._layer.autoRefresh > 0) {
+			setInterval(dojo.hitch(this, this.redraw), this._layer.autoRefresh);
+		}
+
 		this.paths = [];
 
 		mapbook_entry = this.preParseNode(mapbook_entry);
