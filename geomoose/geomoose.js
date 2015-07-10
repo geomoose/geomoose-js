@@ -421,9 +421,18 @@ window.GeoMOOSE = {
 	 *  miny - Minimum Y-bound.
 	 *  maxx - Maximum X-bound.
 	 *  maxx - Maximum Y-bound.
+	 *  projection - Optional projection. When unspecified, assumes map coordinates.
 	 */
-	zoomToExtent : function(minx,miny,maxx,maxy) {
-		Map.zoomToExtent(OpenLayers.Bounds.fromArray([minx,miny,maxx,maxy]));
+	zoomToExtent : function(minx,miny,maxx,maxy,projection) {
+		var bounds = OpenLayers.Bounds.fromArray([minx,miny,maxx,maxy]);
+
+		// transform the bounds if the projection is specified
+		if(GeoMOOSE.isDefined(projection)) {
+			var proj = new OpenLayers.Projection(projection);
+			bounds.transform(proj, Map.projection);
+		}
+
+		Map.zoomToExtent(bounds);
 	},
 
 	/*
