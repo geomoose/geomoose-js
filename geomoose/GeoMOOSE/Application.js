@@ -269,6 +269,7 @@ dojo.declare('GeoMOOSE.Application', null, {
 	configureMap: function () {
 		CONFIGURATION.scales = CONFIGURATION.scales.sort().reverse();
 		var options = {
+			tileManager: null,
 			maxExtent : OpenLayers.Bounds.fromArray(CONFIGURATION.max_extent),
 			resolutions: CONFIGURATION.scales,
 			controls : [new OpenLayers.Control.PanZoomBar()], //, new OpenLayers.Control.ScaleJumper({target: 'scale-jumper'})],
