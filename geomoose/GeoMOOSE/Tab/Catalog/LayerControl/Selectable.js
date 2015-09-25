@@ -27,7 +27,16 @@ dojo.require('GeoMOOSE.Tab.Catalog.LayerControl');
 dojo.declare('GeoMOOSE.Tab.Catalog.LayerControl.Selectable', [GeoMOOSE.Tab.Catalog.LayerControl], {
 
 	constructor: function() {
-		
+		dojo.subscribe('/geomoose/deactivate-tools', dojo.hitch(this, this.removeSelected));	
+	},
+
+	removeSelected: function() {
+		if(this.control_id) {
+			var e = dojo.byId(this.control_id);
+			if(e) {
+				dojo.removeClass(e, 'selected');
+			}
+		}
 	},
 
 	onClick: function() {

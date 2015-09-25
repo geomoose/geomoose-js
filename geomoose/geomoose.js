@@ -815,7 +815,7 @@ window.GeoMOOSE = {
 	 * Turn off all current tools, including layer tools.
 	 */
 	deactivateTools: function() {
-		
+		dojo.publish('/geomoose/deactivate-tools', {});	
 		for(var tool_name in Tools) {
 			Tools[tool_name].deactivate();
 		}
