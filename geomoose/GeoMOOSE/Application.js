@@ -320,6 +320,8 @@ dojo.declare('GeoMOOSE.Application', null, {
 			Map.addControl(new OpenLayers.Control.LayerSwitcher());
 		}
 
+
+
 		this.configureMapTools();
 
 		this.configureServiceManager();
@@ -335,6 +337,9 @@ dojo.declare('GeoMOOSE.Application', null, {
 		Map.removePopup = dojo.hitch(this, this.removePopup);
 
 		Map.events.register('moveend', this, this.clearPopups);
+
+		// place a scale line on the map
+
 
 //		var mapContainer = dojo.byId('mapContainer');
 //		dojo.connect(mapContainer, 'click', dojo.hitch(this, this.toggleStickyPopups));
@@ -379,6 +384,16 @@ dojo.declare('GeoMOOSE.Application', null, {
 		Tools['previous'] = previous;
 		Tools['next'] = next;
 		Tools['fullextent'] = fullExtent;
+
+		// add the scale line to the map as configured.
+		if(CONFIGURATION.scale_line && CONFIGURATION.scale_line.enabled) {
+			Map.addControl(new OpenLayers.Control.ScaleLine({
+				bottomOutUnits: CONFIGURATION.scale_line.bottom_units,
+				topOutUnits: CONFIGURATION.scale_line.top_units,
+				maxWidth: CONFIGURATION.scale_line.width
+			}));
+		}
+
 
 	},
 

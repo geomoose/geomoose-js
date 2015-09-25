@@ -124,7 +124,7 @@ var CONFIGURATION = {
 	},
 	'scale_line' : {
 		/** scale_line.enabled - Toggle whether the scale lien should be displayed on the map. Defaults to true. */
-		'enabled' : true,
+		'enabled' : false,
 		/** scale_line.top_units - What units to display on the top of the scale line. */
 		'top_units' : 'ft',
 		/** scale_line.bottom_units - What units to display on the bottom of the scale line. */
