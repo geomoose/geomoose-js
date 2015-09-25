@@ -477,3 +477,7 @@ body {
 	background-position: 4px 4px;
 }
 
+#map .olControlAttribution {
+	left: 3px;
+	bottom: 3px;
+}
