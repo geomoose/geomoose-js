@@ -56,8 +56,8 @@ dojo.declare('GeoMOOSE.Tab.Catalog.LayerControl.Metadata', [GeoMOOSE.Tab.Catalog
 	tip: 'CONFIGURATION.layer_controls.metadata.tip',
 
 	onClick: function() {
-		if(this.layer.metadata_url != '') {
-			window.open(this.layer.metadata_url);
+		if(this.layer.metadataUrl != '') {
+			window.open(this.layer.metadataUrl);
 		} else {
 			alert('No metadata available for ' + this.layer.title);
 		}

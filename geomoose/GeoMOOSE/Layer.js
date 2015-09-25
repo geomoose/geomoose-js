@@ -86,7 +86,7 @@ dojo.declare('GeoMOOSE.Layer', null, {
 		}
 
 		/** pull the metadata (as available( **/
-		this.metadatUrl = '';
+		this.metadataUrl = '';
 		var metadata = xml.getElementsByTagName('metadata');
 		if(metadata.length > 0) {
 			this.hasMetadata = true;
@@ -129,6 +129,27 @@ dojo.declare('GeoMOOSE.Layer', null, {
 
 			this.title = title;
 			this.label = title;
+		}
+
+		var copy_children = {
+			metadataUrl: 'metadata',
+			hasMetadata: false,
+			legendUrl: 'legend'
+		};
+
+		for(var name in copy_children) {
+			if(this[name] == '' || this[name] == null || !GeoMOOSE.isDefined(this[name])) {
+				for(var path in this.paths) {
+					var mapsource = Application.getMapSource(path);
+					// the "_layer" should denote a private member.
+					//  change all references looked to be a big job to "delcare" it as
+					//  public so I placed this note here and a similar one in MapSource.js
+					if(mapsource && mapsource._layer && mapsource._layer[name]) {
+						this[name] = mapsource._layer[name];
+						break;
+					}
+				}
+			}
 		}
 
 

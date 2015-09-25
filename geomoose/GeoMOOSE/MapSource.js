@@ -70,6 +70,13 @@ dojo.declare('GeoMOOSE.MapSource', null, {
 	 */
 	_ol_layer: null,
 
+	/** _layer. An instance of GeoMOOSE.Layer - This is actually semi-private and used other places
+	 *          The original implementation was meant to keep this private but there have since been
+	 *          requirements to make it public, but given javascript has no language constructs as such,
+	 *          this note was put here to donate that the "_" = "private" convention was being broken.
+	 */
+	_layer: null,
+
 	/**
 	 * Variable: path
 	 *
