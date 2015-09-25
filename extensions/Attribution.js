@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2009-2012, Dan "Ducky" Little & GeoMOOSE.org
+Copyright (c) 2009-2015, Dan "Ducky" Little & GeoMOOSE.org
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -33,7 +33,6 @@ THE SOFTWARE.
 
 AttributionExtension = new OpenLayers.Class(GeoMOOSE.UX.Extension, {
 	init: function(map) {
-		console.log("Adding attribution control to map " + map);
 		map.addControl(new OpenLayers.Control.Attribution());
 	},
 
