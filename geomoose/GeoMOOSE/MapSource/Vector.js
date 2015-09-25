@@ -138,6 +138,12 @@ dojo.declare('GeoMOOSE.MapSource.Vector', GeoMOOSE.MapSource, {
 				'feature_desc' : this.attributes,
 				'layer_path' : this.path
 			});
+			// ensure that anything selected for the dialog has been
+			//   unselected when the dialog is closed.
+			dojo.connect(dialog, 'hide', dojo.hitch(this, function() {
+				this.controls['edit_attributes'].unselectAll();
+			}));
+
 			dialog.show(ev);
 			//dojo.connect(dialog, 'onClose', function() { dialog.destoryRecursive(); });
 		});
