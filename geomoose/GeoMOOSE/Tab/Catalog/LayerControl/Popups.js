@@ -22,7 +22,9 @@ THE SOFTWARE.
 
 dojo.provide('GeoMOOSE.Tab.Catalog.LayerControl.Popups');
 
-dojo.declare('GeoMOOSE.Tab.Catalog.LayerControl.Popups', [GeoMOOSE.Tab.Catalog.LayerControl], {
+dojo.require('GeoMOOSE.Tab.Catalog.LayerControl.Selectable');
+
+dojo.declare('GeoMOOSE.Tab.Catalog.LayerControl.Popups', [GeoMOOSE.Tab.Catalog.LayerControl.Selectable], {
 	classes: ['sprite-control-popups'],
 
 	tip: 'CONFIGURATION.layer_controls.popups.tip',
@@ -37,6 +39,7 @@ dojo.declare('GeoMOOSE.Tab.Catalog.LayerControl.Popups', [GeoMOOSE.Tab.Catalog.L
 		} else {
 			GeoMOOSE.deactiveMapSource(this.layer.src);
 		}
+		this.inherited(arguments);
 	}
 });
 

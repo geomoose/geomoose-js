@@ -22,7 +22,9 @@ THE SOFTWARE.
 
 dojo.provide('GeoMOOSE.Tab.Catalog.LayerControl.EditAttributes');
 
-dojo.declare('GeoMOOSE.Tab.Catalog.LayerControl.EditAttributes', [GeoMOOSE.Tab.Catalog.LayerControl], {
+dojo.require('GeoMOOSE.Tab.Catalog.LayerControl.Selectable');
+
+dojo.declare('GeoMOOSE.Tab.Catalog.LayerControl.EditAttributes', [GeoMOOSE.Tab.Catalog.LayerControl.Selectable], {
 	classes: ['sprite-control-draw_edit_attributes'],
 
 	tip: 'CONFIGURATION.layer_controls["edit-attributes"].tip',
@@ -30,6 +32,7 @@ dojo.declare('GeoMOOSE.Tab.Catalog.LayerControl.EditAttributes', [GeoMOOSE.Tab.C
 	onClick: function() {
 		GeoMOOSE.activateMapSource(this.layer.src);
 		GeoMOOSE.activateLayerTool('edit_attributes', {title: this.layer.title});
+		this.inherited(arguments);
 	}
 });
 

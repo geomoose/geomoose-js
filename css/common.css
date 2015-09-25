@@ -481,3 +481,9 @@ body {
 	left: 3px;
 	bottom: 3px;
 }
+
+.sprite-control.selected {
+	background-color: #EEB8A8;
+	border-bottom: solid 2px red;
+	height: 16px;
+}

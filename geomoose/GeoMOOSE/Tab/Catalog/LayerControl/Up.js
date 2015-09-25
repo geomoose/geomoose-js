@@ -23,6 +23,8 @@ THE SOFTWARE.
 dojo.provide('GeoMOOSE.Tab.Catalog.LayerControl.Up');
 dojo.provide('GeoMOOSE.Tab.Catalog.LayerControl.Down');
 
+dojo.require('GeoMOOSE.Tab.Catalog.LayerControl');
+
 dojo.declare('GeoMOOSE.Tab.Catalog.LayerControl.Up', [GeoMOOSE.Tab.Catalog.LayerControl], {
 	classes: ['sprite-control-up'],
 

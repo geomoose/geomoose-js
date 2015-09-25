@@ -22,7 +22,9 @@ THE SOFTWARE.
 
 dojo.provide('GeoMOOSE.Tab.Catalog.LayerControl.RemoveFeature');
 
-dojo.declare('GeoMOOSE.Tab.Catalog.LayerControl.RemoveFeature', [GeoMOOSE.Tab.Catalog.LayerControl], {
+dojo.require('GeoMOOSE.Tab.Catalog.LayerControl.Selectable');
+
+dojo.declare('GeoMOOSE.Tab.Catalog.LayerControl.RemoveFeature', [GeoMOOSE.Tab.Catalog.LayerControl.Selectable], {
 	classes: ['sprite-control-draw_remove'],
 
 	tip: 'CONFIGURATION.layer_controls["remove-feature"].tip',
@@ -30,6 +32,7 @@ dojo.declare('GeoMOOSE.Tab.Catalog.LayerControl.RemoveFeature', [GeoMOOSE.Tab.Ca
 	onClick: function() {
 		GeoMOOSE.activateMapSource(this.layer.src);
 		GeoMOOSE.activateLayerTool('remove', {title: this.layer.title});
+		this.inherited(arguments);
 	}
 });
 

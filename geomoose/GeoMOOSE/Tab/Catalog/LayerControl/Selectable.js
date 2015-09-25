@@ -20,21 +20,18 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-dojo.provide('GeoMOOSE.Tab.Catalog.LayerControl.EditShape');
+dojo.provide('GeoMOOSE.Tab.Catalog.LayerControl.Selectable');
 
-dojo.require('GeoMOOSE.Tab.Catalog.LayerControl.Selectable');
+dojo.require('GeoMOOSE.Tab.Catalog.LayerControl');
 
-dojo.declare('GeoMOOSE.Tab.Catalog.LayerControl.EditShape', [GeoMOOSE.Tab.Catalog.LayerControl.Selectable], {
-	classes: ['sprite-control-draw_edit'],
+dojo.declare('GeoMOOSE.Tab.Catalog.LayerControl.Selectable', [GeoMOOSE.Tab.Catalog.LayerControl], {
 
-	tip: 'CONFIGURATION.layer_controls["edit-shape"].tip',
+	constructor: function() {
+		
+	},
 
 	onClick: function() {
-		GeoMOOSE.activateMapSource(this.layer.src);
-		GeoMOOSE.activateLayerTool('modify', {title: this.layer.title});
-		this.inherited(arguments);
+		// mark this control as "selected"
+		dojo.addClass(dojo.byId(this.control_id), 'selected');
 	}
 });
-
-GeoMOOSE._registerLayerControl('edit-shape', GeoMOOSE.Tab.Catalog.LayerControl.EditShape);
-

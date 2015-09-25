@@ -22,7 +22,9 @@ THE SOFTWARE.
 
 dojo.provide('GeoMOOSE.Tab.Catalog.LayerControl.DrawPolygon');
 
-dojo.declare('GeoMOOSE.Tab.Catalog.LayerControl.DrawPolygon', [GeoMOOSE.Tab.Catalog.LayerControl], {
+dojo.require('GeoMOOSE.Tab.Catalog.LayerControl.Selectable');
+
+dojo.declare('GeoMOOSE.Tab.Catalog.LayerControl.DrawPolygon', [GeoMOOSE.Tab.Catalog.LayerControl.Selectable], {
 	classes: ['sprite-control-drawPolygon'],
 
 	tip: 'CONFIGURATION.layer_controls["draw-polygon"].tip',
@@ -30,6 +32,7 @@ dojo.declare('GeoMOOSE.Tab.Catalog.LayerControl.DrawPolygon', [GeoMOOSE.Tab.Cata
 	onClick: function() {
 		GeoMOOSE.activateMapSource(this.layer.src);
 		GeoMOOSE.activateLayerTool('polygon', {title: this.layer.title});
+		this.inherited(arguments);
 	}
 });
 

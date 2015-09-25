@@ -22,7 +22,9 @@ THE SOFTWARE.
 
 dojo.provide('GeoMOOSE.Tab.Catalog.LayerControl.DrawLine');
 
-dojo.declare('GeoMOOSE.Tab.Catalog.LayerControl.DrawLine', [GeoMOOSE.Tab.Catalog.LayerControl], {
+dojo.require('GeoMOOSE.Tab.Catalog.LayerControl.Selectable');
+
+dojo.declare('GeoMOOSE.Tab.Catalog.LayerControl.DrawLine', [GeoMOOSE.Tab.Catalog.LayerControl.Selectable], {
 	classes: ['sprite-control-drawPath'],
 
 	tip: 'CONFIGURATION.layer_controls["draw-line"].tip',
@@ -30,6 +32,7 @@ dojo.declare('GeoMOOSE.Tab.Catalog.LayerControl.DrawLine', [GeoMOOSE.Tab.Catalog
 	onClick: function() {
 		GeoMOOSE.activateMapSource(this.layer.src);
 		GeoMOOSE.activateLayerTool('line', {title: this.layer.title});
+		this.inherited(arguments);
 	}
 });
 

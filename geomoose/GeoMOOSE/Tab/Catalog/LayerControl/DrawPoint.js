@@ -22,7 +22,9 @@ THE SOFTWARE.
 
 dojo.provide('GeoMOOSE.Tab.Catalog.LayerControl.DrawPoint');
 
-dojo.declare('GeoMOOSE.Tab.Catalog.LayerControl.DrawPoint', [GeoMOOSE.Tab.Catalog.LayerControl], {
+dojo.require('GeoMOOSE.Tab.Catalog.LayerControl.Selectable');
+
+dojo.declare('GeoMOOSE.Tab.Catalog.LayerControl.DrawPoint', [GeoMOOSE.Tab.Catalog.LayerControl.Selectable], {
 	classes: ['sprite-control-drawPoint'],
 
 	tip: 'CONFIGURATION.layer_controls["draw-point"].tip',
@@ -30,6 +32,7 @@ dojo.declare('GeoMOOSE.Tab.Catalog.LayerControl.DrawPoint', [GeoMOOSE.Tab.Catalo
 	onClick: function() {
 		GeoMOOSE.activateMapSource(this.layer.src);
 		GeoMOOSE.activateLayerTool('point', {title: this.layer.title});
+		this.inherited(arguments);
 	}
 });
 
