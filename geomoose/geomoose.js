@@ -857,7 +857,9 @@ window.GeoMOOSE = {
 	activateDefaultTool: function() {
 		var toolbar = dijit.byId('toolbar');
 		if(GeoMOOSE.isDefined(toolbar.tools[CONFIGURATION.default_tool])) {
-			toolbar.tools[CONFIGURATION.default_tool].onClick();
+			var tool = toolbar.tools[CONFIGURATION.default_tool];
+			tool.onClick();
+			tool.onStart();
 		} else {
 			GeoMOOSE.warning('Could not activateDefaultTool "'+CONFIGURATION.default_tool+'" as it is not defined in the toolbar.');
 		}

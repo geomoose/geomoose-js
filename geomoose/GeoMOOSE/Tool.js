@@ -119,7 +119,6 @@ dojo.declare('GeoMOOSE.ToolMenu', [GeoMOOSE.Tool, dijit.CheckedMenuItem], {
 
 	onClick: function() {
 		this.inherited(arguments);
-		console.log('ON CLICK!!!');
 		this.changeCursor();
 	}
 });
