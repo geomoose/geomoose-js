@@ -389,7 +389,9 @@ dojo.declare('GeoMOOSE.Application', null, {
 		if(CONFIGURATION.scale_line && CONFIGURATION.scale_line.enabled) {
 			Map.addControl(new OpenLayers.Control.ScaleLine({
 				bottomOutUnits: CONFIGURATION.scale_line.bottom_units,
+				bottomInUnits: CONFIGURATION.scale_line.bottom_units,
 				topOutUnits: CONFIGURATION.scale_line.top_units,
+				topInUnits: CONFIGURATION.scale_line.top_units,
 				maxWidth: CONFIGURATION.scale_line.width
 			}));
 		}
