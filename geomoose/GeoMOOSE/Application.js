@@ -177,6 +177,8 @@ dojo.declare('GeoMOOSE.Application', null, {
 		if(this.active_map_source) {
 			GeoMOOSE.activateMapSource(this.active_map_source);
 		}
+
+		GeoMOOSE.activateDefaultTool();
 	},
 
 	/**
