@@ -30,7 +30,7 @@ THE SOFTWARE.
 HashTrack = new OpenLayers.Class(GeoMOOSE.UX.Extension, {
 	center: null,
 	zoomLevel: null,
-
+	layers: null,
 
 	parseHashTag: function() {
 		var args = dojo.queryToObject(''+window.location.hash.substring(1));
@@ -44,7 +44,10 @@ HashTrack = new OpenLayers.Class(GeoMOOSE.UX.Extension, {
 			this.center.lon = parseFloat(split[1]);
 			this.zoomLevel = parseFloat(split[2]);
 		}
-
+		this.layers = null;
+		if(args.l) {
+			this.layers = args.l.split(',');
+		}
 	},
 
 	init: function(map) {
@@ -55,13 +58,15 @@ HashTrack = new OpenLayers.Class(GeoMOOSE.UX.Extension, {
 			});
 		}
 		map.events.register('moveend', this, this.mapMoved);
+		dojo.connect(Application, 'onLayersChange', dojo.hitch(this, this.mapMoved));
 	},
 
 	mapMoved: function() {
 		var center = Map.getCenter();
 		var zoom = Map.getZoom();
 		var position = center.lat + ',' + center.lon + ',' + zoom;
-		window.location.hash = '#xy='+position 
+		var layers = GeoMOOSE.getVisibleLayers().join(",");
+		window.location.hash = '#xy='+position+'&l='+layers;
 	},
 
 	load: function() {
@@ -71,6 +76,11 @@ HashTrack = new OpenLayers.Class(GeoMOOSE.UX.Extension, {
 			this.parseHashTag();
 			if(this.center != null) {
 				Map.setCenter(this.center, this.zoomLevel);
+			}
+			if(this.layers != null) {
+ 				dojo.forEach(this.layers, function(val, idx) {
+					GeoMOOSE.turnLayerOn(val);
+				});
 			}
 		}));
 	},
