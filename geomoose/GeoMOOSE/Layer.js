@@ -162,6 +162,16 @@ dojo.declare('GeoMOOSE.Layer', null, {
 				paths.push(src);
 			}
 			GeoMOOSE.changeLayerVisibility(paths, stat);
+
+			for(var path in this.paths) {
+			    var mapsource = Application.getMapSource(path);
+			    var parts;
+			    var layer;
+			    if(mapsource && (parts = path.split('/')) && parts[1] 
+					&& (layer = mapsource.getLayerByName(parts[1]))) {
+				layer.initial_on = stat;
+			    }
+			}
 		}
 	},
 
