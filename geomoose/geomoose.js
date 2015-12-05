@@ -504,11 +504,12 @@ window.GeoMOOSE = {
 	 * Get an URL for bookmarking.
 	 */
 	getBookmarkUrl: function() {
-		var url = new String(document.location)
-		if(url.indexOf('?') > 0) {
-			url = url.split('?')[0];
-		}
-		url = url.replace('#','');
+		var url = new String(window.location);
+		// Strip off any existing search or hash values
+		// Note search (?) always comes before hash (#) so if there is a
+		// search part, the first split will also remove the hash part.
+		url = url.split('?')[0].split('#')[0];
+
 		url += '?extent=' + Map.getExtent().toArray().toString(',');
 
 		var layer_changes = Application.getStatusDifferences();
