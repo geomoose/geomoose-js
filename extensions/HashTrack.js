@@ -37,8 +37,15 @@ HashTrack = new OpenLayers.Class(GeoMOOSE.UX.Extension, {
 	 * 
 	 * Parameters:
 	 *  Parsed from window.location.hash:
+	 *    xy: map center position and zoom level e.g:
 	 *    xy=[center x coordinate],[center y coordinate],[zoom level]
-	 *    l=[layer path],[layer path],...
+	 *
+	 *    on, off: Semicolon separated lists of layer paths to turn on
+	 *             or off.  Starting with the defaults in the mapbook, first
+	 *             the on list is used to turn on layers then the off list
+	 *             is used to turn off layers. e.g:
+	 *    on=[layer path];[layer path];...
+	 *    off=[layer path];[layer path];...
 	 */
 	parseHashTag: function() {
 		//console.log("HashTrack: parseHashTag called");
@@ -92,7 +99,7 @@ HashTrack = new OpenLayers.Class(GeoMOOSE.UX.Extension, {
 	 * Updates the hash parameters based on changes to the map state.
 	 * 
 	 * Parameters: none
-         * Side effects: Updates window.location.hash
+	 * Side effects: Updates window.location.hash
 	 */
 	updateHash: function() {
 		//console.log("HashTrack: updateHash called");
