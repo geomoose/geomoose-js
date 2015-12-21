@@ -279,7 +279,9 @@ dojo.declare('GeoMOOSE.MapSource.WMS', [GeoMOOSE.MapSource], {
 		} else {
 			/* if we're not locking it down, then just return everything */
 			for(var i = 0, len = layers.length; i < len; i++) {
-				legend_urls.push(legendURL + '&LAYER=' + layers[i] + '&STYLE=' + styles[layers[i]]);
+				var st = styles[layers[i]];
+				if(!GeoMOOSE.isDefined(st)) { st = ''; }
+				legend_urls.push(legendURL + '&LAYER=' + layers[i] + '&STYLE=' + st);
 			}
 		}
 
