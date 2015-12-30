@@ -30,6 +30,10 @@ THE SOFTWARE.
 
 BookmarkToTabExtension = new OpenLayers.Class(GeoMOOSE.UX.Extension, {
 	load: function() {
+		if(GeoMOOSE.isDefined(window.HashTrack)) {
+			alert("The BookmarkToTab extension conflicts with HashTrack.js! Only use one at a time! HashTrack is the newer of these two extensions and does not create a page-reload event in the browser while navigating or bookmarking, the GeoMOOSE development team suggests using it over BookmarkToTab.");
+		}
+
 		GeoMOOSE.bookmark = function() {
 			var url  = GeoMOOSE.getBookmarkUrl();
 			var id   = GeoMOOSE.id('bookmark');
