@@ -100,6 +100,38 @@ dojo.declare('GeoMOOSE.Layer', null, {
 		}
 	},
 
+	/** Store the initial settings of the paths
+	 *
+	 *  This will let the application track what the user has changed
+	 *  and is returned by getStatusDifference
+	 *
+	 */
+	saveInitialStatus: function() {
+		this.initialStatus = {};
+		for(var path in this.paths) {
+			this.initialStatus[path] = this.paths[path];
+		}
+	},
+
+	/** Get the paths that have changed.
+	 *
+	 *  @returns An object with attributes 'on' and 'off' which contain
+	 *            lists of how the statii have changed.
+	 */
+	getStatusDifference: function() {
+		var ret = {'on' : [], 'off' : []};
+		for(var path in this.paths) {
+			if(this.initialStatus[path] != this.paths[path]) {
+				if(this.paths[path] === true) {
+					ret['on'].push(path);
+				} else {
+					ret['off'].push(path);
+				}
+			}
+		}
+		return ret;
+	},
+
 	parseLayerXml: function(layerXml) {
 		this._commonParser(layerXml);
 
@@ -152,27 +184,7 @@ dojo.declare('GeoMOOSE.Layer', null, {
 			}
 		}
 
-
-
-		var stat = parseBoolean(layerXml.getAttribute('status'));
-		if(GeoMOOSE.isDefined(stat)) {
-			var paths = [];
-			for(var src in this.paths) {
-				this.paths[src] = stat;
-				paths.push(src);
-			}
-			GeoMOOSE.changeLayerVisibility(paths, stat);
-
-			for(var path in this.paths) {
-			    var mapsource = Application.getMapSource(path);
-			    var parts;
-			    var layer;
-			    if(mapsource && (parts = path.split('/')) && parts[1] 
-					&& (layer = mapsource.getLayerByName(parts[1]))) {
-				layer.initial_on = stat;
-			    }
-			}
-		}
+		this.saveInitialStatus();
 	},
 
 	parseFromMapSource: function(mapSourceXml) {
@@ -184,6 +196,7 @@ dojo.declare('GeoMOOSE.Layer', null, {
 		this.src = name;
 
 		this.paths = {};
+
 		for(var i = 0; i < layers.length; i++) {
 			var l = layers[i];
 			var on = parseBoolean(l.getAttribute('status'));
@@ -198,6 +211,7 @@ dojo.declare('GeoMOOSE.Layer', null, {
 			this.paths[name] = status;
 		}
 
+		this.saveInitialStatus();
 	},
 
 	pathsAsArray: function() {

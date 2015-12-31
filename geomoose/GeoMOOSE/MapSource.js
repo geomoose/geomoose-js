@@ -243,19 +243,7 @@ dojo.declare('GeoMOOSE.MapSource', null, {
 	 */
 	
 	getStatusDifferences: function() {
-		var diffs = {'on' : [], 'off' : []};
-		for(var i = 0, len = this.layers.length; i < len; i++) {
-			var layer = this.layers[i];
-			if(layer.on != layer.initial_on) {
-				if(layer.on === true) {
-					diffs['on'].push(layer.name);
-				} else {
-					diffs['off'].push(layer.name);
-				}
-			}
-		}
-		return diffs;
-		
+		return this._layer.getStatusDifference();
 	},
 
 	/**
