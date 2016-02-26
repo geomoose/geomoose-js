@@ -874,8 +874,13 @@ dojo.declare('GeoMOOSE.Tab.Service', [dijit.layout.BorderContainer], {
 
 		if(this._clearHighlightOnClose) {
 			if(GeoMOOSE.isDefined(CONFIGURATION.services.highlight_layer)) {
-				GeoMOOSE.clearLayerParameters(CONFIGURATION.services.highlight_layer);
-				GeoMOOSE.changeLayerVisibility(CONFIGURATION.services.highlight_layer, false);
+				var layers = CONFIGURATION.services.highlight_layer;
+				if(!dojo.isArray(layers)) { layers = [layers]; };
+				for(var i = 0, ii = layers.length; i < ii; i++) {
+					var layer = layers[i];
+					GeoMOOSE.clearLayerParameters(layer);
+					GeoMOOSE.changeLayerVisibility(layer, false);
+				}
 			}
 		}
 

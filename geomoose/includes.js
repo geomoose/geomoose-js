@@ -43,6 +43,7 @@ dojo.require('GeoMOOSE.Dialog.Error');
 dojo.require('GeoMOOSE.MapSource');
 dojo.require('GeoMOOSE.MapSource.Vector');
 dojo.require('GeoMOOSE.MapSource.Vector.WFS');
+dojo.require('GeoMOOSE.MapSource.Vector.GeoJSON');
 
 dojo.require('GeoMOOSE.MapSource.WMS');
 dojo.require('GeoMOOSE.MapSource.MapServer');
