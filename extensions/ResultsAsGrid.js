@@ -1,4 +1,33 @@
-/** Renders the results of the query as an interactive grid.
+/*
+Copyright (c) 2009-2016, Dan "Ducky" Little & GeoMOOSE.org
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+*/
+
+/*
+ * Class: ResultsAsGrid
+ *
+ * Renders the results of the query as an interactive grid.
+ *
+ * WARNING! This class will not work out of the box! It is necessary
+ *          to create a subclass!!!
+ *
  */
 
 dojo.require('dojo.store.Memory');
@@ -10,7 +39,7 @@ dojo.require('dijit.Toolbar');
 dojo.require('dijit.layout.BorderContainer');
 
 dojo.provide("extensions.ResultsAsGrid");
-dojo.declare("ResultsAsGrid", null, {
+dojo.declare("extensions.ResultsAsGrid", null, {
 	load: function() {
 		var self = this;
 
@@ -73,6 +102,8 @@ dojo.declare("ResultsAsGrid", null, {
 	/** Render the toolbar, override with custom code when you need a toolbar.
 	 */
 	renderToolbar: function(layout) {
+		/* Below is an example of how to add a button to the toolbar,
+		 * WARNING! OVERRIDE THIS CLASS, DO NOT MODIFY IT!
 		// add the toolbar to the layout containing the grid.
 		var toolbar = new dijit.Toolbar({region: 'top'});
 		layout.addChild(toolbar);
@@ -85,6 +116,7 @@ dojo.declare("ResultsAsGrid", null, {
 		});
 		toolbar.addChild(list_button);
 		toolbar.startup();
+		*/
 	},
 
 
@@ -237,8 +269,4 @@ dojo.declare("ResultsAsGrid", null, {
 
 	}
 });
-
-
-GeoMOOSE.UX.register("ResultsAsGrid");
-
 
