@@ -86,6 +86,9 @@
 	<script type="text/javascript">
 		// Fix for Dojo build paths != run paths.
 		dojo.registerModulePath('extensions', '../../../extensions');
+		// Allow modules to be included from "site" to indicate
+		//  modules customized for hte site.
+		dojo.registerModulePath('site', '../../../site');
 	</script>
 	<script type="text/javascript" src="site/includes.js"></script>
 	<script type="text/javascript" src="extensions/CustomTab.js"></script>

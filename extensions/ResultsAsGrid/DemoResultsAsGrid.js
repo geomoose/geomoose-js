@@ -34,14 +34,19 @@ dojo.declare("extensions.ResultsAsGrid.DemoResultsAsGrid", extensions.ResultsAsG
 	 *  report on the parcels, all sorts of fun options.
 	 */
 	demoListParcels: function() {
+		// Array to contain the selected PINs.
 		var pins = [];
+		// Get the selected items from the grid.
 		var items = this.dataGrid.selection.getSelected();
+		// iterate through the items.
 		for(var i = 0, ii = items.length; i < ii; i++) {
+			// get the PIN.
 			var pin = this.objectStore.getValue(items[i], "PIN");
+			// add the PIN to the array.
 			pins.push(pin);
 		}
 
-
+		// put an alert up that shows which PINs were selected.
 		alert('You have selected the following PINs: '+pins.join(', '));
 	},
 
@@ -49,17 +54,22 @@ dojo.declare("extensions.ResultsAsGrid.DemoResultsAsGrid", extensions.ResultsAsG
 	/** Add a demo of listing the selected PINs using a button in the toolbar.
 	 */
 	renderToolbar: function(layout) {
-		// add the toolbar to the layout containing the grid.
+		// create a new toolbar on the top of the grid pane.
 		var toolbar = new dijit.Toolbar({region: 'top'});
-		layout.addChild(toolbar);
-		toolbar.startup();
 
+		// Add the toolbar to the layout.
+		layout.addChild(toolbar);
+
+		// Create a button.
 		var list_button = new dijit.form.Button({
 			label: "List Parcels",
 			iconClass: "dijitEditorIcon dijitEditorIconInsertTable",
 			onClick: dojo.hitch(this, this.demoListParcels)
 		});
+		// Place the button on the toolbar.
+
 		toolbar.addChild(list_button);
+		// Tell the toolbar to startup and register its events.
 		toolbar.startup();
 	}
 });
