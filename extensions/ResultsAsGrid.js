@@ -9,7 +9,8 @@ dojo.require("dojox.grid._CheckBoxSelector")
 dojo.require('dijit.Toolbar');
 dojo.require('dijit.layout.BorderContainer');
 
-DataGridExtension = new OpenLayers.Class(GeoMOOSE.UX.Extension, {
+dojo.provide("extensions.ResultsAsGrid");
+dojo.declare("ResultsAsGrid", null, {
 	load: function() {
 		var self = this;
 
@@ -238,6 +239,6 @@ DataGridExtension = new OpenLayers.Class(GeoMOOSE.UX.Extension, {
 });
 
 
-GeoMOOSE.UX.register("DataGridExtension");
+GeoMOOSE.UX.register("ResultsAsGrid");
 
 
