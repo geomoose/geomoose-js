@@ -29,6 +29,7 @@ dojo.require('dijit.CheckedMenuItem');
 
 dojo.declare('GeoMOOSE._Tool', null, {
 	tool_xml: null,
+	selectable: false,
 
 	doStyle: function() {
 		var icon_class = this.tool_xml.getAttribute('icon-class');
@@ -59,6 +60,13 @@ dojo.declare('GeoMOOSE._Tool', null, {
 		} else if(GeoMOOSE.isDefined(this.tool_xml.getAttribute('cursor'))) {
 			this.cursor_css = this.tool_xml.getAttribute('cursor'); 
 		}
+
+		if(this.selectable) {
+			dojo.subscribe('/geomoose/deactivate-tools', dojo.hitch(this, function() {
+				this.set('checked', false);
+			}));
+		}
+
 	},
 
 	changeCursor: function() {
@@ -79,7 +87,6 @@ dojo.declare('GeoMOOSE.Tool', [GeoMOOSE._Tool, dijit.form.ToggleButton], {
 	onStart: function() {
 	},
 
-	
 	onClick: function() {
 		/** this is a small hack to make sure that the button stays selected. **/
 		if(!this.get('checked')) {
