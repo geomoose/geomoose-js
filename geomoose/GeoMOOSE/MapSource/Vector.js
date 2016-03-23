@@ -253,6 +253,23 @@ dojo.declare('GeoMOOSE.MapSource.Vector', GeoMOOSE.MapSource, {
 					});
 				}
 			}
+
+			// white list specific tag names to merge with the 
+			//   attributes list.
+			var whitelist = ['url'];
+			// iterate through the children
+			for(var ch = 0, chlen = attr.childNodes.length; ch < chlen; ch++) {
+				var child = attr.childNodes[ch];
+				// handle any quirks of the tagname by taking it lower case.
+				if(child.tagName) {
+					var tag_name = child.tagName.toLowerCase();
+					// if in the while list then merge the attribute values.
+					if(whitelist.indexOf(tag_name) >= 0) {
+						// pull the text value of the node out.
+						desc[tag_name] = OpenLayers.Util.getXmlNodeValue(child); 
+					}
+				}
+			}
 			this.attributes.push(desc);
 		}
 

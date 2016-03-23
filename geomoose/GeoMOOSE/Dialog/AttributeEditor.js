@@ -104,8 +104,13 @@ dojo.declare('GeoMOOSE.Dialog.AttributeEditor', [dijit.Dialog], {
 				'title' : this.feature_desc[i]['label']
 			}
 
-			if(GeoMOOSE.isDefined(this.feature_desc[i]['options'])) {
-				input_opts['options'] = this.feature_desc[i]['options'];
+			var merge_options = ['options', 'url'];
+			for(var x = 0, xlen = merge_options.length; x < xlen; x++) {
+				var merge_opt = merge_options[x];
+
+				if(GeoMOOSE.isDefined(this.feature_desc[i][merge_opt])) {
+					input_opts[merge_opt] = this.feature_desc[i][merge_opt];
+				}
 			}
 
 			var input_obj = new input_types[input_type](null, input_opts);

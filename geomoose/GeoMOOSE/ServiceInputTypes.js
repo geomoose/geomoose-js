@@ -378,6 +378,18 @@ GeoMOOSE.Services.InputType.AjaxSelect = OpenLayers.Class(GeoMOOSE.Services.Inpu
 
 	options: [],
 
+	initialize: function(input, options) {
+		GeoMOOSE.Services.InputType.Select.prototype.initialize.apply(this, arguments);
+
+		if(options.url) {
+			this.url = options.url;
+		} else if(input) {
+			var url = input.getElementsByTagName('url')[0];
+			this.url = OpenLayers.Util.getXmlNodeValue(url);
+		}
+	},
+
+
 	got_opts_from_req: function(request) {
 		var formed_opts = [];
 		var response = request.responseXML;
@@ -389,12 +401,8 @@ GeoMOOSE.Services.InputType.AjaxSelect = OpenLayers.Class(GeoMOOSE.Services.Inpu
 	},
 
 	getOptions: function () {
-		var url = this.input.getElementsByTagName('url')[0];
-
-		url = OpenLayers.Util.getXmlNodeValue(url);
-
 		var requestOptions = new OpenLayers.Request.GET({
-		       url: url,
+		       url: this.url,
 		       async: false,
 		       success: OpenLayers.Function.bind(this.got_opts_from_req, this) 
 		});
