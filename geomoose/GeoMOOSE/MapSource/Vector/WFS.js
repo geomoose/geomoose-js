@@ -33,7 +33,9 @@ dojo.declare('GeoMOOSE.MapSource.Vector.WFS', [GeoMOOSE.MapSource.Vector], {
 	_createOLLayer: function(options) {
 		var strategies = [new OpenLayers.Strategy.BBOX()];
 		if(this.canSave) {
-			this.save_strategy = new OpenLayers.Strategy.Save();
+			// Set the layer to save without using the save button,
+			//  refs: #117
+			this.save_strategy = new OpenLayers.Strategy.Save({auto: true});
 			strategies.push(this.save_strategy);
 		}
 		if(this.clusteringEnabled) {
@@ -41,7 +43,7 @@ dojo.declare('GeoMOOSE.MapSource.Vector.WFS', [GeoMOOSE.MapSource.Vector], {
 		}
 		this._ol_layer = new OpenLayers.Layer.Vector(this.title, {
 			strategies: strategies,
-			projection: new OpenLayers.Projection(CONFIGURATION.projection),
+			projection: this.srsName,
 			styleMap : this.style_map,
 			visibility: false,
 			protocol: new OpenLayers.Protocol.WFS({
