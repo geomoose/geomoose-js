@@ -50,6 +50,7 @@ dojo.declare('GeoMOOSE.MapSource.Vector.WFS', [GeoMOOSE.MapSource.Vector], {
 				version: '1.1.0',
 				srsName: this.srsName,
 				url: this.url,
+				filter: this.filter,
 				featureNS: this.featureNS,
 				featurePrefix: this.featurePrefix,
 				featureType: this.featureType,
@@ -83,11 +84,45 @@ dojo.declare('GeoMOOSE.MapSource.Vector.WFS', [GeoMOOSE.MapSource.Vector], {
 			this.srsName = CONFIGURATION.projection;
 		}
 
+		// set the filter default
+		this.filter = null;
+		// check the XML for a filter.
+		var filters = mapbook_xml.getElementsByTagName('filter');
+		if(filters.length > 0) {
+			// this only honours the first filter.
+			var filter = filters[0];
+			// and that filter needs to be a CQL filter.
+			if(filter.getAttribute('type') == 'cql') {
+				this.updateFilter(OpenLayers.Util.getXmlNodeValue(filter));
+			}
+		}
+
+
 		return mapbook_xml;
 	},
 
 	save: function() {
 		this.save_strategy.save();
+	},
+
+	/** Implement CQL Filting for WFS Layers
+	 *
+	 */
+
+	updateFilter: function(filterText) {
+		var filter = new OpenLayers.Filter.Logical();
+		var format_CQL = new OpenLayers.Format.CQL();
+		try {
+			filter = format_CQL.read(filterText);
+		} catch (err) {
+			//GeoMOOSE.error('OpenLayers CQL parser is unable to parse:'+filter_text);
+		}
+		if(filter) {
+			this.filter = filter;
+			this._ol_layer.filter = this.filter;
+			this._ol_layer.redraw({force: true});
+			this._ol_layer.refresh({force: true});
+		}
 	}
 });
 

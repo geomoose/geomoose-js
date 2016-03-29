@@ -333,6 +333,8 @@ dojo.declare('GeoMOOSE.MapSource', null, {
 			this.attributes[valid_attributes[i]] = attr_value;
 		}
 
+		// some mapsource types support filtering.
+		this.filter = null;
 	},
 
 	/**
@@ -519,6 +521,15 @@ dojo.declare('GeoMOOSE.MapSource', null, {
 	 */
 	asLayer: function() {
 		return this._layer;
+	},
+
+	/** Update the layer's filter and act accordingly.
+	 *
+	 */
+	updateFilter: function(filterText) {
+		// does nothing in this guise.
+		//  it's a stub function for those layers that support
+		//  filtering.
 	}
 
 });

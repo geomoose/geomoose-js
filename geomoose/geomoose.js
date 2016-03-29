@@ -226,6 +226,14 @@ window.GeoMOOSE = {
 	},
 
 	/*
+	 * Method: updateLayerFilter
+	 * Change the filter for a given layer.
+	 */
+	updateLayerFilter: function(laterName, filterText) {
+		Application.getMapSource(layerName).updateFilter(filterText);
+	},
+
+	/*
 	 * Method: getLayerParameters
 	 * Get the params for a given layer.
 	 *
