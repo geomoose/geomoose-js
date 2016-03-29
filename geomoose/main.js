@@ -64,8 +64,19 @@ dojo.addOnLoad(function() {
 		/* Trigger the old onMapbookLoaded event. */
 		GM_Events.triggerEvent('onMapbookLoaded', {});
 
+		// parse the URL parameters
 		var params = GeoMOOSE.getUrlParameters();
-		if(GeoMOOSE.isDefined(params.call)) {
+
+		// used as a flag to disable ".call" from the URL if the application
+		//  already specified the startup service in config.
+		var startup_service_called = false;
+		if(GeoMOOSE.isDefined(CONFIGURATION['startup_service'])) { 
+			var service_name = CONFIGURATION['startup_service'];
+			GeoMOOSE.startService(service_name, params, true);
+			startup_service_called = true;
+		}
+
+		if(GeoMOOSE.isDefined(params.call) && !startup_service_called) {
 			var service_name = params.call;
 			delete params.call;
 			GeoMOOSE.startService(service_name, params, true);
