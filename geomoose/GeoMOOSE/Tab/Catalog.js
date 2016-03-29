@@ -111,6 +111,12 @@ dojo.declare('GeoMOOSE.Tab._CatalogLayer', null, {
 				paths.push(src);
 			}
 			GeoMOOSE.changeLayerVisibility(paths, v);
+
+			if(v === false) {
+				// hide the legends
+				this.updateLegends();
+			}
+
 		}));
 
 		/* store min/maxscale in the dom */
@@ -227,6 +233,7 @@ dojo.declare('GeoMOOSE.Tab._CatalogLayer', null, {
 
 		/* load the new legends */
 		if(dijit.byId(this.checkbox_id).get('checked')) {
+			legends_div.style.display = 'block';
 			var legend_urls = [];
 			if(this.layer.dynamicLegends) {
 				var paths = [];
@@ -246,6 +253,8 @@ dojo.declare('GeoMOOSE.Tab._CatalogLayer', null, {
 				}, legends_div);
 				dojo.addClass(legend_img, ['catalog-legend-image']);
 			}
+		} else {
+			legends_div.style.display = 'none';
 		}
 	},
 	
