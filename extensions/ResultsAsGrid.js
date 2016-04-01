@@ -123,10 +123,8 @@ dojo.declare("extensions.ResultsAsGrid", null, {
 	highlightFeatures: [],
 
 	clearHighlightFeatures: function() {
-		while(this.highlightFeatures.length > 0) {
-			var f = this.highlightFeatures.pop();
-			f.style = null;
-		}
+		var ol_layer = Application.getMapSource(this.conf.targetLayer)._ol_layer;
+		ol_layer.removeFeatures(this.highlightFeatures, {silent: true});
 	},
 
 	/** Highlight the feature when the mouse if over the row.
@@ -140,16 +138,20 @@ dojo.declare("extensions.ResultsAsGrid", null, {
 		if(item) {
 			var ol_layer = Application.getMapSource(this.conf.targetLayer)._ol_layer;
 			var f = ol_layer.getFeatureById(item.id);
-			f.style =  {
+			var clone = f.clone();
+
+			clone.style =  {
 				strokeColor: 'red',
 				strokeOpacity: 1.0,
 				fillColor: 'red',
 				fillOpacity: 0.8
 			};
 
-			this.highlightFeatures.push(f);
+			this.highlightFeatures.push(clone);
 
-			ol_layer.redraw();
+			ol_layer.addFeatures([clone], {silent: true});
+
+			//ol_layer.redraw();
 		}
 	},
 
@@ -159,8 +161,41 @@ dojo.declare("extensions.ResultsAsGrid", null, {
 		this.clearHighlightFeatures();
 		var ol_layer = Application.getMapSource(this.conf.targetLayer)._ol_layer;
 		ol_layer.redraw();
-
 	},
+
+	/** Style a selected feature.
+	 *
+	 */
+	styleSelectedFeature: function(f) {
+		f.style = {
+			strokeColor: 'blue',
+			strokeOpacity: .75,
+			fillColor: 'blue',
+			fillOpacity: .5
+		};
+	},
+
+	/** Find the selected features and style
+	 *  them to show what is "checked".
+	 */
+	renderSelected: function() {
+		// get the OpenLayers layer class.
+		var ol_layer = Application.getMapSource(this.conf.targetLayer)._ol_layer;
+		// get the list of selected "items"
+		var items = this.dataGrid.selection.getSelected();
+		for(var i = 0, len = items.length; i < len; i++) {
+			if(items[i]) {
+				var item = items[i];
+				var f = ol_layer.getFeatureById(item.id);
+				if(f) { 
+					this.styleSelectedFeature(f);
+					ol_layer.drawFeature(f);
+				}
+			}
+		}
+	},
+	
+	
 
 	/** Delayed update when lists are changed.
 	 */
@@ -203,6 +238,7 @@ dojo.declare("extensions.ResultsAsGrid", null, {
 
 					dojo.connect(this.dataGrid, 'onMouseOver', this, this.mouseOver);
 					dojo.connect(this.dataGrid, 'onMouseOut', this, this.mouseOut);
+					dojo.connect(this.dataGrid, 'onSelectionChanged', this, this.renderSelected); 
 
 
 					//var middle = dijit.byId('middle');
