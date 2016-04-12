@@ -60,6 +60,8 @@ dojo.declare('GeoMOOSE.Tool.MeasureArea', null, {
 		'mi' : 4014489600
 	},
 
+	helpText: "Click on the map to start measuring. Double-click to finish measuring.",
+
 	/**
 	 * Method: start_measure
 	 * Create a tab for the contents of the measure tab.
@@ -139,6 +141,10 @@ dojo.declare('GeoMOOSE.Tool.MeasureArea', null, {
 			'label' : 'Clear',
 			'onClick' : dojo.hitch(this, this.clear_log)
 		}, dojo.create('span', {}, clear_div));
+
+		var help = dojo.create('div', {}, p);
+		dojo.addClass(help, ['help-text']);
+		help.innerHTML = this.helpText;
 
 		this.tbody_id = GeoMOOSE.id();
 
