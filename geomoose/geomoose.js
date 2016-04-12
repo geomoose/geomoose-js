@@ -472,6 +472,22 @@ window.GeoMOOSE = {
 
 		//addPopup(x,y,w,h,html);
 	},
+	/*
+	 * Method: addPopupGround
+	 * Add a popup to the map.
+	 *
+	 * Parameters:
+	 *  easting - easting (or lon) coordinate to place the popup.
+	 *  northing - northing (or lat) coordinate to place the popup.
+	 *  html - The contents of the popup.
+	 *  title - The title of the popup
+	 */
+	addPopupGround : function(easting, northing, html, title) {
+		var xy = Map.getPixelFromLonLat(
+			new OpenLayers.LonLat(easting, northing)
+		);
+		return GeoMOOSE.addPopup(xy.x, xy.y, 0, 0, html, title);	
+	},
 
 	/*
 	 * Method: clearPopups
