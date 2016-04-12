@@ -42,7 +42,6 @@ dojo.declare('GeoMOOSE.Popup', [dijit._Widget, dijit._Templated], {
 	x: 0, y: 0,
 
 	close: function() {
-		console.info('close event', this);
 		// user clicks close, we bring the boom.
 		this.destroyRecursive();
 		// clear internal events if they were set.
