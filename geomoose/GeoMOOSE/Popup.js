@@ -42,13 +42,14 @@ dojo.declare('GeoMOOSE.Popup', [dijit._Widget, dijit._Templated], {
 	x: 0, y: 0,
 
 	close: function() {
+		console.info('close event', this);
+		// user clicks close, we bring the boom.
+		this.destroyRecursive();
 		// clear internal events if they were set.
 		if(this.clearOnMove) {
 			dojo.disconnect(this.clearEvent);
 			dojo.disconnect(this.stickyEvent);
 		}
-		/* user clicks close, we bring the boom. */
-		this.destroyRecursive();
 	},
 
 	/*
@@ -129,14 +130,14 @@ dojo.declare('GeoMOOSE.Popup', [dijit._Widget, dijit._Templated], {
 		/* position the popup */
 		this.position();
 		/* wire up a click to the close box to close the popup */	
-		dojo.connect(this.closeBox, 'click', dojo.hitch(this, this.close));
-		dojo.connect(this.titleNode, 'mousedown', dojo.hitch(this, this.startMove));
+		dojo.connect(this.closeBox, 'click', this, this.close);
+		dojo.connect(this.titleNode, 'mousedown', this, this.startMove);
 
 		// when clear on move is set to true the popups
 		//  are dropped when the mouse moves away from the popup spot.
 		if(this.clearOnMove) {
-			this.clearEvent = dojo.connect(document, 'mousemove', dojo.hitch(this, this.close));
-			this.stickyEvent = dojo.connect(document, 'click', dojo.hitch(this, this.makeSticky));
+			this.clearEvent = dojo.connect(this.popupNode, 'mouseleave', this, this.close);
+			this.stickyEvent = dojo.connect(this.popupNode, 'click', this, this.makeSticky);
 		}
 	}
 });
