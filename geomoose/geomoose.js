@@ -555,6 +555,10 @@ window.GeoMOOSE = {
 			var url = document.location+'';
 			if(url.indexOf('?') > 0) {
 				var url = url.split('?')[1];
+				if(url.indexOf('#') > 0) {
+					// eliminate the hash
+					url = url.split('#')[0];
+				}
 				this._parsed_parameters = dojo.queryToObject(url);
 			} else {
 				this._parsed_parameters = {};

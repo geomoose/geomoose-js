@@ -72,9 +72,13 @@ dojo.addOnLoad(function() {
 		var startup_service_called = false;
 		if(GeoMOOSE.isDefined(CONFIGURATION['startup_service'])) { 
 			var service_name = CONFIGURATION['startup_service'];
-			GeoMOOSE.startService(service_name, params, true);
-			startup_service_called = true;
+			if(service_name) {
+				GeoMOOSE.startService(service_name, params, true);
+				startup_service_called = true;
+			}
 		}
+
+		console.log('Call?', CONFIGURATION['startup_service'], params.call, startup_service_called);
 
 		if(GeoMOOSE.isDefined(params.call) && !startup_service_called) {
 			var service_name = params.call;
