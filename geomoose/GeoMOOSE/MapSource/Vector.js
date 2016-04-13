@@ -103,6 +103,12 @@ dojo.declare('GeoMOOSE.MapSource.Vector', GeoMOOSE.MapSource, {
 	addToMap: function(map) {
 		this.inherited(arguments);
 
+		var modify_control = new OpenLayers.Control.ModifyFeature(this._ol_layer, {
+		                      standalone: true,
+				      vertexRenderIntent: 'select'
+				     });
+
+		
 		this.controls = {
 			'polygon' : new OpenLayers.Control.DrawFeature(this._ol_layer, OpenLayers.Handler.Polygon, {}),
 			'line' : new OpenLayers.Control.DrawFeature(this._ol_layer, OpenLayers.Handler.Path, {}),
@@ -115,7 +121,7 @@ dojo.declare('GeoMOOSE.MapSource.Vector', GeoMOOSE.MapSource, {
 				includeXY: true,
 				hover: true
 			}),
-			'edit_attributes' : new OpenLayers.Control.SelectFeature(this._ol_layer),
+			'edit_attributes' : new OpenLayers.Control.SelectFeature(this._ol_layer, {box: true}),
 			'remove' : new GeoMOOSE.Control.DeleteFeature(this._ol_layer),
 			'remove_all' : {
 				'activate' : dojo.hitch(this, function() {
