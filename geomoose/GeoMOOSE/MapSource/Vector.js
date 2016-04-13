@@ -60,10 +60,14 @@ dojo.declare('GeoMOOSE.MapSource.Vector', GeoMOOSE.MapSource, {
 				this.visibility = visibility;
 				this._ol_layer.setVisibility(this.isVisible());
 				if(visibility === true) {
-					this._ol_layer.redraw({force: true});
+					this._ol_layer.refresh({force: true});
 				}
 			}
 		}
+	},
+
+	redraw: function() {
+		this._ol_layer.refresh({force: true});
 	},
 
 	_createOLLayer: function(options) {
