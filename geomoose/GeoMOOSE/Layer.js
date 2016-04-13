@@ -145,7 +145,6 @@ dojo.declare('GeoMOOSE.Layer', null, {
 			for(var i = 0; i < paths.length; i++) {
 				this.paths[paths[i]] = false;
 			}
-
 		}
 
 		if(this.title == null || !GeoMOOSE.isDefined(this.title)) {

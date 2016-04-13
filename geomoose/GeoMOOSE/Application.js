@@ -546,9 +546,8 @@ dojo.declare('GeoMOOSE.Application', null, {
 				for(var i = 0, ii = diffs[stat].length; i < ii; i++) {
 					// ensure the highlight layers (which are highly dynamic) are
 					//  not considered apart of the state.
-					console.log('getStatusDifferences', stat, i, diffs[stat][i], CONFIGURATION.services.highlight_layer);
 					if(CONFIGURATION.services.highlight_layer.indexOf(diffs[stat][i]) < 0) {
-						layers[stat].push(name+'/'+diffs[stat][i]);
+						layers[stat].push(diffs[stat][i]);
 					}
 				}
 				
