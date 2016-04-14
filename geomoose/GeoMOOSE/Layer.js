@@ -192,6 +192,9 @@ dojo.declare('GeoMOOSE.Layer', null, {
 		}
 
 		this.saveInitialStatus();
+		if(status) {
+			GeoMOOSE.changeLayerVisibility(paths, status);
+		}
 	},
 
 	parseFromMapSource: function(mapSourceXml) {
