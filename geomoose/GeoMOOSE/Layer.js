@@ -139,11 +139,19 @@ dojo.declare('GeoMOOSE.Layer', null, {
 		this.paths = {};
 
 		this.src = layerXml.getAttribute('src');
+
+		// Only override the status when it is 
+		//  defined by the <layer> element.
+		var status = false;
+		if(layerXml.hasAttribute('status')) {
+			status = parseBoolean(layerXml.getAttribute('status'));
+		}
+
 		var paths = [];
 		if(GeoMOOSE.isDefined(this.src)) {
 			paths = this.src.split(':');
 			for(var i = 0; i < paths.length; i++) {
-				this.paths[paths[i]] = false;
+				this.paths[paths[i]] = status;
 			}
 		}
 
