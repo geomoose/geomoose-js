@@ -515,3 +515,7 @@ body {
 .olMap.editing-mode {
 	cursor: url(../cursors/pencil2.gif) 5 5,url(../cursors/pencil2.cur),copy;
 }
+
+.olMap.service-identify {
+	cursor: url(../cursors/identify2.gif) 9 9,url(../cursors/identify2.cur),help;
+}

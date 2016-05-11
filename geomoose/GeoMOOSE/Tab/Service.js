@@ -154,6 +154,9 @@ dojo.declare('GeoMOOSE.Tab.Service', [dijit.layout.BorderContainer], {
 			dijit.byId('toolbar').disableTools();
 		}
 
+		// allow custom CSS for a service
+		dojo.query('.olMap').addClass('service-'+this.service_xml.getAttribute('name'));
+
 		if(steps.length == 0) {
 			var step0_name = rootName + '0';
 			var step0 = dojo.create('div', {'id' : step0_name}, content);
@@ -850,6 +853,9 @@ dojo.declare('GeoMOOSE.Tab.Service', [dijit.layout.BorderContainer], {
 	},
 
 	onClose: function() {
+		// remove the CSS class
+		dojo.query('.olMap').removeClass('service-'+this.service_xml.getAttribute('name'));
+
 		this.disableTools();
 
 		/** deactivate all our controls **/
