@@ -381,7 +381,7 @@ GeoMOOSE.Services.InputType.AjaxSelect = OpenLayers.Class(GeoMOOSE.Services.Inpu
 	initialize: function(input, options) {
 		GeoMOOSE.Services.InputType.Select.prototype.initialize.apply(this, arguments);
 
-		if(options.url) {
+		if(options && options.url) {
 			this.url = options.url;
 		} else if(input) {
 			var url = input.getElementsByTagName('url')[0];
