@@ -54,6 +54,12 @@ dojo.declare('GeoMOOSE.Dialog.AttributeEditor', [dijit.Dialog], {
 		this.feature.attributes[attr] = value;
 	},
 
+	/** Callback stub.
+	 */
+	onSave: function() {
+
+	},
+
 	show: function(event) {
 		var feature = event.feature;
 		var content = dojo.byId(this.content_id);
@@ -151,6 +157,8 @@ dojo.declare('GeoMOOSE.Dialog.AttributeEditor', [dijit.Dialog], {
 				if(this.feature.state != OpenLayers.State.INSERT) {
 					this.feature.state = OpenLayers.State.UPDATE;
 				}
+
+				this.onSave();
 				this.hide();
 			})
 		}));

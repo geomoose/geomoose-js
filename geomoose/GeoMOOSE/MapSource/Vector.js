@@ -154,6 +154,10 @@ dojo.declare('GeoMOOSE.MapSource.Vector', GeoMOOSE.MapSource, {
 				this.controls['edit_attributes'].unselectAll();
 			}));
 
+			dojo.connect(dialog, 'onSave', dojo.hitch(this, function() {
+				this.save();
+			}));
+
 			dialog.show(ev);
 			//dojo.connect(dialog, 'onClose', function() { dialog.destoryRecursive(); });
 		});
