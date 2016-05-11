@@ -33,7 +33,11 @@ dojo.declare('GeoMOOSE.Tab.Catalog.LayerControl.Legend', [GeoMOOSE.Tab.Catalog.L
 	onClick: function() {
 		var legend = dojo.query('.catalog_legend_container', this.parentNode.parentNode)[0];
 		var wipe_params = {'node' : legend};
-		if(legend.style.display != 'none') {
+		var show_legend = !this.layer.showLegends;
+
+		this.layer.showLegends = show_legend;
+
+		if(!show_legend) {
 			if(CONFIGURATION.flashy_bits) {
 				dojo.fx.wipeOut(wipe_params).play();
 			} else {
@@ -45,6 +49,8 @@ dojo.declare('GeoMOOSE.Tab.Catalog.LayerControl.Legend', [GeoMOOSE.Tab.Catalog.L
 			} else {
 				legend.style.display = 'block';
 			}
+
+			this.catalogLayer.updateLegends();
 		}
 
 	}

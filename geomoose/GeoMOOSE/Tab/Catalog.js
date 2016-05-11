@@ -142,7 +142,7 @@ dojo.declare('GeoMOOSE.Tab._CatalogLayer', null, {
 			if(layer.controls[control_name]) {
 				var control_class = GeoMOOSE._getLayerControl(control_name);
 				if(GeoMOOSE.isDefined(control_class)) {
-					var control = new control_class({layer: layer});
+					var control = new control_class({layer: layer, catalogLayer: this});
 					control.draw(controls);
 				}
 			}
@@ -232,7 +232,7 @@ dojo.declare('GeoMOOSE.Tab._CatalogLayer', null, {
 		while(legends_div.firstChild) { legends_div.removeChild(legends_div.firstChild); }
 
 		/* load the new legends */
-		if(dijit.byId(this.checkbox_id).get('checked')) {
+		if(dijit.byId(this.checkbox_id).get('checked') && this.layer.showLegends) {
 			legends_div.style.display = 'block';
 			var legend_urls = [];
 			if(this.layer.dynamicLegends) {
