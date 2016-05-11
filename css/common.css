@@ -487,3 +487,31 @@ body {
 	border-bottom: solid 2px red;
 	height: 16px;
 }
+
+
+/** Cursor Definitions **/
+
+/** cursor.pan - CSS for pan tool. */
+.olMap.tool-pan {
+	cursor: url(../cursors/pan.gif) 9 9,url(../cursors/pan.cur),move;
+}
+
+.olMap.tool-zoomout {
+	cursor: url(../cursors/zoomout2.gif) 5 5,url(../cursors/zoomout2.cur),crosshair;
+}
+
+.olMap.tool-zoomin {
+	cursor: url(../cursors/zoomin2.gif) 5 5,url(../cursors/zoomin2.cur),crosshair;
+}
+
+.olMap.tool-measure {
+	cursor: url(../cursors/measure2.gif),url(../cursors/measure2.cur),crosshair;
+}
+
+.olMap.tool-measurearea {
+	cursor: url(../cursors/measure2.gif),url(../cursors/measure2.cur),crosshair;
+}
+
+.olMap.editing-mode {
+	cursor: url(../cursors/pencil2.gif) 5 5,url(../cursors/pencil2.cur),copy;
+}

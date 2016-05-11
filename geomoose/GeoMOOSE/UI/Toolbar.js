@@ -44,9 +44,12 @@ dojo.declare('GeoMOOSE.UI.Toolbar', [dijit.Toolbar], {
 	},
 
 	_deactivateTools: function() {
+		var map = dojo.query('.olMap');
 		for(var tool_name in Tools) {
 			Tools[tool_name].deactivate();
+			map.removeClass('tool-'+tool_name);
 		}
+		dojo.publish('/geomoose/deactivate-tools');
 	},
 
 	_internalToolAction: function() {
@@ -56,6 +59,7 @@ dojo.declare('GeoMOOSE.UI.Toolbar', [dijit.Toolbar], {
 			}
 
 			Tools[this.action].activate();
+			dojo.query('.olMap').addClass('tool-'+this.action);
 		} else {
 			GeoMOOSE.warning('The tool "'+this.action+'" is undefined!');
 		}

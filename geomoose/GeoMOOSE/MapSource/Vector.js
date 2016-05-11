@@ -137,10 +137,32 @@ dojo.declare('GeoMOOSE.MapSource.Vector', GeoMOOSE.MapSource, {
 			}
 		};
 
+		// set of functions for indicating editing to the user when
+		//  the layer tools are activated.
+		var show_editing = function() {
+			dojo.query('.olMap').addClass('editing-mode');
+		};
+
+		var end_editing = function() {
+			dojo.query('.olMap').removeClass('editing-mode');
+		};
+
+		var cursor_controls = {
+			'point' : 'editing-mode',
+			'line' : 'editing-mode',
+			'polygon' : 'editing-mode',
+			'modify' : 'editing-mode'
+		};
+
 
 		for(var control in this.controls) {
 			map.addControl(this.controls[control]);
 			Tools[this.title+'_'+control] = this.controls[control];
+		}
+
+		for(var control in cursor_controls) {
+			this.controls[control].events.register('activate', null, show_editing);
+			this.controls[control].events.register('deactivate', null, end_editing);
 		}
 
 		this.controls['edit_attributes'].events.register('featurehighlighted', this, function(ev) {

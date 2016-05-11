@@ -109,19 +109,6 @@ var CONFIGURATION = {
 		'minimum_ratio' : 10,
 		'maximum_ratio' : 20
 	},
-	/** cursor - Object of CSS cursor definitions */
-	'cursor' : {
-		/** cursor.pan - CSS for pan tool. */
-		pan: "url(cursors/pan.gif) 9 9,url(cursors/pan.cur),move",
-		/** cursor.zoomout - CSS for zoomout tool. */
-		zoomout: "url(cursors/zoomout2.gif) 5 5,url(cursors/zoomout2.cur),crosshair",
-		/** cursor.zoomin - CSS for zoomin tool. */
-		zoomin: "url(cursors/zoomin2.gif) 5 5,url(cursors/zoomin2.cur),crosshair",
-		/** cursor.measure - CSS for measure tool. */
-		measure: "url(cursors/measure2.gif),url(cursors/measure2.cur),crosshair",
-		/** cursor.measurearea - CSS for measurearea tool. */
-		measurearea: "url(cursors/measure2.gif),url(cursors/measure2.cur),crosshair"
-	},
 	'scale_line' : {
 		/** scale_line.enabled - Toggle whether the scale lien should be displayed on the map. Defaults to true. */
 		'enabled' : false,

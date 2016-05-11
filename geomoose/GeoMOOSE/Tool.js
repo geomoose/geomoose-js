@@ -54,25 +54,13 @@ dojo.declare('GeoMOOSE._Tool', null, {
 
 		this.doStyle();
 
-		this.cursor_css = 'default';
-		if(GeoMOOSE.isDefined(CONFIGURATION.cursor[this.name])) {
-			this.cursor_css = CONFIGURATION.cursor[this.name];
-		} else if(GeoMOOSE.isDefined(this.tool_xml.getAttribute('cursor'))) {
-			this.cursor_css = this.tool_xml.getAttribute('cursor'); 
-		}
-
 		if(this.selectable) {
 			dojo.subscribe('/geomoose/deactivate-tools', dojo.hitch(this, function() {
 				this.set('checked', false);
 			}));
 		}
-
-	},
-
-	changeCursor: function() {
-		dojo.style(dojo.byId('mapContainer'), {'cursor' : this.cursor_css});
 	}
-
+	
 });
 
 /*
@@ -95,7 +83,6 @@ dojo.declare('GeoMOOSE.Tool', [GeoMOOSE._Tool, dijit.form.ToggleButton], {
 			//this.inherited(arguments);
 			this.onStart();
 		}
-		this.changeCursor();
 	}
 });
 
@@ -126,7 +113,6 @@ dojo.declare('GeoMOOSE.ToolMenu', [GeoMOOSE.Tool, dijit.CheckedMenuItem], {
 
 	onClick: function() {
 		this.inherited(arguments);
-		this.changeCursor();
 	}
 });
 
@@ -139,7 +125,6 @@ dojo.declare('GeoMOOSE.UnselectableToolMenu', [GeoMOOSE._Tool, dijit.MenuItem], 
 
 	onClick: function() {
 		this.onStart();
-		this.changeCursor();
 
 	}
 });
