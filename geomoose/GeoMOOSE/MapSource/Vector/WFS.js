@@ -84,6 +84,11 @@ dojo.declare('GeoMOOSE.MapSource.Vector.WFS', [GeoMOOSE.MapSource.Vector], {
 			this.srsName = CONFIGURATION.projection;
 		}
 
+
+		return mapbook_xml;
+	},
+
+	constructor: function(mapbook_xml) {
 		// set the filter default
 		this.filter = null;
 		// check the XML for a filter.
@@ -96,9 +101,6 @@ dojo.declare('GeoMOOSE.MapSource.Vector.WFS', [GeoMOOSE.MapSource.Vector], {
 				this.updateFilter(OpenLayers.Util.getXmlNodeValue(filter));
 			}
 		}
-
-
-		return mapbook_xml;
 	},
 
 	save: function() {
