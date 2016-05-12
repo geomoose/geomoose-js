@@ -62,6 +62,9 @@ dojo.declare('GeoMOOSE.MapSource.Vector', GeoMOOSE.MapSource, {
 				if(visibility === true) {
 					this._ol_layer.refresh({force: true});
 				}
+
+				/* trigger us some events */
+				this.onLayersChange(path, visibility);
 			}
 		}
 	},
