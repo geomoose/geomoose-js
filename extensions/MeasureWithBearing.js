@@ -278,7 +278,11 @@ MeasureWithBearingExtension = new OpenLayers.Class(GeoMOOSE.UX.Extension, {
 			mouse click events. (Moving = one measure, then clicking on what seems the same spot
 			will create a small measurement differential */
 		/* needing these fundementally annoys me but it makes the app work. */
-		this.current_measure = event.measure;
+		var measure = event.measure;
+		if(event.type == 'measurepartial' && this.current_total) {
+			measure = event.measure - this.current_total;
+		}
+		this.current_measure = measure;
 		this.current_bearing = this.get_bearing_from_event(event);
 		this.current_total = this.current_measure + this.get_segment_total();
 
@@ -291,7 +295,15 @@ MeasureWithBearingExtension = new OpenLayers.Class(GeoMOOSE.UX.Extension, {
 			more important if we have a length > 1 we can actually make the array refs */
 		var len = components.length;
 		if(len > 1) {
-			return this.get_bearing(components[len-2],components[len-1]);
+			// there is an awkward bug in open layers where the last two points can be the same.
+			//  this accounts for that problem.
+			var a = components[len-2];
+			var b = components[len-1];
+			if(a.x == b.x && a.y == b.y) {
+				a = components[len-3];
+				b = components[len-2];
+			}
+			return this.get_bearing(a,b);
 		}
 		/* set it to nil */
 		return '-';
@@ -332,6 +344,11 @@ MeasureWithBearingExtension = new OpenLayers.Class(GeoMOOSE.UX.Extension, {
 	},
 
 	log_measure: function(event) {
+		var clear_current = false;
+		if(!this.current_measure) {
+			this.show_measure(event);
+			clear_current = true;
+		}
 		/* add the entry to the internal log */
 		this.entries.push({
 			'measure' : this.current_measure,
@@ -339,8 +356,14 @@ MeasureWithBearingExtension = new OpenLayers.Class(GeoMOOSE.UX.Extension, {
 				bearing of the double click */
 			'bearing' : this.current_bearing 
 		});
+
+
 		/* refresh the log table */
 		this.update_log_table();
+
+		if(clear_current) { 
+			this.current_measure = null;
+		}
 	},
 
 	load: function() {
