@@ -276,7 +276,7 @@ dojo.declare("extensions.ResultsAsGrid", null, {
 			// bridge the ID from OpenLayers
 			obj['id'] = evt.feature.id;
 			this.memoryStore.add(obj, {});
-			// check for a structure update
+
 			if(this.gridStructure == null) {
 				var view = [
 					new dojox.grid.cells.RowIndex({ width: "20px" })
@@ -300,6 +300,12 @@ dojo.declare("extensions.ResultsAsGrid", null, {
 		ol_layer.events.register('featureremoved', this, function(evt) {
 			this.memoryStore.remove(evt.feature.id);
 			this.triggerUpdate();
+
+			// when the feature are cleared out, reset the grid structure.
+			if(this.memoryStore.query(function() { return true; }).total == 0) {
+				this.gridStructure = null;
+			}
+
 		});
 
 
