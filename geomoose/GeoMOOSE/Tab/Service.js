@@ -51,11 +51,6 @@ dojo.declare('GeoMOOSE.Tab.Service', [dijit.layout.BorderContainer], {
 		/* header and footer are added dynamically based on content */
 		//this.addChild(this.header);
 		//this.addChild(this.footer);
-
-	},
-
-	constructor: function() {
-
 		/* make a nice little drawing layer */
 		this.drawing_layer = new OpenLayers.Layer.Vector(GeoMOOSE.id());
 		Map.addLayers([this.drawing_layer]);
@@ -112,6 +107,12 @@ dojo.declare('GeoMOOSE.Tab.Service', [dijit.layout.BorderContainer], {
 
 			this._onFeatureAdded({feature: useful_feature});
 		});
+
+
+
+	},
+
+	constructor: function() {
 
 		/* TODO: Make this right.  It is VERY, VERY, VERY wrong... */
 		this.input_types = {};
@@ -865,7 +866,7 @@ dojo.declare('GeoMOOSE.Tab.Service', [dijit.layout.BorderContainer], {
 		}
 
 		/** remove the drawing layer **/
-		if(GeoMOOSE.isDefined(this.drawing_layer)) {
+		if(this.drawing_layer != null) {
 			Map.removeLayer(this.drawing_layer);
 			this.drawing_layer = null;
 		}
@@ -896,6 +897,7 @@ dojo.declare('GeoMOOSE.Tab.Service', [dijit.layout.BorderContainer], {
 	},
 
 	onHide: function() {
+		this.drawing_layer.setVisibility(false);
 		this.disableTools();
 		this.inherited(arguments);
 	},
@@ -903,6 +905,7 @@ dojo.declare('GeoMOOSE.Tab.Service', [dijit.layout.BorderContainer], {
 	onShow: function() {
 		this.inherited(arguments);
 		this.restoreTools();
+		this.drawing_layer.setVisibility(true);
 	},
 
 	_closeMe: function() {
