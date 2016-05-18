@@ -50,7 +50,7 @@ var CONFIGURATION = {
 		'1:120' : 120
 	},
 	/** startup_service - Service to call at startup. Defaults to false */
-	'startup_service' : false,
+	'startup_service' : '',
 	'toolbar' : {
 		'show_labels' : false /** toolbar.show_labels - Toggles whether the toolbar should render all labels by default. Defaults to false. */
 	},

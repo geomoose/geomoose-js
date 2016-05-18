@@ -70,7 +70,15 @@ dojo.addOnLoad(function() {
 		// used as a flag to disable ".call" from the URL if the application
 		//  already specified the startup service in config.
 		var startup_service_called = false;
-		if(GeoMOOSE.isDefined(CONFIGURATION['startup_service'])) { 
+
+		if(GeoMOOSE.isDefined(params.call)) {
+			startup_service_called = true;
+			var service_name = params.call;
+			delete params.call;
+			GeoMOOSE.startService(service_name, params, true);
+		}
+
+		if(GeoMOOSE.isDefined(CONFIGURATION['startup_service']) && CONFIGURATION['startup_service'] != '') { 
 			var service_name = CONFIGURATION['startup_service'];
 			if(service_name) {
 				GeoMOOSE.startService(service_name, params, true);
@@ -78,11 +86,6 @@ dojo.addOnLoad(function() {
 			}
 		}
 
-		if(GeoMOOSE.isDefined(params.call) && !startup_service_called) {
-			var service_name = params.call;
-			delete params.call;
-			GeoMOOSE.startService(service_name, params, true);
-		}
 	});
 
 	dojo.connect(Application, 'onGotMapbook', layout.resize);
