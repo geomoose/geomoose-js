@@ -397,7 +397,7 @@ GeoMOOSE.Services.InputType.AjaxSelect = OpenLayers.Class(GeoMOOSE.Services.Inpu
 		for(var i = 0 ; i < opts.length; i++) {
 		       formed_opts.push({value: opts[i].getAttribute('value'), name: OpenLayers.Util.getXmlNodeValue(opts[i])});
 		}
-		this.options = formed_opts;
+		this.options['options'] = formed_opts;
 	},
 
 	getOptions: function () {
@@ -407,7 +407,7 @@ GeoMOOSE.Services.InputType.AjaxSelect = OpenLayers.Class(GeoMOOSE.Services.Inpu
 		       success: OpenLayers.Function.bind(this.got_opts_from_req, this) 
 		});
 
-		return this.options; 
+		return this.options['options']; 
 	}
 });
 
