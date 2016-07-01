@@ -216,18 +216,30 @@ dojo.declare("extensions.ResultsAsGrid", null, {
 
 			if(n_elements == 0) {
 				// clear out the data grid if it exists.
+				if(this.layout) {
+					var middle = dijit.byId('middle');
+					this.layout.removeChild(this.dataGrid);
+					this.dataGrid = null;
+
+					middle.removeChild(this.layout);
+				}
 			} else {
 				if(this.dataGrid == null) {
-					var dg_layout = new dijit.layout.BorderContainer({
-						region: 'bottom', gutters: false,
-						splitter: true, liveSplitters: false,
-						style: "height: 30%" //125px"
-					});
-
 					var middle = dijit.byId('middle');
-					middle.addChild(dg_layout);
 
-					this.renderToolbar(dg_layout);
+					if(!this.layout) {
+						var dg_layout = new dijit.layout.BorderContainer({
+							region: 'bottom', gutters: false,
+							splitter: true, liveSplitters: false,
+							style: "height: 30%" //125px"
+						});
+
+						this.layout = dg_layout;
+						middle.addChild(this.layout);
+
+						this.renderToolbar(this.layout);
+					}
+
 
 					this.dataGrid = new dojox.grid.DataGrid({
 						region: 'center',
@@ -240,9 +252,7 @@ dojo.declare("extensions.ResultsAsGrid", null, {
 					dojo.connect(this.dataGrid, 'onMouseOut', this, this.mouseOut);
 					dojo.connect(this.dataGrid, 'onSelectionChanged', this, this.renderSelected); 
 
-
-					//var middle = dijit.byId('middle');
-					dg_layout.addChild(this.dataGrid);
+					this.layout.addChild(this.dataGrid);
 					this.dataGrid.startup();
 					middle.resize();
 				}
@@ -283,16 +293,31 @@ dojo.declare("extensions.ResultsAsGrid", null, {
 				];
 
 				for(var attr in evt.feature.attributes) {
-					view.push({
-						name: attr, field: attr, width: 8
-					});
+					// ACHTUNG! Skip the internal identifier.
+					//  This could potentially be a bug where the 
+					//  features have an "id" column.
+					console.log('Attributes', attr);
+					if(attr != 'id') {
+						view.push({
+							name: attr, field: attr, width: 8
+						});
+					}
 				}
 
 
 				var structure = [{
 					type: "dojox.grid._CheckBoxSelector"
 				}, view];
+
 				this.gridStructure = structure;
+
+				// remove the old 'grid' and null it out
+				//  so that it will be redrawn.
+				if(this.dataGrid != null) {
+					this.layout.removeChild(this.dataGrid);
+					this.dataGrid = null;
+				}
+
 			}
 			this.triggerUpdate();
 		});
