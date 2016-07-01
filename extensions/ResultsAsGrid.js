@@ -296,7 +296,6 @@ dojo.declare("extensions.ResultsAsGrid", null, {
 					// ACHTUNG! Skip the internal identifier.
 					//  This could potentially be a bug where the 
 					//  features have an "id" column.
-					console.log('Attributes', attr);
 					if(attr != 'id') {
 						view.push({
 							name: attr, field: attr, width: 8
