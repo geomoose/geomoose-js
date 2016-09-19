@@ -92,7 +92,12 @@ dojo.declare('GeoMOOSE.Tool', [GeoMOOSE._Tool, dijit.form.ToggleButton], {
  */
 
 dojo.declare('GeoMOOSE.UnselectableTool', [GeoMOOSE.Tool], {
-	selectable: false
+	selectable: false,
+
+	onClick: function() {
+		this.set('checked', false);
+		this.onStart();
+	}
 });
 
 /*
