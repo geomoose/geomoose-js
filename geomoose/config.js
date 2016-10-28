@@ -36,8 +36,6 @@ var CONFIGURATION = {
 	},
 	/** catalog_name - Set the catalog's label. Defaults to 'Catalog' */
 	'catalog_name' : 'Catalog',
-	/** group_checkboxes - Allow entire groups to be toggled on or off with a global checkbox. Defaults to true.  */
-	'group_checkboxes' : true,
 	/** flashy_bits - Toggles Animations on or off. Defaults to true*/
 	'flashy_bits' : true,
 	/** zoomto - Object representing the zoom to drop downs. */

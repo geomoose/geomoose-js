@@ -365,14 +365,6 @@ dojo.declare('GeoMOOSE.Tab.Catalog', [GeoMOOSE.Tab], {
 		if(group.getAttribute('title')) {
 			var li = document.createElement('li');
 			p.appendChild(li);
-			/*
-			if(CONFIGURATION.group_checkboxes && parseBoolean(group.getAttribute('multiple'), true)) {
-				var group_control = document.createElement('input');
-				group_control.type = 'checkbox';
-				li.appendChild(group_control);
-				group_control.onclick = groupClickAll;
-			}
-			*/
 
 			var title_div = dojo.create('a', {
 				'innerHTML' : group.getAttribute('title')
