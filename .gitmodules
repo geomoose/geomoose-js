@@ -1,6 +1,6 @@
 [submodule "libs/OpenLayers"]
 	path = libs/OpenLayers
-	url = https://github.com/openlayers/openlayers.git
+	url = https://github.com/openlayers/ol2.git
 [submodule "libs/proj4js"]
 	path = libs/proj4js
 	url = https://github.com/geomoose/proj4js-amd.git

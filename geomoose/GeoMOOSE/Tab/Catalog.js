@@ -66,15 +66,14 @@ dojo.declare('GeoMOOSE.Tab._CatalogLayer', null, {
 		this.parent_id = parent_id;
 		var p = dojo.byId(parent_id);
 
-		var container;
+		var container_opts = {className: 'catalog-layer'};
 		if (layer.tip != null) {
-			container = dojo.create('div', {title: layer.tip}, p);
-		} else {
-			container = dojo.create('div', null, p);
+			container_opts.title = layer.tip;
 		}
+		var container = dojo.create('div', container_opts, p);
 		this.div = container;
 
-		var title = dojo.create('div', {}, container);
+		var title = dojo.create('div', {className: 'catalog-layer-titlebar'}, container);
 
 		this.checkbox_id = GeoMOOSE.id();
 		var checkbox = dojo.create('span', {'id' : this.checkbox_id}, title);
@@ -133,7 +132,7 @@ dojo.declare('GeoMOOSE.Tab._CatalogLayer', null, {
 
 		/** Whew ... time to render controls ... yikes ... **/
 		var controls_id = GeoMOOSE.id();
-		var controls = dojo.create('div', {id: controls_id}, container);
+		var controls = dojo.create('div', {id: controls_id, className: 'catalog-layer-controls'}, container);
 		if(CONFIGURATION.catalog.show_controls === false) {
 			dojo.addClass(controls, 'hide');
 		}
@@ -365,14 +364,6 @@ dojo.declare('GeoMOOSE.Tab.Catalog', [GeoMOOSE.Tab], {
 		if(group.getAttribute('title')) {
 			var li = document.createElement('li');
 			p.appendChild(li);
-			/*
-			if(CONFIGURATION.group_checkboxes && parseBoolean(group.getAttribute('multiple'), true)) {
-				var group_control = document.createElement('input');
-				group_control.type = 'checkbox';
-				li.appendChild(group_control);
-				group_control.onclick = groupClickAll;
-			}
-			*/
 
 			var title_div = dojo.create('a', {
 				'innerHTML' : group.getAttribute('title')
