@@ -41,7 +41,7 @@ BookmarkToTabExtension = new OpenLayers.Class(GeoMOOSE.UX.Extension, {
 
   			var bookmark_tab = GeoMOOSE.getTab('bookmark_tab');
 			if(!GeoMOOSE.isDefined(bookmark_tab)) {
-				bookmark_tab = new GeoMOOSE.Tab({'title': 'Bookmark'});
+				bookmark_tab = new GeoMOOSE.Tab({'title': 'Bookmark', 'closable':true});
 				GeoMOOSE.addTab('bookmark_tab', bookmark_tab)
 			}
 
