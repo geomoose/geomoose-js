@@ -229,7 +229,7 @@ window.GeoMOOSE = {
 	 * Method: updateLayerFilter
 	 * Change the filter for a given layer.
 	 */
-	updateLayerFilter: function(laterName, filterText) {
+	updateLayerFilter: function(layerName, filterText) {
 		Application.getMapSource(layerName).updateFilter(filterText);
 	},
 
